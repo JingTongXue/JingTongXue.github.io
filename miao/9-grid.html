@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>九宫格</title>
+	
+	<style>
+		
+		table{
+			height: 200px;
+			width: 200px;
+			border-collapse: collapse;  /*合并边框*/
+		}
+		table col,table tr{	
+		    text-align: center;			
+			border:5px solid blue;
+		}
+		table td:hover{
+			border:5px solid red;
+		}
+		
+	</style>
+
+</head>
+<body>
+	
+	<div class="table">
+		<h1>table</h1>
+		<table>
+			<col>
+			<col>
+			<col>
+			<tr>
+				<td class="row1">1</td>
+				<td class="row2">2</td>
+				<td class="row3">3</td>
+			</tr>
+			<tr>
+				<td class="row4">4</td>
+				<td class="row5">5</td>
+				<td class="row6">6</td>
+			</tr>
+			<tr>
+				<td class="row7">7</td>
+				<td class="row8">8</td>
+				<td class="row9">9</td>
+			</tr>
+		</table>
+	</div><br><br>
+
+	<style>
+		.float{
+			position:relative;
+		}
+		.float ul{
+			height: 250px;
+			width: 250px;
+			list-style: none;
+			position: absolute;
+			left: -30px;
+
+		}
+		.float ul li {
+			line-height: 60px;
+			text-align: center;
+			float: left;
+			height: 60px;
+			width: 60px;
+			border: 5px solid blue;
+			margin-top: -5px;
+			margin-left: -5px;
+		}
+		.float ul li:hover{
+			border:5px solid red;
+			position: relative;
+
+		}
+
+	</style>
+	<div>
+	<div class="float">
+		<h1>浮动</h1>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+		</ul>
+	</div>
+	</div>
+	<br><br><br><br><br><br><br><br><br><br><br><br>
+	<style>
+		.inline-table{
+			margin-left: 10px;
+			height: 200px;
+			width: 200px;
+			/*border: 1px solid blue;*/
+		}
+		.inline-table div{
+			text-align: center;
+			line-height: 60px;
+			display: inline-block;
+			height: 54px;
+			width: 54px;
+			border: 5px solid blue;
+			margin-top: -5px;
+			margin-left: -10px;
+		}
+		.inline-table div:hover{
+			border: 5px solid red;
+			position: relative;
+		}
+
+	</style>
+
+	<div class="inline-block">
+		<h1>inline-block</h1>
+		<div class="inline-table">
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+			<div>9</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
