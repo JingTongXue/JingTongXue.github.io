@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>oald-layout-flex</title>
+    <style>
+         html,body{
+            width: 100%;
+            height: 100%;
+        }
+
+        .flex{
+            display:flex;
+            width: 100%;  
+            height: 100%;
+        }
+
+        .a{
+            display:flex;
+            flex-grow:1;
+            background-color: lime;
+            flex-direction:column;
+        }
+
+        .a1{
+            height: 150px;
+            background-color: yellow;
+        }
+        .a2{
+            height: calc(100% - 150px);
+            background-color: rgb(235,243,255);
+        }
+
+
+
+        .b{
+            width: 180px;
+            background-color:red;
+            }
+        .c{
+            width: 180px;
+            background-color: tan;
+        }
+        .d{
+            width: 180px;
+            background-color: blue;
+         }
+    </style>
+</head>
+<body>
+        <div class="flex">
+                <div class="b">asdasd</div>
+                <div class="a">
+                  <div class="a1">dasdasd</div>
+                  <div class="a2">asdasdas</div>
+                </div>
+                <div class="c">asdasd</div>
+                <div class="d">asdasdas</div>
+</body>
+</html>
