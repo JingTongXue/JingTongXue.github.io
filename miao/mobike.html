@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            margin: 0;
+        }
+        .header{
+            width: 100%;
+            height: 800px;
+            background: url("https://mobike.com/cn/assets/themes/moby/img/landing/hero-bg-3.jpg" );
+            background-size:cover;             
+        }
+        @media (max-width: 1380px){
+            .header{
+            height: 550px;
+        }
+        }
+        @media (max-width:800px){
+            .header{
+                height:300px;
+            }
+        }
+        .left{
+            margin-right: -4px;
+            margin-left:-4px;
+            padding: 2px;
+            overflow: hidden;
+        }
+        .left div{
+            float: left;
+            width: 25%;
+            height: 320px;
+            border:2px solid white;
+            /* padding: 2px; */
+
+        }
+        /* .left {
+            display: flow-root;
+        } */
+
+        .left .liu1{
+            background: url("https://mobike.com/cn/assets/themes/moby/img/promo-01.jpg");
+            background-size: cover;
+            
+        }
+        .left .liu2{
+            background: url("https://mobike.com/cn/assets/themes/moby/img/promo-02.jpg");
+            background-size: cover;
+        }
+        .left .liu3{
+            background: url("https://mobike.com/cn/assets/themes/moby/img/promo-03.jpg");
+            background-size: cover;
+        }
+        .left .liu4{
+            background: url("https://mobike.com/cn/assets/themes/moby/img/promo-04.jpg");
+            background-size: cover;
+        }
+        @media (max-width:1300px){
+            .left div{
+                width:50%;
+            }
+        }
+        @media (max-width:780px){
+            .left div{
+                width:100%;
+            }
+        }
+        section{
+            overflow: hidden;
+        }
+
+        .z{
+            background-color:blue;
+        }
+
+
+        /* 下面微信小程序部分 */
+        .relative{
+            width: 100%;
+        }
+        
+        .container-md{
+            
+            text-align: center;
+            height: 110px;
+        }
+        .meta-links{
+            position: relative;
+            display: inline-block;
+            height: 140px;
+            width: 350px;
+        }
+        .container-md .meta-links .icon{
+            position: absolute;
+            top:30px;
+            background-size:contain; 
+            width: 50px;
+            height: 50px;
+            background-repeat:no-repeat; 
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header"> </div>
+
+    <section>
+        <div class="left">
+            <div class="liu1"></div>
+            <div class="liu2"></div>
+            <div class="liu3"></div>
+            <div class="liu4"></div>
+        </div>
+    </section>
+       <div class="relative of-hidden meta-links-wrap">
+        <div class="container-md">
+                <div class="meta-links">
+                    <div class="icon" style="background-image:url('https://mobike.com/cn/assets/themes/moby/img/icon-wechat.png')"></div>
+                    <div class="text">
+                        <h4>微信小程序</h4>
+                        <p>微信扫一扫，直接用车</p>
+                    </div>
+                </div>
+                <div class="meta-links">
+                    <div class="icon" style="background-image:url('https://mobike.com/cn/assets/themes/moby/img/icon-rp.png')"></div>
+                    <div class="text">
+                        <h4>红包车</h4>
+                        <p>骑膜拜，能赚钱</p>
+                    </div>
+                </div>
+                <div class="meta-links">
+                    <div class="icon" style="background-image:url('https://mobike.com/cn/assets/themes/moby/img/icon-credit.png')"></div>
+                    <div class="text">
+                        <h4>模范分</h4>
+                        <p>文明骑行，信用生活</p>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+</body>
+</html>
