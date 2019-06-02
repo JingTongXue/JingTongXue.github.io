@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>cat字典</title>
+	<style>
+		body,html{
+			height: 100%;
+			margin: 0;
+		}
+		div{
+			height: 100%;
+			font-size: 0;
+			position: relative;
+		}
+		div *{
+			font-size: 30px;
+		}
+		div aside{
+			width: 20%;
+			height: 100%;
+			display: inline-block;/*设置该aside为行内块元素 目的：使其跟其他水平排列*/
+
+		}
+		div main{
+			width: 40%;
+			height: 100%;
+			display: inline-block;/*设置该mian为行内块元素 目的：使其跟其他水平排列*/
+			position:relative;
+		}
+		.a{
+			background-color: tan;
+		}
+		.b{
+			background-color: aqua;
+		}
+		.c{
+			background-color: olive;
+		}
+		.x{
+			background-color: red;
+		}
+		
+		header{
+			background-color: blue;
+			width: 100%;
+		}
+		header .place{
+			padding-top: 15%;
+			min-height: 20px;
+			/*position: absolute;*/
+			/*widows: 100%;*/
+			border-bottom: 3px solid;
+
+		}
+		main .content{
+			/*margin-top: -20%;*/
+			background-color: olive;
+			position: absolute;
+			top:0;
+			margin-top: 18%;
+			bottom: 0;
+			width: 100%;
+
+		}
+
+
+	</style>
+</head>
+<body>
+	<div>
+		<aside class="a"></aside>
+		<main class="x">
+			<header>
+				<div class="place"></div>
+			</header>
+			<div class="content">
+				
+			</div>
+		</main>
+		<aside class="b"></aside>
+		<aside class="c"></aside>
+
+
+	</div>
+</body>
+</html>
