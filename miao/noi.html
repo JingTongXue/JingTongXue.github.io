@@ -43,7 +43,7 @@
     var c = +prompt("c值:","");
     var d = +prompt("d值:","");
     var f = a * x * x * x  + b* x * x + c * x + d ;
-    console.log(f);
+    console.log(f.toFixed(7));
 </script> 
  <script id="ch0103/08">
     do{
@@ -71,7 +71,7 @@
     var a = +prompt("浮点数a:","");//双精度浮点数--？？
     var b = +prompt("浮点数b:","");
     var c = a % b;
-    console.log(c);
+    console.log(c.toFixed(4));
 </script> 
  <script id="ch0103/12">
     do{
@@ -104,7 +104,7 @@
     var b = n - a;//还剩多少个
     console.log(b);
 </script> 
-<! <script id="ch0103/16">
+<script id="ch0103/16">
     var Xa = +prompt("坐标A的X指数","");
     var Ya = +prompt("坐标A的y指数","");
     var Xb = +prompt("坐标B的X指数","");
@@ -121,7 +121,7 @@
     var x3 = +prompt("x3值:","");
     var y3 = +prompt("y3值:","");
     var s = 1/2 *((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
-    console.log(s);
+    console.log(s.toFixed(2));
 </script>  
  <script id="ch0103/18">
     var a1 = +prompt("请输入等差数列第一项","");
@@ -180,7 +180,7 @@
     var b = a.charCodeAt();
     if(b % 2 ==0){//偶数
       console.log("No");
-    }else{
+    }else if(b % 2 == 1){
       console.log("Yes");
     }
 </script> 
@@ -217,7 +217,9 @@
     }
 </script> 
  <script id="ch0104/08">
-    var n = +prompt("请输入一个整数n:","");
+    do{
+      var n = +prompt("请输入一个整数n:","");
+    }while(n < -1000000 || n > 1000000);
     if(n % 3 == 0 && n % 5 == 0){
       console.log("Yes");
     }else{
@@ -281,13 +283,13 @@
     }while(x<0 || x>=20);
     if(0 <= x < 5){
       var y = -x + 2.5;
-      console.log(y);
+      console.log(y.toFixed(3));
     }else if(5 <= x < 10){
       var y = 2 - 1.5*(x - 3)(x -3);
-      console.log(y);
+      console.log(y.toFixed(3));
     }else if(10 <= x <20){
       var y = x/2 -1.5;
-      console.log(y);
+      console.log(y.toFixed(3));
     }
 </script> 
  <script id="ch0104/14">
