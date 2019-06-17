@@ -27,14 +27,14 @@
  <script id="ch103/05">
      var a = +prompt("请输入整数A:","");
      var b = +prompt("请输入整数B:","");
-     var c = a / b;//双精度浮点数，保留小数点后9位-------未做
-     console.log(c);
+     var c = a / b;
+     console.log(c.toFixed(9));
 </script> 
  <script id="ch103/06">
      var a = +prompt("确诊数:","");
      var b = +prompt("死亡数:","");
-     var c = (b / a) * 100;//精确到小数点后三位---------未做
-     console.log(c+"%%");
+     var c = (b / a) * 100;
+     console.log(c.toFixed(3)+"%%");
 </script> 
  <script id="ch103/07">
     var x = +prompt("x值:","");
@@ -49,23 +49,23 @@
     do{
     var a = +prompt("请输入一个数值，表示华氏温度","");
     }while(a<-459.67);
-    var b = 5 * (a - 32) / 9;//精确到小数点后五位----未做
-    console.log(b);
+    var b = 5 * (a - 32) / 9;
+    console.log(b.toFixed(5));
 </script> 
  <script id="ch103/09">
     do{
       var a = +prompt("请输入圆的半径:","");
     }while(a<0 || a>10000);
       var b = a * 2;
-      var c = 2 * 3.1415926 * a;//π不能用？？
-      var d = 3.1415926 * a * a;//小数点后4位----未做
-      console.log(b + " "+ c +" " +d);
+      var c = 2 * 3.14159 * a;//π不能用？？
+      var d = 3.14159 * a * a;
+      console.log(b.toFixed(4) + " "+ c.toFixed(4) +" " +d.toFixed(4));
 </script> 
  <script id="ch103/10">
       var a = +prompt("r1电阻阻值:","");
       var b = +prompt("r2电阻阻值:","");
-      var R =  1 / (1/a + 1/b);//小数点后2位---未做
-      console.log(R);
+      var R =  1 / (1/a + 1/b);
+      console.log(R.toFixed(2));
 </script> 
  <script id="ch103/11">
     var a = +prompt("浮点数a:","");//双精度浮点数--？？
@@ -78,7 +78,7 @@
       var a = +prompt("球半径r:","");
     }while(a < 0 || a>100);
     var b = 4 / 3 * 3.14 * a * a * a;
-    console.log(b);//小数点后2位----？？？
+    console.log(b.toFixed(2));//小数点后2位----？？？
 </script> 
  <script id="ch103/13">    
     do{
