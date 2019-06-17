@@ -20,7 +20,7 @@
  <script id="ch0103/04">
     var a = +prompt("请输入被除数:","");
     var b = +prompt("请输入除数:","");
-    var c = parseInt(a / b);
+    var c = Math.floor(a / b);
     var d = a % b;
     console.log(c + " "+ d);
 </script> 
@@ -111,7 +111,7 @@
     var Yb = +prompt("坐标B的y指数","");
     var i = (Yb - Ya)*(Yb - Ya)+(Xb - Xa)*(Xb - Xa);//即a^2+b^2=c^2
     var j = Math.sqrt(i);
-    console.log(j);
+    console.log(j.toFixed(3));
 </script> 
  <script id="ch0103/17">
     var x1 = +prompt("x1值:","");
@@ -179,9 +179,9 @@
     var a = prompt("请输入一个字符n:","");
     var b = a.charCodeAt();
     if(b % 2 ==0){//偶数
-      console.log("No");
-    }else if(b % 2 == 1){
-      console.log("Yes");
+      console.log("NO");
+    }else {
+      console.log("YES");
     }
 </script> 
  <script id="ch0104/05">
@@ -221,9 +221,9 @@
       var n = +prompt("请输入一个整数n:","");
     }while(n < -1000000 || n > 1000000);
     if(n % 3 == 0 && n % 5 == 0){
-      console.log("Yes");
+      console.log("YES");
     }else{
-      console.log("No");
+      console.log("NO");
     }
 </script> 
  <script id="ch0104/09">
