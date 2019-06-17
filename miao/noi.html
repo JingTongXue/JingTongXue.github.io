@@ -422,6 +422,383 @@
 
 
 
+<script id="ch0105/01">
+  do{
+    var n = +prompt("请输入学生人数:","");
+  }while(n <1 || n >100);
+  var sum = 0;
+  for(var i = 0;i < n;i++){
+    do{
+      var age = +prompt("学生的年龄:","");
+    }while(age <15 || age >25);
+    sum = sum + age;
+  }
+  var mean = (sum / n).toFixed(2);
+  console.log(mean);
+</script> 
+<script id="ch0105/02">
+    var sum = 0;
+    for(var i = 0;i < 12;i++){
+      do{
+        var surplus = +prompt("请输入当月结余:","");
+      }while(surplus > 1000000);
+      sum = sum + surplus;
+    }
+    var mean = "$" + (sum / 12).toFixed(2);
+    console.log(mean);
+</script>
+<script id="ch0105/03">
+    do{
+      var n = +prompt("样本容量:","");
+    }while(n <= 0 || n > 100);
+    var sum = 0;
+    for(var i = 0;i < n;i++){
+      do{
+      var float = +prompt("数值:","");
+      }while(Math.abs(float) > 1000);//Math.abs(x)----取x的绝对值
+      sum = sum + float;
+    }
+    var mean = (sum / n).toFixed(4);
+    console.log(mean);
+</script>
+<script id="ch0105/04">
+    do{
+      var n = +prompt("n个整数,n:","");
+    }while(n < 1 || n >10000);
+    var sum = 0;
+    for(var i = 0;i < n;i++){
+      do{
+        var it = +prompt("请输入一个整数:","");
+      }while(Math.abs(it) > 10000);
+      sum = sum + it;
+    }
+    var mean = (sum / n).toFixed(5);
+    console.log(sum + "  " + mean);
+</script>
+<script id="ch0105/05" type="text/javascript">
+    do{
+      var n = +prompt("参加考试的人数:","");
+    }while(n < 1 || n >=100);
+    var grades = new Array();
+    for(var i = 0;i < n;i++){
+      do{
+      var grade = +prompt("学生的成绩:","")
+      }while(grade < 0 || grade > 100);
+      grades[i] = grade;
+    }
+    //console.log(grades);
+    //冒泡排序
+    for(var j = 0;j < grades.length-1;j++){  
+      for(var i = 0;i < grades.length - 1;i++){
+        
+        if(grades[i] > grades[i+1]){
+          var sum = grades[i];
+          grades[i] = grades[i+1];
+          grades[i+1] = sum;
+        }
+      }
+    }
+    console.log(grades[n-1]);
+</script>
+<script id="ch0105/06">
+    do{
+      var n = +prompt("整数序列个数:","");
+    }while(n < 1 || n >=1000);
+    var grades = new Array();
+    for(var i = 0;i < n;i++){
+      do{
+      var grade = +prompt("请输入一个整数:","")
+      }while(grade < 0 || grade > 1000);
+      grades[i] = grade;
+    }
+    //冒泡排序
+    for(var j = 0;j < grades.length-1;j++){  
+      for(var i = 0;i < grades.length - 1;i++){
+        
+        if(grades[i] > grades[i+1]){
+          var sum = grades[i];
+          grades[i] = grades[i+1];
+          grades[i+1] = sum;
+        }
+      }
+    }
+    var max = grades[n-1];
+    for(var j = 0;j < grades.length-1;j++){  
+      for(var i = 0;i < grades.length - 1;i++){
+        
+        if(grades[i] < grades[i+1]){
+          var sum = grades[i];
+          grades[i] = grades[i+1];
+          grades[i+1] = sum;
+        }
+      }
+    }
+    var min = grades[n-1];
+    console.log(max - min);
+</script>
+<script id="ch0105/07">
+    var n = +prompt('请输入n')
+    var sumgold = sumsilver = sumcopper = 0
+    for(var i = 1;i <= n; i++) {
+        var gold = +prompt('第' + i + '天金牌')
+        var silver = +prompt('第' + i + '天银牌')
+        var copper = +prompt('第' + i + '天铜牌')
+        sumgold += gold
+        sumsilver += silver
+        sumcopper += copper
+    }
+    console.log(sumgold)
+    console.log(sumsilver)
+    console.log(sumcopper)
+    console.log(sumgold + sumsilver + sumcopper)
+</script>
+<script id="ch0105/08">
+    var n = +prompt("n边形,n:","");
+    var sums = (n - 2) * 180;
+    var sum = 0;
+    for(var i = 0;i < n-1;i++){
+      var degree = +prompt("内角度数:","");
+      sum = sum + degree; 
+    }
+    console.log(sums -sum);           
+</script>
+<script id="ch0105/09">
+    var m = +prompt("请输入一个整数m:","");
+    var n = +prompt("请输入一个整数n:","");
+    var sum = 0;
+    for(var i = m;i <= n;i++){
+        if(i % 2 !== 0){
+          sum = sum + i;
+        }
+    }
+    console.log(sum);
+</script>
+<script id="ch0105/10">
+    do{
+      var m = +prompt("请输入一个整数m:","");
+      var n = +prompt("请输入一个整数n:","");
+      var sum = 0;
+    }while(m<=0||m>1000||m>n||n<=0||n>1000);
+    for(var i = m;i <= n;i++){
+        if(i % 17 == 0){
+          sum = sum + i;
+        }
+    }
+    console.log(sum);
+</script>
+<script id="ch0105/11">
+    do{
+    var k =+prompt("给定k个正整数,k:","");
+    }while(k<=1 || k>=100);
+    var sum1 = 0;
+      var sum5 = 0;
+      var sum10 = 0;
+    for(var i = 0;i < k;i++){
+      var it = +prompt("请输入一个正整数:","")
+      if(it == 1){
+          sum1 ++;
+      }else if(it == 5){
+        sum5 ++;
+      }else if(it == 10){
+        sum10 ++;
+      }
+    }
+    console.log(sum1+" "+sum5+" "+sum10);
+</script>
+<script id="ch0105/12">
+    do{
+      var N = +prompt("请输入整数序列的长度N:","");
+    }while(N > 100);
+    var m = +prompt("请输入指定的数字:","");
+    var sum = 0;
+    for(var i = 0;i < N;i++){
+        var it = +prompt("请输入整数:","");
+        if(it == m){
+          sum++;
+        }
+    }
+    console.log(sum);
+</script>
+<script id="ch0105/13">
+    do{
+      var a = +prompt("请输入一个整数a:","");
+      var n = +prompt("请输入次方数n:","");
+    }while(a < -1000000 || a > 1000000 || n < 1 || n > 10000);
+    var sum = 1;
+    for(var i = 0;i < n;i++){
+      sum *= a;
+    }
+    console.log(sum);
+</script>
+<script id="ch0105/14">
+    do{
+      var x = +prompt("请输入整数x:","");
+      var n = +prompt("年数n:","");
+    }while(x < 1 || x > 100 || n < 1 || n >100);
+    var sum = 0;
+    var add = 0;
+    for(var i = 0;i < n;i++){
+        add = x * 0.001;
+        sum = add + x;
+        x = sum;
+    }
+    console.log(sum.toFixed(4));
+</script>
+<script id="ch0105/15">
+    do{
+      var R = +prompt("复合年利率R:","");
+      var M = +prompt("现拥有总金额M:","");
+      var Y = +prompt("投资年数Y:","");
+    }while(R < 0 || R > 32 || M <100 || M >1000000 || Y < 0 || Y > 400)
+    var r = R * 0.01;
+    var sum = 0;
+    var add = 0;
+    for(var i =0;i < Y;i++){
+        add = M * r;
+        sum = add + M;
+        M = sum;
+    }
+    console.log(parseInt(sum));
+</script>
+<script id="ch0105/16">
+    do{
+      var N = +prompt("年薪N万,N:","");
+      var K = +prompt("增长率K:","");
+    }while(N < 10 || N >50 || K < 1 || K > 20);
+    var k = K * 0.01;
+    var sum = 0;
+    var add = 0;
+    var sums = 0;
+    for(var i = 1;i < 100;i++){
+        add = N * k;
+        sum = N + add;
+        sums = sum + N;
+        N = sum;
+        if(sums > 200){
+          if(i <= 20){
+            console.log(i);
+            break;
+          }else{
+            console.log("Impossible");
+            break;
+          }
+        }
+    }
+</script>
+<script id="ch0105/17">
+    do{
+      var k = +prompt("请输入一个正整数k:","");
+    }while(k < 1 || k >46);
+    var m = 1;
+    var n = 1;
+    var b = 0;
+    if(k == 1 || k == 2){
+      console.log(1);
+    }else{
+      for(var i = 3;i < 50;i++){
+        var a = m + n;
+        b = n;
+        n = a;
+        m = b;
+        if(k == i){
+          console.log(n);
+          break;
+        }
+      }
+    }
+</script>
+<script id="ch0105/18">
+      do{
+        var n = +prompt("请输入总病例数n:","");
+      }while(n>10000);
+      var sumj = +prompt("鸡尾酒疗法总病例数:","");
+      var valid = +prompt("鸡尾酒疗法有效病例数:","");
+      var ratej = valid / sumj;
+      for(var i =1;i < n;i++){
+        var sum = +prompt("总病例数:","");
+        var avalid = +prompt("有效病例数:","");
+        var rate = avalid / sum;
+        if(rate - ratej > 0.05){
+          console.log("better");
+        }else if(ratej - rate > 0.05){
+          console.log("worse;")
+        }else{
+          console.log("same");
+        }
+      }
+</script>
+<script id="ch0105/19">
+    var n = +prompt("屋顶数n:","");
+    for(var i = 0;i < n;i++){
+      var x = +prompt("相对坐标位置x:","");
+      var y = +prompt("相对坐标位置y:","");
+      var p = +prompt("屋顶人数p:","");
+      var dis = Math.sqrt(x*x + y*y);
+      var time = Math.ceil((dis / 50) * 2 + 1.5 * p);
+      var times = 0;
+      times += time;
+    }
+    console.log(times);
+</script>
+<script id="ch0105/20">
+    var h = +prompt("球的起始高度h:","");
+    var b = h;
+    for(var i = 0;i < 10;i++){
+      h = h / 2
+      b = b + h *2;
+      
+    }
+    console.log(b.toFixed(4));
+    console.log(h.toFixed(7));
+</script>
+<script id="ch0105/21"></script>
+<script id="ch0105/22"></script>
+<script id="ch0105/23"></script>
+<script id="ch0105/24"></script>
+<script id="ch0105/25"></script>
+<script id="ch0105/26"></script>
+<script id="ch0105/27"></script>
+<script id="ch0105/28"></script>
+<script id="ch0105/29"></script>
+<script id="ch0105/30"></script>
+<script id="ch0105/31"></script>
+<script id="ch0105/32"></script>
+<script id="ch0105/33"></script>
+<script id="ch0105/34"></script>
+<script id="ch0105/35"></script>
+<script id="ch0105/36"></script>
+<script id="ch0105/37"></script>
+<script id="ch0105/38"></script>
+<script id="ch0105/39"></script>
+<script id="ch0105/40"></script>
+<script id="ch0105/41"></script>
+<script id="ch0105/42"></script>
+<script id="ch0105/43"></script>
+<script id="ch0105/44"></script>
+<script id="ch0105/45"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
