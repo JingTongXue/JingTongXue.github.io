@@ -1294,11 +1294,82 @@
 
 </script>
 <script id="itob">//字符串
+  // var n = +prompt();
+  // var str = '';
+  //  while(n > 0){
+  //    var digit = n % 10;
+  //    switch(digit){
+  //      case 0: str = str + '0'; break;
+  //      case 1: str = str + '1'; break;
+  //      case 2: str = str + '2'; break;
+  //      case 3: str = str + '3'; break;
+  //      case 4: str = str + '4'; break;
+  //      case 5: str = str + '5'; break;
+  //      case 6: str = str + '6'; break;
+  //      case 7: str = str + '7'; break;
+  //      case 8: str = str + '8'; break;
+  //      case 9: str = str + '9'; break;
+  //    }
 
+  //    n = (n - digit) / 10;
+  //  }
+  //  console.log(str);
+    var n = Number(prompt('请输入正整数n的值'))
+    var char = n + ""
+    console.log(char)
 </script>
 <script id="lcf&lcm">//最大公约数跟最小公倍数
-
+  var a = +prompt();
+  var b = +prompt();
+  var c = a * b;
+  // var min = a > b ? b : a;
+  // for(var i = min;i >= 1;i--){
+  //     if(a % i == 0 && b % i == 0){
+  //       var yue = i;//最大公约数
+  //     }
+  // }
+  //辗转相除法
+  if(a > b){
+    var m = 0;
+    do{
+      m = a % b;
+      a = b;
+      b = m;
+    }while(m !== 0);
+    console.log(a);
+    console.log( c / a);
+  }
+  if(a < b){
+    var m = 0;
+    do{
+      m = b % a;
+      b = a;
+      a = m;
+    }while(m !== 0);
+    console.log(b);
+    console.log( c / b);
+  }
 </script>
 <script id="sqrt">//平方根
+  //方法一
+  // var n = +prompt();
+  // for(var i = 0.000001;i < n;i += 0.000001){
+  //   if(Math.abs(i*i - n) < 0.001){
+  //     console.log(i);
+  //   }
+  // }
+   
+  //方法二  二分法
+
+
+  //方法三  牛顿法
+  var n = +prompt();
+  var x = 2;
+  for(var i = 0;i <5;i++){
+    x = x - (x*x - n)/(2*x);
+  }
+  console.log(x.toFixed(3));
+  
+
 
 </script>
