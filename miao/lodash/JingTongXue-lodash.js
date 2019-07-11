@@ -1,5 +1,5 @@
 var jingtongxue = {
-    compact : function(ary){
-        return ary.filter(it => it)
-    },
+    compact : function(arry){
+        return arry.filter(it => it)
+      },
 }
