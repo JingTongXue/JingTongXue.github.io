@@ -42,7 +42,31 @@ var jingtongxue = {
           }
         }
         return as;
+      },
 
+      differenceBy:function(array , ...arrays){
+        var ary = [];
+        var as = array.slice();
+        for(var arrys of arrays){
+          if(typeof arrys !== "number"){
+              for(var arry of arrys){
+                if(ary.indexOf(arry) == -1){
+                  ary.push(arry);
+                }
+              }
+          }else{
+            if(ary.indexOf(arrys) == -1){
+              ary.push(arrys);
+            }
+          }
+        }
+
+        for(var a of array){
+          if(ary.indexOf(a) !== -1){
+            as.splice(as.indexOf(a),1);
+          }
+        }
+        return as;
       }
 
 }
