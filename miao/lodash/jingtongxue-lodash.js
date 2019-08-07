@@ -43,8 +43,9 @@ var jingtongxue = {
         }
         return as;
       },
-
-      differenceBy:function(array , ...arrays){
+      
+      //没成功
+      differenceBy :function(array , ...arrays){
         var ary = [];
         var as = array.slice();
         for(var arrys of arrays){
@@ -67,6 +68,46 @@ var jingtongxue = {
           }
         }
         return as;
+      },
+
+      isMatch :function(obj,src){
+        for(var key in src){
+          if(typeof src[key] == 'object' && src[key] !== null){
+            if(!this.isMatch(obj[key],src[key])) {
+              return false
+            }
+          }else{
+            if(obj[key] !== src[key]){
+              return false;
+            }
+          }
+        }
+        return true;
+      },
+
+      pull:function(ary,...values){
+        var va = [...values];
+        for(var i = 0;i < va.length;i++){
+          for(var j = 0;j < ary.length;j++){
+            if(va[i] == ary[j]){
+              ary.splice(j,1);
+              j--;
+            }
+          }
+        }
+        return ary;
+      },
+      pullAll:function(ary,values){
+        for(var i = 0;i < values.length;i++){
+          for(var j = 0;j < ary.length;j++){
+            if(values[i] == ary[j]){
+              ary.splice(j,1);
+              j--;
+            }
+          }
+        }
+        return ary;
       }
+
 
 }
