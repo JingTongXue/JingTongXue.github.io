@@ -46,28 +46,21 @@ var jingtongxue = {
       
       //没成功
       differenceBy :function(array , ...arrays){
-        var ary = [];
-        var as = array.slice();
-        for(var arrys of arrays){
-          if(typeof arrys !== "number"){
-              for(var arry of arrys){
-                if(ary.indexOf(arry) == -1){
-                  ary.push(arry);
-                }
-              }
-          }else{
-            if(ary.indexOf(arrys) == -1){
-              ary.push(arrys);
-            }
-          }
+        var last = arrays.pop();
+        //迭代器多情况考虑 可能情况数组,字符串,函数
+        if(Array.isArray(last)){//数组时
+            arrays.push(last);
+            return difference(array,...arrays);
         }
-
-        for(var a of array){
-          if(ary.indexOf(a) !== -1){
-            as.splice(as.indexOf(a),1);
-          }
+        if(typeof last == 'string'){//字符串
+          last = last.split('.');
+          arrays.push(last);
+          return difference(array,...arrays);
         }
-        return as;
+        if(typeof last == "function"){//函数
+          var ar = arrays[0].map(it => last(it));
+          return ary.filter(it => ar.indexOf(last(it)) === -1);
+        }
       },
 
       isMatch :function(obj,src){
