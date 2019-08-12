@@ -58,12 +58,12 @@ var jingtongxue = {
     }
     if (typeof last == "function") {//函数
       var ar = arrays[0].map(it => last(it));
-      return ary.filter(it => ar.indexOf(last(it)) === -1);
+      return array.filter(it => ar.indexOf(last(it)) === -1);
     }
   },
 
   differenceWith: function (array, other,compert) {//---------------------
-
+      
   },
 
   every :function(ary,predicate = identity){//-----------------
@@ -92,16 +92,41 @@ var jingtongxue = {
     }
   },
 
-
-  matchesProperty :function(){
-
+  
+  matchesProperty :function(path,value){
+    return function(obj){
+      // return get(obj,path) == value;
+      return isEqual(get(obj,path),value);
+    }
+  },
+  get :function(object,path,defaultVal){//循环法
+    var path = topath(path);
+    for(var i = 0;i < path.length;i++){
+      if(object === undefined){
+        return defaultVal;
+      }
+      object = object[path[i]];
+    }
+    return object;
+  },
+  // get:function(object,path,defaultVal){//递归法
+  //   var path = this.topath(path);
+  //   if(object === undefined){
+  //     return defaultVal;
+  //   }
+  //   return get(object[path[0]],path.slice(1),defaultVal);
+  // },
+  topath:function(value){//转化 value 为属性路径的数组   'a[0].b.c'
+    return value.split(/\.|\[|\]./g);
   },
 
-  property :function(){
-
+  property :function(path){
+    return function(obj){
+      return get(obj,path);
+    }
   },
 
-  isEqual: function (value, other) {//深度对比 
+  isEqual: function (a, b) {//深度对比 
     if (a === b) return true;//类型相同,同为null,同为undefined则返回true  指针相同 2 === 2; ---这步之后,说明二者要么类型不同,要么类型相同值不同,否则为true
 
     if (a == null || typeof a != "object" ||
@@ -158,7 +183,7 @@ var jingtongxue = {
     return ary;
   },
   drop: function (array, n) {//多情况考虑
-    if (typeof n == undefined) {//没有填写n时,n默认值为一
+    if (n == undefined) {//没有填写n时,n默认值为一
       array.splice(0, 1);
       return array;
     } else {//填写n时
@@ -171,8 +196,10 @@ var jingtongxue = {
     return array.slice(0, n ? len - n : array.length)
   },
 
-  dropRightWhile: function (array) {//-----------------------
-
+  dropRightWhile: function (array,predicate) {//-----------------------
+    if(typeof other == 'object'){
+        matches()
+    }
   }
 
 
