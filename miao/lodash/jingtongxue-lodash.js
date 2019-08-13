@@ -20,27 +20,19 @@ var jingtongxue = {
   },
 
   difference: function (array, ...arrays) {
-    var ary = [];
-    var as = array.slice();
-    for (var arrys of arrays) {
-      if (typeof arrys !== "number") {
-        for (var arry of arrys) {
-          if (ary.indexOf(arry) == -1) {
-            ary.push(arry);
-          }
-        }
-      } else {
-        if (ary.indexOf(arrys) == -1) {
-          ary.push(arrys);
-        }
+    var map = {};
+    arrays.forEach(function(ary){//將需要排除的值添加到map中
+      for(var i = 0;i < ary.length;i++){
+        map[ary[i]] = true;
+      }
+    })
+    var result = [];
+    for(var i = 0;i < array.length;i++){
+      if(!(array[i] in map)){//如果要檢查的數組中的數不存在于map
+        result.push(array[i]);//則該數不需要被排除,添加到新建數組中即可
       }
     }
-    for (var a of array) {
-      if (ary.indexOf(a) !== -1) {
-        as.splice(as.indexOf(a), 1);
-      }
-    }
-    return as;
+    return result;
   },
 
 
@@ -76,7 +68,7 @@ var jingtongxue = {
     //   return isMatch(obj,source);
     // }
     //2.
-    return jingtongxue.bind(isMatch,null,_,source);//_表示占位符,并不绑定
+    return jingtongxue.bind(isMatch,null,window,source);//_表示占位符,并不绑定
   },
 
   bind:function(func,tihsArg,...fixedargs){
@@ -96,11 +88,11 @@ var jingtongxue = {
   matchesProperty :function(path,value){
     return function(obj){
       // return get(obj,path) == value;
-      return isEqual(get(obj,path),value);
+      return jingtongxue.isEqual(jingtongxue.get(obj,path),value);
     }
   },
   get :function(object,path,defaultVal){//循环法
-    var path = jingtongxue.topath(path);
+    var path = jingtongxue.toPath(path);
     for(var i = 0;i < path.length;i++){
       if(object === undefined){
         return defaultVal;
@@ -116,7 +108,7 @@ var jingtongxue = {
   //   }
   //   return get(object[path[0]],path.slice(1),defaultVal);
   // },
-  topath:function(value){//转化 value 为属性路径的数组   'a[0].b.c'
+  toPath:function(value){//转化 value 为属性路径的数组   'a[0].b.c'
     return value.split(/\.|\[|\]./g);
   },
 
