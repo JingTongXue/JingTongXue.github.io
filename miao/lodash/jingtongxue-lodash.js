@@ -49,12 +49,12 @@ var jingtongxue = {
     //迭代器多情况考虑 可能情况数组,字符串,函数
     if (Array.isArray(last)) {//数组时
       arrays.push(last);
-      return differenceBy(array, ...arrays);
+      return jingtongxue.differenceBy(array, ...arrays);
     }
     if (typeof last == 'string') {//字符串
       last = last.split('.');
       arrays.push(last);
-      return differenceBy(array, ...arrays);
+      return jingtongxue.differenceBy(array, ...arrays);
     }
     if (typeof last == "function") {//函数
       var ar = arrays[0].map(it => last(it));
@@ -138,7 +138,7 @@ var jingtongxue = {
 
     for (let key of keysA) {//比较value值
       if (!keysB.includes(key) || //判断该keyA的value是否存在于keyB,否则false
-       !isEqual(a[key], b[key])) return false;
+       !jingtongxue.isEqual(a[key], b[key])) return false;
     }
 
     return true;
