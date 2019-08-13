@@ -64,11 +64,11 @@ var jingtongxue = {
 
   matches :function(source){
     //1.
-    // return function(obj){
-    //   return isMatch(obj,source);
-    // }
+    return function(obj){
+      return jingtongxue.isMatch(obj,source);
+    }
     //2.
-    return jingtongxue.bind(isMatch,null,window,source);//_表示占位符,并不绑定
+    // return jingtongxue.bind(isMatch,null,window,source);//_表示占位符,并不绑定
   },
 
   bind:function(func,tihsArg,...fixedargs){
@@ -92,7 +92,9 @@ var jingtongxue = {
     }
   },
   get :function(object,path,defaultVal){//循环法
-    var path = jingtongxue.toPath(path);
+    if(jingtongxue.toString(path)){
+      var path = jingtongxue.toPath(path);
+    }
     for(var i = 0;i < path.length;i++){
       if(object === undefined){
         return defaultVal;
@@ -108,6 +110,13 @@ var jingtongxue = {
   //   }
   //   return get(object[path[0]],path.slice(1),defaultVal);
   // },
+  isString:function(value){
+    if(typeof value == "string"){
+      return true 
+    }else{
+      return false;
+    }
+  },
   toPath:function(value){//转化 value 为属性路径的数组   'a[0].b.c'
     return value.split(/\.|\[|\]./g);
   },
@@ -194,8 +203,14 @@ var jingtongxue = {
   },
 
   dropRightWhile: function (array,predicate) {//-----------------------
+    if(typeof other == 'string'){
+      predicate = this.property(predicate);
+    }
     if(typeof other == 'object'){
-        matches()
+      predicate = this.matches(predicate);
+    }
+    if(Array.isArray(predicate)){
+      predicate = this.matchesProperty(predicate);
     }
   }
 
