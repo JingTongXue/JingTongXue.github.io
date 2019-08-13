@@ -50,21 +50,21 @@ var jingtongxue = {
     return false;
   },
 
-  differenceBy: function (array, ...values) {
+  differenceBy: function (array, ...values) {//特
     if (Array.isArray(values[values.length - 1])) {
       return array.filter(x => !values.flat().includes(x))
     }
     var iterator = values.pop()
-    // if (typeof iterator == "function") {
-    //     return array.filter(x => !values.flat().map(it => iterator(it)).includes(iterator(x)))
-    // }
+    if (typeof iterator == "function") {
+        return array.filter(x => !values.flat().map(it => iterator(it)).includes(iterator(x)))
+    }
     if (typeof iterator == "string") {
       return array.filter(it => !values.flat().map(x => x[iterator]).includes(it[iterator]))
     }
-    if (typeof last == "function") {//函数
-      var ar = values[0].map(it => last(it));
-      return array.filter(it => ar.indexOf(last(it)) === -1);
-    }
+    // if (typeof last == "function") {//函数
+    //   var ar = values[0].map(it => last(it));
+    //   return array.filter(it => ar.indexOf(last(it)) === -1);
+    // }
   },
 
   differenceWith: function (array, other, compert) {
@@ -85,7 +85,7 @@ var jingtongxue = {
   },
 
   every: function (ary, predicate) {
-    predicate = jingtongxue.iterate(predicate);
+    var predicate = jingtongxue.iterate(predicate);
     for (var val of ary) {
       if (!(predicate(val))) {
         return false;
@@ -246,7 +246,7 @@ var jingtongxue = {
     }
   },
   dropRightWhile: function (array, predicate) {
-    predicate = jingtongxue.iterate(predicate);
+    var  predicate = jingtongxue.iterate(predicate);
     for(var i = 0;i < array.length;i++){
       if(!(predicate(array[i],i,array))){
         return  array.slice(0,i);
@@ -254,7 +254,7 @@ var jingtongxue = {
     }
   },
   dropWhile: function (array, predicate) {
-    predicate = jingtongxue.iterate(predicate);
+    var predicate = jingtongxue.iterate(predicate);
     for(var i = 0;i < array.length;i++){
       if(!(predicate(array[i],i,array))){
         return  array.slice(i);
@@ -263,7 +263,7 @@ var jingtongxue = {
   },
 
   map: function (array, predicate) {
-    predicate = jingtongxue.iterate(predicate);
+    var  predicate = jingtongxue.iterate(predicate);
     var result = [];
     for(var i = 0;i < array.length;i++){
       result.push(predicate(array[i],i,array));
