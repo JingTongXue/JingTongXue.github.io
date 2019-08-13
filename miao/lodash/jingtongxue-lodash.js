@@ -192,6 +192,7 @@ var jingtongxue = {
       return array;
     }
   },
+  
   dropRight: function (array, n) {
     var len = array.length;
     if(n == undefined){
@@ -201,18 +202,26 @@ var jingtongxue = {
     }
     return array.slice(0,len - n);
   },
-
+  iterate:function(value){
+    if(typeof value == 'string'){
+      return jingtongxue.property(value);
+    }
+    if(typeof value == 'object'){
+      return jingtongxue.matches(value);
+    }
+    if(Array.isArray(value)){
+      return jingtongxue.matchesProperty(value);
+    }
+  },
   dropRightWhile: function (array,predicate) {//-----------------------
-    if(typeof other == 'string'){
-      predicate = this.property(predicate);
-    }
-    if(typeof other == 'object'){
-      predicate = this.matches(predicate);
-    }
-    if(Array.isArray(predicate)){
-      predicate = this.matchesProperty(predicate);
-    }
-  }
+    predicate = jingtongxue.iterate(predicate);
+  },
+  dropWhile :function(array,predicate){
+    predicate = jingtongxue.iterate(predicate);
+  },
 
+  map :function(array,predicate){
+    predicate = jingtongxue.iterate(predicate);
+  }
 
 }
