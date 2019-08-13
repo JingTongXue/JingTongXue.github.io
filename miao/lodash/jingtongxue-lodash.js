@@ -49,12 +49,12 @@ var jingtongxue = {
     //迭代器多情况考虑 可能情况数组,字符串,函数
     if (Array.isArray(last)) {//数组时
       arrays.push(last);
-      return jingtongxue.differenceBy(array, ...arrays);
+      return jingtongxue.difference(array, ...arrays);
     }
     if (typeof last == 'string') {//字符串
       last = last.split('.');
       arrays.push(last);
-      return jingtongxue.differenceBy(array, ...arrays);
+      return jingtongxue.difference(array, ...arrays);
     }
     if (typeof last == "function") {//函数
       var ar = arrays[0].map(it => last(it));
@@ -76,7 +76,7 @@ var jingtongxue = {
     //   return isMatch(obj,source);
     // }
     //2.
-    return bind(isMatch,null,_,source);//_表示占位符,并不绑定
+    return jingtongxue.bind(isMatch,null,_,source);//_表示占位符,并不绑定
   },
 
   bind:function(func,tihsArg,...fixedargs){
@@ -100,7 +100,7 @@ var jingtongxue = {
     }
   },
   get :function(object,path,defaultVal){//循环法
-    var path = topath(path);
+    var path = jingtongxue.topath(path);
     for(var i = 0;i < path.length;i++){
       if(object === undefined){
         return defaultVal;
@@ -122,7 +122,7 @@ var jingtongxue = {
 
   property :function(path){
     return function(obj){
-      return get(obj,path);
+      return jingtongxue.get(obj,path);
     }
   },
 
