@@ -20,83 +20,115 @@ var jingtongxue = {
   },
 
   difference: function (array, ...arrays) {
-    var map = {};
-    arrays.forEach(function(ary){//將需要排除的值添加到map中
-      for(var i = 0;i < ary.length;i++){
-        map[ary[i]] = true;
+    return array.filter(x => !arrays.flat().includes(x))
+  },
+  includes: function (coll, value, from) {
+
+    if (typeof coll == "string") {//字符串
+      var re = new RegExp(value);
+      if (re.test(coll)) {
+        return true;
       }
-    })
+    }
+    if (Object.prototype.toString.call(coll) == "[object Array]") {//數組
+      if (from > 0) {
+        return coll[from] === value;
+      }
+      for (var co of coll) {
+        if (co === value) {
+          return true;
+        }
+      }
+    }
+    if (Object.prototype.toString.call(coll) == "[object Object]") {//對象
+      for (var key in coll) {
+        if (coll[key] === value) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
+
+  differenceBy: function (array, ...values) {
+    if (Array.isArray(values[values.length - 1])) {
+      return array.filter(x => !values.flat().includes(x))
+    }
+    var iterator = values.pop()
+    // if (typeof iterator == "function") {
+    //     return array.filter(x => !values.flat().map(it => iterator(it)).includes(iterator(x)))
+    // }
+    if (typeof iterator == "string") {
+      return array.filter(it => !values.flat().map(x => x[iterator]).includes(it[iterator]))
+    }
+    if (typeof last == "function") {//函数
+      var ar = values[0].map(it => last(it));
+      return array.filter(it => ar.indexOf(last(it)) === -1);
+    }
+  },
+
+  differenceWith: function (array, other, compert) {
     var result = [];
-    for(var i = 0;i < array.length;i++){
-      if(!(array[i] in map)){//如果要檢查的數組中的數不存在于map
-        result.push(array[i]);//則該數不需要被排除,添加到新建數組中即可
+    for (var i = 0; i < array.length; i++) {
+      var temps = false;
+      for (var j = 0; j < other.length; j++) {
+        if (compert(array[i], other[j])) {
+          temps = true;
+          break;
+        }
+        if (!temps) {
+          result.push(array[i]);
+        }
       }
     }
     return result;
   },
 
-
-  differenceBy: function (array, ...arrays) {
-    var last = arrays.pop();
-    //迭代器多情况考虑 可能情况数组,字符串,函数
-    if (Array.isArray(last)) {//数组时
-      arrays.push(last);
-      return jingtongxue.difference(array, ...arrays);
+  every: function (ary, predicate) {
+    predicate = jingtongxue.iterate(predicate);
+    for (var val of ary) {
+      if (!(predicate(val))) {
+        return false;
+      }
     }
-    if (typeof last == 'string') {//字符串
-      last = last.split('.');
-      arrays.push(last);
-      return jingtongxue.difference(array, ...arrays);
-    }
-    if (typeof last == "function") {//函数
-      var ar = arrays[0].map(it => last(it));
-      return array.filter(it => ar.indexOf(last(it)) === -1);
-    }
+    return true;
   },
 
-  differenceWith: function (array, other,compert) {//---------------------
-      
-  },
-
-  every :function(ary,predicate = identity){//-----------------
-
-  },
-
-  matches :function(source){
+  matches: function (source) {
     //1.
-    return function(obj){
-      return jingtongxue.isMatch(obj,source);
+    return function (obj) {
+      return jingtongxue.isMatch(obj, source);
     }
     //2.
     // return jingtongxue.bind(isMatch,null,window,source);//_表示占位符,并不绑定
   },
 
-  bind:function(func,tihsArg,...fixedargs){
-    return function(...args){
+  bind: function (func, tihsArg, ...fixedargs) {
+    return function (...args) {
       var act = [...fixedargs];
-      for(var i = 0;i < act,length;i++){
-        if(act[i] = window){
+      for (var i = 0; i < act, length; i++) {
+        if (act[i] = window) {
           act[i] = args.shift();
         }
       }
       act.push(...args);
-      return func(tihsArg,act);
+      return func(tihsArg, act);
     }
   },
 
-  
-  matchesProperty :function(path,value){
-    return function(obj){
+
+  matchesProperty: function (path, value) {
+    return function (obj) {
       // return get(obj,path) == value;
-      return jingtongxue.isEqual(jingtongxue.get(obj,path),value);
+      return jingtongxue.isEqual(jingtongxue.get(obj, path), value);
     }
   },
-  get :function(object,path,defaultVal){//循环法
-    if(jingtongxue.toString(path)){
+  get: function (object, path, defaultVal) {//循环法
+    if (jingtongxue.toString(path)) {
       var path = jingtongxue.toPath(path);
     }
-    for(var i = 0;i < path.length;i++){
-      if(object === undefined){
+    for (var i = 0; i < path.length; i++) {
+      if (object === undefined) {
         return defaultVal;
       }
       object = object[path[i]];
@@ -110,20 +142,20 @@ var jingtongxue = {
   //   }
   //   return get(object[path[0]],path.slice(1),defaultVal);
   // },
-  isString:function(value){
-    if(typeof value == "string"){
-      return true 
-    }else{
+  isString: function (value) {
+    if (typeof value == "string") {
+      return true
+    } else {
       return false;
     }
   },
-  toPath:function(value){//转化 value 为属性路径的数组   'a[0].b.c'
+  toPath: function (value) {//转化 value 为属性路径的数组   'a[0].b.c'
     return value.split(/\.|\[|\]./g);
   },
 
-  property :function(path){
-    return function(obj){
-      return jingtongxue.get(obj,path);
+  property: function (path) {
+    return function (obj) {
+      return jingtongxue.get(obj, path);
     }
   },
 
@@ -139,7 +171,7 @@ var jingtongxue = {
 
     for (let key of keysA) {//比较value值
       if (!keysB.includes(key) || //判断该keyA的value是否存在于keyB,否则false
-       !jingtongxue.isEqual(a[key], b[key])) return false;
+        !jingtongxue.isEqual(a[key], b[key])) return false;
     }
 
     return true;
@@ -192,36 +224,51 @@ var jingtongxue = {
       return array;
     }
   },
-  
+
   dropRight: function (array, n) {
     var len = array.length;
-    if(n == undefined){
-      return array.slice(0,len-1);
-    }else if(n > len){
+    if (n == undefined) {
+      return array.slice(0, len - 1);
+    } else if (n > len) {
       return [];
     }
-    return array.slice(0,len - n);
+    return array.slice(0, len - n);
   },
-  iterate:function(value){
-    if(typeof value == 'string'){
+  iterate: function (value) {
+    if (typeof value == 'string') {
       return jingtongxue.property(value);
     }
-    if(typeof value == 'object'){
+    if (typeof value == 'object') {
       return jingtongxue.matches(value);
     }
-    if(Array.isArray(value)){
+    if (Array.isArray(value)) {
       return jingtongxue.matchesProperty(value);
     }
   },
-  dropRightWhile: function (array,predicate) {//-----------------------
+  dropRightWhile: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
+    for(var i = 0;i < array.length;i++){
+      if(!(predicate(array[i],i,array))){
+        return  array.slice(0,i);
+      }
+    }
   },
-  dropWhile :function(array,predicate){
+  dropWhile: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
+    for(var i = 0;i < array.length;i++){
+      if(!(predicate(array[i],i,array))){
+        return  array.slice(i);
+      }
+    }
   },
 
-  map :function(array,predicate){
+  map: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
+    var result = [];
+    for(var i = 0;i < array.length;i++){
+      result.push(predicate(array[i],i,array));
+    }
+    return result;
   }
 
 }
