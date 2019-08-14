@@ -269,6 +269,103 @@ var jingtongxue = {
       result.push(predicate(array[i],i,array));
     }
     return result;
+  },
+  fill :function(array,value,start,end){
+    if(start >= 0 && end >= 0){
+      for(var i = start;i < end;i++){
+        array[i] = value;
+      }
+    }else{
+      for(var i = 0;i < array.length;i++){
+        array[i] = value;
+      }
+    }
+    return array;
+  },
+  findIndex : function(array,predicate){
+    var predicate = jingtongxue.iterate(predicate);
+    for(var i = 0;i < array.length;i++){
+      if(predicate(array[i],i,array)){
+        return i;
+      }
+    }
+    return -1;
+  },
+  findLastIndex :function(array,predicate){
+    var predicate = jingtongxue.iterate(predicate);
+    for(var i = array.length - 1;i >= 0;i--){
+      if(predicate(array[i])){
+        return i;
+      }
+    }
+    return -1;
+  },
+  flatten :function(array){
+    var result = [];
+    for(var ary of array){
+      if(Object.prototype.toString.call(ary) == "[object Array]"){
+        for(var ar of ary){
+          result.push(ar);
+        }
+      }else{
+        result.push(ary);
+      }
+    }
+    return result;
+  },
+  flattenDeep :function(array,result = []){
+    for(var ary of array){
+      if(Object.prototype.toString.call(ary) == "[object Array]"){
+        jingtongxue.flattenDeep(ary,result);
+      }else{
+        result.push(ary);
+      }
+    }
+    return result;
+  },
+  flattenDepth :function(array,depth,result = []){
+    for(var ary of array){
+      if(Object.prototype.toString.call(ary) == "[object Array]" && depth != 0 ){
+        jingtongxue.flattenDepth(ary,depth - 1,result);
+      }else{
+        result.push(ary);
+      }
+    }
+    return result;
+  },
+  fromPairs :function(pairs){
+    var result = {};
+    for(var pari of pairs){
+      result[pari[0]] = pari[1];
+    }
+    return result;
+  },
+  head :function(array){
+    var len = array.length;
+    return len == 0? undefined : array[0];
+  },
+  indexOf :function(array,value,fromIndex){
+    if(fromIndex < 0){//fromIndex小于0时
+      for(var i = array.length;i >= 0;i++){
+        if(array[i] == value){
+          return i;
+        }
+      }
+    }else if(fromIndex == undefined){//fromIndex未赋值时
+      for(var i = 0;i < array.length;i++){
+        if(array[i] == value){
+          return i;
+        }
+      }
+    }else{
+      for(var i = fromIndex;i < array.length;i++){//fromIndex大于0时
+        if(array[i] == value){
+          return i;
+        }
+      }
+    }
+
+
   }
 
 }

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+
+        一、使用var声明变量
+        1、使用方法
+        通过var关键字可以一次声明一个变量或者多个变量，同时可以为声明的变量赋初始值。但是变量的声明和初始值并不是在同一时间执行的,在执行初始值之前这些声明的变量的值为undefined。
+        'use strict';
+        var x = 12,
+        y = x;
+
+        2、声明变量与非声明变量区别
+        变量声明定义的时候无论出现在代码的什么位置，都会在执行代码之前，将声明的变量添加到当前执行环境的作用域（上下文）中，该变量与undefined绑定在一起除非到了执行变量初始化语句或者除非之前已经声明了这个变量，添加带作用域中的变量是不可配置的，这就是变量提升。在使用该变量的时候，会解析执行表达式，返回值，这个值可能是没有经过执行初始化的undefined。返回undefined也很好的提醒程序员该变量没有初始化。
+
+        非变量声明不会再执行之前处理，永远是在执行的时候进行处理。也就是说，当在执行代码的时候，遇到了一个未经声明的标识符，经过解析执行创建这个标识符，在严格模式下会直接返回引用类型错误，非严格模式下，会在全局对象中添加这个标识符和对应的值这个变量是可以配置的。在使用这个变量的时候，如果在创建之前使用，无论是否在严格模式下都会抛出异常。
+
+        以下是详细描述：
+        （1）声明变量在执行代码之前解析创建，所以变量提升；非声明变量在执行时候解析创建，不存在变量提升。
+        console.log(x,y); // x undefined y 抛出异常
+        var x = 12;
+        y = 34;
+        console.log(x,y);// 12 34
+
+        因为在执行之前进行的变量定义初始化，所以x，但是执行的时候由于没有执行x = 12所以x为undefined；但是对于y来说是在执行的时候才会创建的，所以在创建之前使用只能抛出异常。当执行完x = 12，执行y =
+        34.会发现y没有创建，所以会尽可能的去创建它，由于在非严格模式下，所以得逞了。之后再使用x，y都会被赋值了。
+
+        （2）声明变量是被创建在当前执行环境的词法作用域中，非声明变量在严格模式下不会创建抛出异常，在非严格模式下会作为属性创建在全局对象中。
+        function f(){
+        f = 12;
+        var z = 2;
+        }
+        f();
+        z = -1;
+        console.log(f,z);//12 -1
+
+        函数中f变量是非声明变量，所以在非严格模式下降添加到全局对象中作为一个属性而存在，但是函数中的z则添加带f函数所创建的执行环境中，所以在函数外部无法访问到。值得注意的是，虽然在函数外部也定义了一个z =
+        -1但是这个z不是通过声明变量定义的，所以也会添加到全局对象中。
+
+        （3）声明变量所在的词法环境是不可配置的，而非声明变量所在的全局对象是可以配置的。所谓的配置就是指可以删除该属性，或者修改该属性的特性。
+        var x = 12;
+        z = -1;
+        console.log(x,z);//12 -1
+        delete x;
+        delete z;
+        console.log(x,z);//z is not defined证明z删除了但是x没有删除
+
+        （4）没有执行初始化的声明变量typeof为undefined，但是非声明变量也为undefined
+        console.log(typeof x);//undefined
+        console.log(typeof z);//undefined
+        var x = 12;
+        z = -1;
+
+        3、注意事项
+        （1）尽可能的使用声明变量方式进行变量声明，摒弃非声明变量的方式，只有这样才能不会将变量添加到全局中去污染全局变量属性，以便发生意想不到的效果，并且还可以提高性能。
+        （2）通过使用严格模式可以限制上述问题之外，还可以提醒程序员使用变量声明，防止使用未经声明的变量。
+        （3）不能依赖于变量提升。
+        （4）应该避免重复声明相同的变量，最多使用赋值语句对变量值的修改。
+        （5）由于javascript是一个弱类型的语言，所以在覆盖变量值得时候尽可能不要更改一个变量的类型。
+        （6）注意的是typeof检测一个变量的类型，如果为undefined的话，除了这个变量声明了但是没有初始化的意思之外，很可能该变量使用过非声明变量方式创建的，或者这个变量就是不存在。
+
+        所以总结一句就是在严格模式下使用var声明变量，不能依赖于变量提升、js弱类型、typeof检测undefined、不能重复声明变量。
+
+        可以看出ES5标准中的var存在的问题是不少的，但是最重要的一个问题就是没有块作用域这一概念，这完全取决于之前的设计，因为在ES5标准中仅仅说对全局、函数、eval、catch块才会创建词法环境，对于for等语法块是不创建的，导致不存在块级作用域从而使用很耗性能的闭包代替。在ES6中出现了let关键字声明变量，这个可以解决一些问题。
+
+        二、使用let声明变量
+        1、详细介绍
+        在执行之前，只要进入一个块级作用域比如全局、函数、{}等。不会和var一样对let进行所谓的变量提升，而是将通过let声明的变量标识符保存起来，以便于判断接下来是否含有命名冲突，也服务于‘暂存死区’，直到开始执行代码。到执行到声明语句的时候，才会正式的创建，如果没有初始化则赋值为undefined，否则初始化标识符。（对于为什么赋值为undefined而不是null或者其他，前面文章中有介绍）
+
+        对于全局变量中的let不会添加到全局对象中去。这是和全局中的var的区别之一，对于全局中的var，在执行代码之前会将标识符添加到与这个执行环境绑定的词法环境中去，但是又因为这个词法环境与全局对象是绑定在一起的，所以会将全局的变量声明都作为全局对象的属性存在。Let声明的变量和var不一样，他并不会去破坏全局对象，而是当执行到let语句的时候创建一个块词法作用域，而将let声明的变量添加到这个词法作用域中去。
+        var x = 'global';
+        let y = 'global';
+        console.log(this.x); // "global"
+        console.log(this.y); // undefined
+
+        在全局中使用let，避免了将全局属性添加到全局对象中，减少了对全局对象的污染。
+
+        在执行代码之前，定义绑定初始化的时候，在处理let声明表达式的时候，如果该表达式在当前处理的词法环境中存在则抛出异常。在E5标准中，如果对同一个变量进行了两次声明是不会报错的只不过后一个声明仅仅当做赋值表达式在使用，这个会产生一些问题，比如发生了命名冲突还不知道，导致代码逻辑错误，从而只能依托程序员提高警惕避免重复命名。E6中的let很好的避免了这种重复声明的问题，只要在let声明之前无论什么方式创建的变量，只要与let声明语句位于同一个块中，同名就会抛出异常。
+        if (x) {
+        let foo;
+        let foo; // 冲突
+        }
+
+
+        switch (x) {
+        case 0:
+        let foo;
+        break;
+
+        case 1:
+        let foo; // 冲突
+        break;
+        }
+        这个switch中所有的case都处于同一个块作用域中的，这个要注意了。
+
+
+        function f(foo) {
+        let foo; //与参数冲突
+        }
+        f(12);
+
+
+        var x = 12;
+        let x = -1;//与var声明的变量冲突
+
+
+        function f() {
+        var x = 12;
+        if (true) {
+        let x = -1;//不在同一个块作用域不冲突
+        console.log(x);//-1
+        }
+        console.log(x);//12
+        }
+        f();
+
+        在开始执行的时候，在还没有执行到let变量声明初始化的位置之前对let变量进行引用，引用将会抛出异常,因为这个变量还处于封锁状态也就是‘==暂存死区==’状态。这个概念解决了E5中使用var导致变量提升的弊端，是的在声明之前不能提前使用了，一点使用将抛出异常。
+        “`
+        function do_something() {
+        console.log(foo); // ReferenceError
+        let foo = 2;
+        }
+        ```
+        var tmp = 123;
+        if (true) {
+        tmp = 'abc'; // ReferenceError
+        let tmp;
+        }
+
+
+        // 不报错
+        var x = x;
+
+        // 报错
+        let x = x;
+        // ReferenceError: x is not defined
+
+        只要一进入{}或者全局，就会单独创建一个块级作用域，只不过这个作用域仅仅维护let变量的。在创建的时候除了添加let声明和初始化值之外，还记录了父级块级作用域中let变量执行都该位置的时候值得副本（可能这个副本的记录浏览器引擎优化了），如果子块中存在与父块中相同的变量，则忽略父级块级作用域中的值。
+        function letTest() {
+        let x = 1;
+        if (true) {
+        let x = 2; // 不同的变量，忽略父级作用域的x
+        console.log(x); // 2
+        }
+        console.log(x); // 1
+        }
+        letTest();
+        一执行函数进入函数体{}就会创建一个块级作用域其中有x赋值为1，
+        然后遇到if{}又创建一个块级作用域其中有x赋值为2，但是由于这个子块中有x
+        所以父块中x不会进行缓存。
+
+
+        var list = document.getElementById("list");
+        for (let i = 1; i <= 5; i++) { var item=document.createElement("LI");
+            item.appendChild(document.createTextNode("Item " + i));
+              item.onclick = function (ev) {
+                console.log(" Item " +i+ " is clicked."); }; list.appendChild(item); }
+            这是一个很经典的使用let的好处的应用，这个for循环其实建立了两个嵌套的块级作用域， 外面的块中就是为（）里面的参数建立的， 而里面的块是为循环体建立的，当每次执行循环体的时候就是创建一个块级作用域，
+            这循环体中块级作用域就会缓存父块中i的值， 使得相应事件的时候依然有效。下面应用将详细介绍。 2、引用实例 （1）模仿私有接口 //之前没有let可能是这么创建一个类的，用闭包形成了一范围保护类静态私有属性 //
+            Class Class implements Interface var Class=(function (){ //静态私有属性和方法 var
+            privateProperty=12; //静态公共方法 //定义构造函数 var Class=function(property /*optional*/){
+            }; //extend(subClass,superClass) //公共实例方法 Class.prototype={ constructor:Class, }; return Class; })(); //
+            现在可以用let替代闭包了 var Class; { //静态私有属性和方法 let privateProperty=12; //静态公共方法 //定义构造函数
+            Class=function(property /*optional*/){ }; //extend(subClass,superClass) //公共实例方法 Class.prototype={
+            constructor:Class, }; } （2）替代使用闭包模仿的块级作用域 var arr=[]; for (var i=0; i < 5; i ++) { arr[i]=( function (i){
+            return function () { alert(i); } })(i); } //现在可以使用let了 for (let i=0; i < 5; i++) { arr[i]=function () {
+            alert(i); } } 三、使用const声明变量
+            合格关键字和let一样也是E6标准提出的，使用const声明变量和let几乎差不多，只不过是对于定义的值只能切必须进行一次初始化。一般声明为const的变量的变量名都要大写。
+            console.log(CONST);//和let一样也是有‘暂存死区’的存在 const CONST=100; //CONST=12;//不能为定义const的变量修改值 //var
+            CONST=20;//不能命名重复发生冲突 一、使用var声明变量 1、使用方法
+            通过var关键字可以一次声明一个变量或者多个变量，同时可以为声明的变量赋初始值。但是变量的声明和初始值并不是在同一时间执行的,在执行初始值之前这些声明的变量的值为undefined。 'use strict' ;
+            var x=12, y=x; 2、声明变量与非声明变量区别
+            变量声明定义的时候无论出现在代码的什么位置，都会在执行代码之前，将声明的变量添加到当前执行环境的作用域（上下文）中，该变量与undefined绑定在一起除非到了执行变量初始化语句或者除非之前已经声明了这个变量，添加带作用域中的变量是不可配置的，这就是变量提升。在使用该变量的时候，会解析执行表达式，返回值，这个值可能是没有经过执行初始化的undefined。返回undefined也很好的提醒程序员该变量没有初始化。
+            非变量声明不会再执行之前处理，永远是在执行的时候进行处理。也就是说，当在执行代码的时候，遇到了一个未经声明的标识符，经过解析执行创建这个标识符，在严格模式下会直接返回引用类型错误，非严格模式下，会在全局对象中添加这个标识符和对应的值这个变量是可以配置的。在使用这个变量的时候，如果在创建之前使用，无论是否在严格模式下都会抛出异常。
+            以下是详细描述： （1）声明变量在执行代码之前解析创建，所以变量提升；非声明变量在执行时候解析创建，不存在变量提升。 console.log(x,y); // x undefined y 抛出异常 var x=12;
+            y=34; console.log(x,y);// 12 34
+            因为在执行之前进行的变量定义初始化，所以x，但是执行的时候由于没有执行x=12所以x为undefined；但是对于y来说是在执行的时候才会创建的，所以在创建之前使用只能抛出异常。当执行完x=12，执行y=34.会发现y没有创建，所以会尽可能的去创建它，由于在非严格模式下，所以得逞了。之后再使用x，y都会被赋值了。
+            （2）声明变量是被创建在当前执行环境的词法作用域中，非声明变量在严格模式下不会创建抛出异常，在非严格模式下会作为属性创建在全局对象中。 function f(){ f=12; var z=2; } f();
+            z=-1; console.log(f,z);//12 -1
+            函数中f变量是非声明变量，所以在非严格模式下降添加到全局对象中作为一个属性而存在，但是函数中的z则添加带f函数所创建的执行环境中，所以在函数外部无法访问到。值得注意的是，虽然在函数外部也定义了一个z=-1但是这个z不是通过声明变量定义的，所以也会添加到全局对象中。
+            （3）声明变量所在的词法环境是不可配置的，而非声明变量所在的全局对象是可以配置的。所谓的配置就是指可以删除该属性，或者修改该属性的特性。 var x=12; z=-1; console.log(x,z);//12
+            -1 delete x; delete z; console.log(x,z);//z is not defined证明z删除了但是x没有删除
+            （4）没有执行初始化的声明变量typeof为undefined，但是非声明变量也为undefined console.log(typeof x);//undefined console.log(typeof
+            z);//undefined var x=12; z=-1; 3、注意事项
+            （1）尽可能的使用声明变量方式进行变量声明，摒弃非声明变量的方式，只有这样才能不会将变量添加到全局中去污染全局变量属性，以便发生意想不到的效果，并且还可以提高性能。
+            （2）通过使用严格模式可以限制上述问题之外，还可以提醒程序员使用变量声明，防止使用未经声明的变量。 （3）不能依赖于变量提升。 （4）应该避免重复声明相同的变量，最多使用赋值语句对变量值的修改。
+            （5）由于javascript是一个弱类型的语言，所以在覆盖变量值得时候尽可能不要更改一个变量的类型。
+            （6）注意的是typeof检测一个变量的类型，如果为undefined的话，除了这个变量声明了但是没有初始化的意思之外，很可能该变量使用过非声明变量方式创建的，或者这个变量就是不存在。
+            所以总结一句就是在严格模式下使用var声明变量，不能依赖于变量提升、js弱类型、typeof检测undefined、不能重复声明变量。
+            可以看出ES5标准中的var存在的问题是不少的，但是最重要的一个问题就是没有块作用域这一概念，这完全取决于之前的设计，因为在ES5标准中仅仅说对全局、函数、eval、catch块才会创建词法环境，对于for等语法块是不创建的，导致不存在块级作用域从而使用很耗性能的闭包代替。在ES6中出现了let关键字声明变量，这个可以解决一些问题。
+            二、使用let声明变量 1、详细介绍
+            在执行之前，只要进入一个块级作用域比如全局、函数、{}等。不会和var一样对let进行所谓的变量提升，而是将通过let声明的变量标识符保存起来，以便于判断接下来是否含有命名冲突，也服务于‘暂存死区’，直到开始执行代码。到执行到声明语句的时候，才会正式的创建，如果没有初始化则赋值为undefined，否则初始化标识符。（对于为什么赋值为undefined而不是null或者其他，前面文章中有介绍）
+            对于全局变量中的let不会添加到全局对象中去。这是和全局中的var的区别之一，对于全局中的var，在执行代码之前会将标识符添加到与这个执行环境绑定的词法环境中去，但是又因为这个词法环境与全局对象是绑定在一起的，所以会将全局的变量声明都作为全局对象的属性存在。Let声明的变量和var不一样，他并不会去破坏全局对象，而是当执行到let语句的时候创建一个块词法作用域，而将let声明的变量添加到这个词法作用域中去。
+            var x='global' ; let y='global' ; console.log(this.x); // "global" console.log(this.y); // undefined
+            在全局中使用let，避免了将全局属性添加到全局对象中，减少了对全局对象的污染。
+            在执行代码之前，定义绑定初始化的时候，在处理let声明表达式的时候，如果该表达式在当前处理的词法环境中存在则抛出异常。在E5标准中，如果对同一个变量进行了两次声明是不会报错的只不过后一个声明仅仅当做赋值表达式在使用，这个会产生一些问题，比如发生了命名冲突还不知道，导致代码逻辑错误，从而只能依托程序员提高警惕避免重复命名。E6中的let很好的避免了这种重复声明的问题，只要在let声明之前无论什么方式创建的变量，只要与let声明语句位于同一个块中，同名就会抛出异常。
+            if (x) { let foo; let foo; // 冲突 } switch (x) { case 0: let foo; break; case 1: let foo; // 冲突 break; }
+            这个switch中所有的case都处于同一个块作用域中的，这个要注意了。 function f(foo) { let foo; //与参数冲突 } f(12); var x=12; let
+            x=-1;//与var声明的变量冲突 function f() { var x=12; if (true) { let x=-1;//不在同一个块作用域不冲突 console.log(x);//-1 }
+            console.log(x);//12 } f();
+            在开始执行的时候，在还没有执行到let变量声明初始化的位置之前对let变量进行引用，引用将会抛出异常,因为这个变量还处于封锁状态也就是‘==暂存死区==’状态。这个概念解决了E5中使用var导致变量提升的弊端，是的在声明之前不能提前使用了，一点使用将抛出异常。
+            “` function do_something() { console.log(foo); // ReferenceError let foo=2; } ``` var tmp=123; if (true) {
+            tmp='abc' ; // ReferenceError let tmp; } // 不报错 var x=x; // 报错 let x=x; // ReferenceError: x is not defined
+            只要一进入{}或者全局，就会单独创建一个块级作用域，只不过这个作用域仅仅维护let变量的。在创建的时候除了添加let声明和初始化值之外，还记录了父级块级作用域中let变量执行都该位置的时候值得副本（可能这个副本的记录浏览器引擎优化了），如果子块中存在与父块中相同的变量，则忽略父级块级作用域中的值。
+            function letTest() { let x=1; if (true) { let x=2; // 不同的变量，忽略父级作用域的x console.log(x); // 2 }
+            console.log(x); // 1 } letTest(); 一执行函数进入函数体{}就会创建一个块级作用域其中有x赋值为1， 然后遇到if{}又创建一个块级作用域其中有x赋值为2，但是由于这个子块中有x
+            所以父块中x不会进行缓存。 var list=document.getElementById("list"); for (let i=1; i <=5; i++) { var
+            item=document.createElement("LI"); item.appendChild(document.createTextNode("Item " + i));
+  item.onclick = function (ev) {
+    console.log(" Item " +i+ " is clicked."); }; list.appendChild(item); } 这是一个很经典的使用let的好处的应用，这个for循环其实建立了两个嵌套的块级作用域，
+            外面的块中就是为（）里面的参数建立的， 而里面的块是为循环体建立的，当每次执行循环体的时候就是创建一个块级作用域， 这循环体中块级作用域就会缓存父块中i的值， 使得相应事件的时候依然有效。下面应用将详细介绍。
+            2、引用实例 （1）模仿私有接口 //之前没有let可能是这么创建一个类的，用闭包形成了一范围保护类静态私有属性 // Class Class implements Interface var
+            Class=(function (){ //静态私有属性和方法 var privateProperty=12; //静态公共方法 //定义构造函数 var
+            Class=function(property /*optional*/){ }; //extend(subClass,superClass) //公共实例方法 Class.prototype={
+            constructor:Class, }; return Class; })(); // 现在可以用let替代闭包了 var Class; { //静态私有属性和方法 let
+            privateProperty=12; //静态公共方法 //定义构造函数 Class=function(property /*optional*/){
+            }; //extend(subClass,superClass) //公共实例方法 Class.prototype={ constructor:Class, }; } （2）替代使用闭包模仿的块级作用域 var
+            arr=[]; for (var i=0; i < 5; i ++) { arr[i]=( function (i){ return function () { alert(i); } })(i);
+            } //现在可以使用let了 for (let i=0; i < 5; i++) { arr[i]=function () { alert(i); } } 三、使用const声明变量
+            合格关键字和let一样也是E6标准提出的，使用const声明变量和let几乎差不多，只不过是对于定义的值只能切必须进行一次初始化。一般声明为const的变量的变量名都要大写。
+            console.log(CONST);//和let一样也是有‘暂存死区’的存在 const CONST=100; //CONST=12;//不能为定义const的变量修改值 //var
+            CONST=20;//不能命名重复发生冲突 一、使用var声明变量 1、使用方法
+            通过var关键字可以一次声明一个变量或者多个变量，同时可以为声明的变量赋初始值。但是变量的声明和初始值并不是在同一时间执行的,在执行初始值之前这些声明的变量的值为undefined。 'use strict' ;
+            var x=12, y=x; 2、声明变量与非声明变量区别
+            变量声明定义的时候无论出现在代码的什么位置，都会在执行代码之前，将声明的变量添加到当前执行环境的作用域（上下文）中，该变量与undefined绑定在一起除非到了执行变量初始化语句或者除非之前已经声明了这个变量，添加带作用域中的变量是不可配置的，这就是变量提升。在使用该变量的时候，会解析执行表达式，返回值，这个值可能是没有经过执行初始化的undefined。返回undefined也很好的提醒程序员该变量没有初始化。
+            非变量声明不会再执行之前处理，永远是在执行的时候进行处理。也就是说，当在执行代码的时候，遇到了一个未经声明的标识符，经过解析执行创建这个标识符，在严格模式下会直接返回引用类型错误，非严格模式下，会在全局对象中添加这个标识符和对应的值这个变量是可以配置的。在使用这个变量的时候，如果在创建之前使用，无论是否在严格模式下都会抛出异常。
+            以下是详细描述： （1）声明变量在执行代码之前解析创建，所以变量提升；非声明变量在执行时候解析创建，不存在变量提升。 console.log(x,y); // x undefined y 抛出异常 var x=12;
+            y=34; console.log(x,y);// 12 34
+            因为在执行之前进行的变量定义初始化，所以x，但是执行的时候由于没有执行x=12所以x为undefined；但是对于y来说是在执行的时候才会创建的，所以在创建之前使用只能抛出异常。当执行完x=12，执行y=34.会发现y没有创建，所以会尽可能的去创建它，由于在非严格模式下，所以得逞了。之后再使用x，y都会被赋值了。
+            （2）声明变量是被创建在当前执行环境的词法作用域中，非声明变量在严格模式下不会创建抛出异常，在非严格模式下会作为属性创建在全局对象中。 function f(){ f=12; var z=2; } f();
+            z=-1; console.log(f,z);//12 -1
+            函数中f变量是非声明变量，所以在非严格模式下降添加到全局对象中作为一个属性而存在，但是函数中的z则添加带f函数所创建的执行环境中，所以在函数外部无法访问到。值得注意的是，虽然在函数外部也定义了一个z=-1但是这个z不是通过声明变量定义的，所以也会添加到全局对象中。
+            （3）声明变量所在的词法环境是不可配置的，而非声明变量所在的全局对象是可以配置的。所谓的配置就是指可以删除该属性，或者修改该属性的特性。 var x=12; z=-1; console.log(x,z);//12
+            -1 delete x; delete z; console.log(x,z);//z is not defined证明z删除了但是x没有删除
+            （4）没有执行初始化的声明变量typeof为undefined，但是非声明变量也为undefined console.log(typeof x);//undefined console.log(typeof
+            z);//undefined var x=12; z=-1; 3、注意事项
+            （1）尽可能的使用声明变量方式进行变量声明，摒弃非声明变量的方式，只有这样才能不会将变量添加到全局中去污染全局变量属性，以便发生意想不到的效果，并且还可以提高性能。
+            （2）通过使用严格模式可以限制上述问题之外，还可以提醒程序员使用变量声明，防止使用未经声明的变量。 （3）不能依赖于变量提升。 （4）应该避免重复声明相同的变量，最多使用赋值语句对变量值的修改。
+            （5）由于javascript是一个弱类型的语言，所以在覆盖变量值得时候尽可能不要更改一个变量的类型。
+            （6）注意的是typeof检测一个变量的类型，如果为undefined的话，除了这个变量声明了但是没有初始化的意思之外，很可能该变量使用过非声明变量方式创建的，或者这个变量就是不存在。
+            所以总结一句就是在严格模式下使用var声明变量，不能依赖于变量提升、js弱类型、typeof检测undefined、不能重复声明变量。
+            可以看出ES5标准中的var存在的问题是不少的，但是最重要的一个问题就是没有块作用域这一概念，这完全取决于之前的设计，因为在ES5标准中仅仅说对全局、函数、eval、catch块才会创建词法环境，对于for等语法块是不创建的，导致不存在块级作用域从而使用很耗性能的闭包代替。在ES6中出现了let关键字声明变量，这个可以解决一些问题。
+            二、使用let声明变量 1、详细介绍
+            在执行之前，只要进入一个块级作用域比如全局、函数、{}等。不会和var一样对let进行所谓的变量提升，而是将通过let声明的变量标识符保存起来，以便于判断接下来是否含有命名冲突，也服务于‘暂存死区’，直到开始执行代码。到执行到声明语句的时候，才会正式的创建，如果没有初始化则赋值为undefined，否则初始化标识符。（对于为什么赋值为undefined而不是null或者其他，前面文章中有介绍）
+            对于全局变量中的let不会添加到全局对象中去。这是和全局中的var的区别之一，对于全局中的var，在执行代码之前会将标识符添加到与这个执行环境绑定的词法环境中去，但是又因为这个词法环境与全局对象是绑定在一起的，所以会将全局的变量声明都作为全局对象的属性存在。Let声明的变量和var不一样，他并不会去破坏全局对象，而是当执行到let语句的时候创建一个块词法作用域，而将let声明的变量添加到这个词法作用域中去。
+            var x='global' ; let y='global' ; console.log(this.x); // "global" console.log(this.y); // undefined
+            在全局中使用let，避免了将全局属性添加到全局对象中，减少了对全局对象的污染。
+            在执行代码之前，定义绑定初始化的时候，在处理let声明表达式的时候，如果该表达式在当前处理的词法环境中存在则抛出异常。在E5标准中，如果对同一个变量进行了两次声明是不会报错的只不过后一个声明仅仅当做赋值表达式在使用，这个会产生一些问题，比如发生了命名冲突还不知道，导致代码逻辑错误，从而只能依托程序员提高警惕避免重复命名。E6中的let很好的避免了这种重复声明的问题，只要在let声明之前无论什么方式创建的变量，只要与let声明语句位于同一个块中，同名就会抛出异常。
+            if (x) { let foo; let foo; // 冲突 } switch (x) { case 0: let foo; break; case 1: let foo; // 冲突 break; }
+            这个switch中所有的case都处于同一个块作用域中的，这个要注意了。 function f(foo) { let foo; //与参数冲突 } f(12); var x=12; let
+            x=-1;//与var声明的变量冲突 function f() { var x=12; if (true) { let x=-1;//不在同一个块作用域不冲突 console.log(x);//-1 }
+            console.log(x);//12 } f();
+            在开始执行的时候，在还没有执行到let变量声明初始化的位置之前对let变量进行引用，引用将会抛出异常,因为这个变量还处于封锁状态也就是‘==暂存死区==’状态。这个概念解决了E5中使用var导致变量提升的弊端，是的在声明之前不能提前使用了，一点使用将抛出异常。
+            “` function do_something() { console.log(foo); // ReferenceError let foo=2; } ``` var tmp=123; if (true) {
+            tmp='abc' ; // ReferenceError let tmp; } // 不报错 var x=x; // 报错 let x=x; // ReferenceError: x is not defined
+            只要一进入{}或者全局，就会单独创建一个块级作用域，只不过这个作用域仅仅维护let变量的。在创建的时候除了添加let声明和初始化值之外，还记录了父级块级作用域中let变量执行都该位置的时候值得副本（可能这个副本的记录浏览器引擎优化了），如果子块中存在与父块中相同的变量，则忽略父级块级作用域中的值。
+            function letTest() { let x=1; if (true) { let x=2; // 不同的变量，忽略父级作用域的x console.log(x); // 2 }
+            console.log(x); // 1 } letTest(); 一执行函数进入函数体{}就会创建一个块级作用域其中有x赋值为1， 然后遇到if{}又创建一个块级作用域其中有x赋值为2，但是由于这个子块中有x
+            所以父块中x不会进行缓存。 var list=document.getElementById("list"); for (let i=1; i <=5; i++) { var
+            item=document.createElement("LI"); item.appendChild(document.createTextNode("Item " + i));
+  item.onclick = function (ev) {
+    console.log(" Item " +i+ " is clicked."); }; list.appendChild(item); } 这是一个很经典的使用let的好处的应用，这个for循环其实建立了两个嵌套的块级作用域，
+            外面的块中就是为（）里面的参数建立的， 而里面的块是为循环体建立的，当每次执行循环体的时候就是创建一个块级作用域， 这循环体中块级作用域就会缓存父块中i的值， 使得相应事件的时候依然有效。下面应用将详细介绍。
+            2、引用实例 （1）模仿私有接口 //之前没有let可能是这么创建一个类的，用闭包形成了一范围保护类静态私有属性 // Class Class implements Interface var
+            Class=(function (){ //静态私有属性和方法 var privateProperty=12; //静态公共方法 //定义构造函数 var
+            Class=function(property /*optional*/){ }; //extend(subClass,superClass) //公共实例方法 Class.prototype={
+            constructor:Class, }; return Class; })(); // 现在可以用let替代闭包了 var Class; { //静态私有属性和方法 let
+            privateProperty=12; //静态公共方法 //定义构造函数 Class=function(property /*optional*/){
+            }; //extend(subClass,superClass) //公共实例方法 Class.prototype={ constructor:Class, }; } （2）替代使用闭包模仿的块级作用域 var
+            arr=[]; for (var i=0; i < 5; i ++) { arr[i]=( function (i){ return function () { alert(i); } })(i);
+            } //现在可以使用let了 for (let i=0; i < 5; i++) { arr[i]=function () { alert(i); } } 三、使用const声明变量
+            合格关键字和let一样也是E6标准提出的，使用const声明变量和let几乎差不多，只不过是对于定义的值只能切必须进行一次初始化。一般声明为const的变量的变量名都要大写。
+            console.log(CONST);//和let一样也是有‘暂存死区’的存在 const CONST=100; //CONST=12;//不能为定义const的变量修改值 //var
+            CONST=20;//不能命名重复发生冲突 </div> <script>
+                var div = document.querySelector("div");
+                
+                addEventListener("keydown", function (event) {
+                    if (event.keyCode == 74) {//J 向下
+                        requestAnimationFrame(scrollDown);
+                    }
+                    if (event.keyCode == 75) {//K 向上
+                        requestAnimationFrame(scrollUp);
+                    }
+                })
+                function scrollUp(time,start){
+                    if(start == null){
+                        start = time;
+                    }
+                    window.scrollUp(0,-10);
+                    if(time - start < 200){
+                        requestAnimationFrame(time => scrollUp(time,start));
+                    }
+                }
+
+                function scrollDown(time,start){
+                    if(start == null){
+                        start = time;
+                    }
+                    window.scrollUp(0,-10);
+                    if(time - start < 200){
+                        requestAnimationFrame(time => scrollDown(time,start));
+                    }
+                }
+               
+
+            </script>
+</body>
+
+</html>

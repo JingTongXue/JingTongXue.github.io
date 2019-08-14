@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            height: 100%;
+            width: 100%;
+        }
+        .ear{
+            /* //居中 */
+            text-align: center;
+            margin-top: 200px;
+            /* height: 500px; */
+        }
+       
+
+        #earth{
+            position: relative;
+            height: 150px;
+            width: 150px;
+            display: inline-block;
+        }
+        #moon{
+            position: absolute;
+            height: 100px;
+            width: 100px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <p class = "ear">
+        <img id = "earth"src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIptKhWLKn4mMEs6Zz1MhijCFqxTYkwM1nf0PUscp0zZxyjW90 alt="">
+    
+        <img id = "moon"src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQesqPgzEW4bSjGTYYPrLIfgHcl11mOsSJdeZeD6PwjJ1VVxPk2" alt="">
+    </p>
+
+    <script>
+        var earth = document.querySelectorAll("img")[0];
+        var angle = 0;
+        var lastTime = 0;
+        function animate(time) {
+            if (lastTime !== null) {
+                angle += (time - lastTime) * 0.001;
+            }
+            lastTime = time;
+            earth.style.top = (Math.sin(angle) * 200) + "px";
+            earth.style.left = (Math.cos(angle) * 200) + "px";
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+
+        var moon = document.querySelectorAll("img")[1];
+        var angle = 0;
+        var lastTime = 0;
+        function animate(time) {
+            if (lastTime !== null) {
+                angle += (time - lastTime) * 0.001;
+            }
+            lastTime = time;
+            earth.style.top = (Math.sin(angle) * 200) + "px";
+            earth.style.left = (Math.cos(angle) * 200) + "px";
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+    </script>
+</body>
+
+</html>

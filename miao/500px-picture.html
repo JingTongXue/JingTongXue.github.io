@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* body {
+            position: absolute;
+        } */
+
+        p {
+            text-align: center;
+        }
+
+        img {
+            height: 600px;
+            width: 1000px;
+        }
+
+        .hint {
+            position: absolute;
+            display: none;
+            width: 120px;
+            height: 20px;
+            /* top: -600px;
+            left: 50px; */
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=259058270,2037955824&fm=26&gp=0.jpg" alt="">
+    </p>
+    <div class="hint" id="hint">
+        <span class="fonts">你好 要图? 掏钱</span>
+    </div>
+    <script>
+        var img = document.querySelector("img");
+        
+        
+        img.addEventListener("contextmenu", function (event) {
+            var hint = document.querySelector("div");
+            hint.style.top = (event.pageY - 10) + "px";
+            hint.style.left = (event.pageX - 10) + "px";
+            hint.style.display = "inline-block";
+            event.preventDefault();
+        });
+
+    </script>
+</body>
+
+</html>
