@@ -85,7 +85,7 @@ var jingtongxue = {
   },
 
   every: function (ary, predicate) {
-    var predicate = jingtongxue.iterate(predicate);
+    predicate = jingtongxue.iterate(predicate);
     for (var val of ary) {
       if (!(predicate(val))) {
         return false;
@@ -257,7 +257,7 @@ var jingtongxue = {
     }
   },
   isFunction: function(value){
-    return Object.prototype.toString.call(value) === "[Object Function]";
+    return Object.prototype.toString.call(value) == "[object Function]";
   },
   identity :function(...value){
     return value[0];
@@ -272,7 +272,7 @@ var jingtongxue = {
   },
 
   map: function (array, predicate) {
-    var  predicate = jingtongxue.iterate(predicate);
+    predicate = jingtongxue.iterate(predicate);
     var result = [];
     for(var i = 0;i < array.length;i++){
       result.push(predicate(array[i],i,array));
@@ -356,7 +356,7 @@ var jingtongxue = {
   indexOf :function(array,value,fromIndex = 0){
     if(value == NaN){
       for(var i = 0;i < array.length;i++){
-        if(array[i] == NaN){
+        if(isNaN(array[i])){
           return i;
         }
       }
@@ -369,8 +369,49 @@ var jingtongxue = {
     }
     return -1
     },
+    isNaN :function(value){
+      return jingtongxue.isNumber(value) && +value !== value;
+    },
+    isNative :function(value){
+      
+    },
+    isNil :function(value){
+      return value == null || value == undefined;
+    },
+    isNull :function(value){
+      return value === null;
+    },
+    isNumber :function(value){
+      return Object.prototype.toString.call(value) === "[object Number]" || Object.prototype.toString.call(value) === "[object Null]";
+    },
+    isObject :function(value){
+      return value instanceof Object;
+    },
+    isObjectLike :function(value){
+      return value != null && typeof value == "object";
+    },
+    isRegExp :function(value){
+      return Object.prototype.toString.call(value) == "[object RegExp]";
+    },
+    isSafeInteger :function(value){//~V~
+      return Number.isSafeInteger(value);
+    },
+    isSet :function(value){
+      return Object.prototype.toString.call(value) == "[object Set]";
+    },
+    isString :function(value){
+      return Object.prototype.toString.call(value) == "[object String]";
+    },
+    isSymbol :function(value){
+      return Object.prototype.toString.call(value) == "[object Symbol]";
+    },
+    isUndefined :function(value){
+      return Object.prototype.toString.call(value) == "[object Undefined]";
+    },
     initial :function(array){
-      // return 
+      // array.pop();
+      // return array;
+      return array.slice(0,array.length - 1);
     },
     reverse :function(array){
       var ary = [];
@@ -378,6 +419,34 @@ var jingtongxue = {
         ary.push(array[i]);
       }
       return ary;
+    },
+    intersection :function(...arrays){
+      var ary = arrays[0];
+      var result = [];
+      var de = false;
+      for(var i = 0;i < ary.length;i++){
+        for(var j = 1;j < arrays.length;j++){
+          if(arrays[j].indexOf(ary[i]) == -1){
+              break;
+          }
+          de = true;
+          if(de && result.length == 0){
+            result.push(ary[i]);
+          }
+        }
+      }
+      return result;
+    },
+    join :function(array,separator){
+      var str = "";
+      for(var i = 0;i < array.length;i++){
+        if(i == array.length - 1){
+          str +=  "" + array[i];
+        }else{
+          str += "" + array[i] + separator
+        }
+      }
+      return str;
     }
   
 
