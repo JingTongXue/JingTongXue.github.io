@@ -246,17 +246,23 @@ var jingtongxue = {
     }
   },
   dropRightWhile: function (array,predicate = jingtongxue.identity) {
-    predicate = jingtongxue.iterate(predicate);
-    for(let i = 0;i < array.length ;i++){
-      if(!predicate(array[i],i,array)){
-        return array.slice(0,i);
+    var res = array.slice();
+    if(!jingtongxue.isFunction(predicate)){
+      predicate = jingtongxue.iterate(predicate);
+    }
+    for(let i = 0;i < array.length;i--){
+      if(predicate(array[i])){
+        return res.slice(0,i - 1);
       }
     }
+  },
+  isFunction: function(value){
+    return Object.prototype.toString.call(value) === "[Object Function]";
   },
   identity :function(...value){
     return value[0];
   },
-  dropWhile: function (array, predicate = jingtongxue.identity) {
+  dropWhile: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
     for(let i = 0;i < array.length;i++){
       if(!predicate(array[i],i,array)){
