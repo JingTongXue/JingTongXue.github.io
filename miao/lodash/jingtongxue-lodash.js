@@ -249,7 +249,7 @@ var jingtongxue = {
     predicate = jingtongxue.iterate(predicate);
     for(let i = 0;i < array.length ;i++){
       if(!predicate(array[i],i,array)){
-        return array.slice(0,i + 1);
+        return array.slice(0,i);
       }
     }
   },
@@ -288,15 +288,15 @@ var jingtongxue = {
   findIndex : function(array,predicate = jingtongxue.identity,fromIndex = 0){
     predicate = jingtongxue.iterate(predicate);
     for(let i = fromIndex;i < array.length;i++){
-      if(predicate(array[i],i,array)){
+      if(predicate(array[i])){
         return i;
       }
     }
     return -1;
   },
-  findLastIndex :function(array,predicate = jingtongxue.identity,fromIndex){
+  findLastIndex :function(array,predicate = jingtongxue.identity,fromIndex = array.length - 1){
     predicate = jingtongxue.iterate(predicate);
-    for(let i = array.length - 1;i >= 0;i--){
+    for(let i = fromIndex;i >= 0;i--){
       if(predicate(array[i])){
         return i;
       }
