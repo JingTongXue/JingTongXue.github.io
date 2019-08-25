@@ -247,16 +247,16 @@ var jingtongxue = {
   },
   dropRightWhile: function (array,predicate) {
     predicate = jingtongxue.iterate(predicate);
-    for(let i = array.length;i >= 0;i--){
+    for(let i = array.length - 1;i >= 0;i--){
       if(!predicate(array[i],i,array)){
-        return array.slice(0,i);
+        return array.slice(0,i + 1);
       }
     }
   },
   dropWhile: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
     for(let i = 0;i < array.length;i++){
-      if(!(predicate(array[i],i,array))){
+      if(!predicate(array[i],i,array)){
         return  array.slice(i);
       }
     }
@@ -282,16 +282,16 @@ var jingtongxue = {
     }
     return array;
   },
-  findIndex : function(array,predicate){
+  findIndex : function(array,predicate,fromIndex = 0){
     predicate = jingtongxue.iterate(predicate);
-    for(let i = 0;i < array.length;i++){
+    for(let i = fromIndex;i < array.length;i++){
       if(predicate(array[i],i,array)){
         return i;
       }
     }
     return -1;
   },
-  findLastIndex :function(array,predicate){
+  findLastIndex :function(array,predicate,fromIndex){
     predicate = jingtongxue.iterate(predicate);
     for(let i = array.length - 1;i >= 0;i--){
       if(predicate(array[i])){
