@@ -245,15 +245,18 @@ var jingtongxue = {
       return jingtongxue.matchesProperty(value);
     }
   },
-  dropRightWhile: function (array,predicate) {
+  dropRightWhile: function (array,predicate = jingtongxue.identity) {
     predicate = jingtongxue.iterate(predicate);
-    for(let i = array.length - 1;i >= 0;i--){
+    for(let i = 0;i < array.length ;i++){
       if(!predicate(array[i],i,array)){
         return array.slice(0,i + 1);
       }
     }
   },
-  dropWhile: function (array, predicate) {
+  identity :function(...value){
+    return value[0];
+  },
+  dropWhile: function (array, predicate = jingtongxue.identity) {
     predicate = jingtongxue.iterate(predicate);
     for(let i = 0;i < array.length;i++){
       if(!predicate(array[i],i,array)){
@@ -282,7 +285,7 @@ var jingtongxue = {
     }
     return array;
   },
-  findIndex : function(array,predicate,fromIndex = 0){
+  findIndex : function(array,predicate = jingtongxue.identity,fromIndex = 0){
     predicate = jingtongxue.iterate(predicate);
     for(let i = fromIndex;i < array.length;i++){
       if(predicate(array[i],i,array)){
@@ -291,7 +294,7 @@ var jingtongxue = {
     }
     return -1;
   },
-  findLastIndex :function(array,predicate,fromIndex){
+  findLastIndex :function(array,predicate = jingtongxue.identity,fromIndex){
     predicate = jingtongxue.iterate(predicate);
     for(let i = array.length - 1;i >= 0;i--){
       if(predicate(array[i])){
