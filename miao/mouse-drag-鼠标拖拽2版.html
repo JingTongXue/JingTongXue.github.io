@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .sq{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top:100px;
+            left: 100px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="sq one" style="background-color: red">1</div>
+    <div class="sq two" style="background-color: orange;left: 200px;">2</div>
+    <div class="sq three" style="background-color:palegoldenrod;top:100px;left:300px;">3</div>
+
+    <script>
+        var sqs = document.querySelectorAll(".sq");
+        var isDown = false;
+        var originX = null;
+        var originY = null;
+        var idx = null;
+        var maxZ = 2;
+        for(var i = 0;i < sqs.length;i++){
+            sqs[i].addEventListener("mousedown",down);
+        }
+        addEventListener("mousemove",move);
+        addEventListener("mouseup",up);
+        
+        function down(e){
+            // debugger;
+            // console.log(e.currentTarget.textContent);//该div里的内容
+            idx = Number(e.currentTarget.textContent) - 1;
+            e.target.style.zIndex = maxZ + 1;
+            maxZ++;
+
+            var x = e.currentTarget.offsetLeft;
+            var y = e.currentTarget.offsetTop;
+            if(!isDown){
+                isDown = true;
+                originX = e.pageX - x;
+                originY = e.pageY - y;
+            }
+        }
+
+        function move(e){
+            if(isDown && idx !== null){
+                sqs[idx].style.top = (e.pageY - originY) + 'px';
+                sqs[idx].style.left = (e.pageX - originX) + 'px';
+            }
+        }
+
+        function up(e){
+            if(isDown){
+                isDown = false;
+            }
+        }
+    </script>
+</body>
+</html>

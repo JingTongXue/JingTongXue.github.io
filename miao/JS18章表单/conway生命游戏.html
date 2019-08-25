@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <div>
+      <button id="next">next generation</button>
+      <button id="auto">auto play</button>
+      <button id="stop">stop</button>
+    </div>
+    <div class="world"></div>
+
+    <script>
+      //思路:创建一个二维数组,活着的小格值为1,死去的不赋值.
+      //这样循环查看每个小格的活着邻居数为多少,来判断该小格下一步的生死
+      class Conway {
+        constructor(width = 20, height = width) {//构造函数
+          this.width = width;
+          this.height = height;
+          this.world = Array(height).fill(0).map(it => Array(width).fill(0));//二维数组
+          this.fillRandom();
+        }
+    
+        fillRandom(ration = 0.2) {
+          this.world.forEach((row, rowIdx) => {
+            row.forEach((cell, colIdx) => {
+              if (Math.random() < 0.2) {
+                this.world[rowIdx][colIdx] = 1
+              }
+            })
+          })
+        }
+    
+        next() {//下一步的状态
+          var world = Array(this.height).fill(0).map(it => Array(this.width).fill(0));
+    
+          this.world.forEach((row, rowIdx) => {
+            row.forEach((cell, colIdx) => {
+    
+              var neighbors = 0;//该坐标周围活着的邻居数
+              for(var i = rowIdx - 1; i <= rowIdx + 1; i++) {//该坐标的上下行
+                for(var j = colIdx - 1; j <= colIdx + 1; j++) {//该坐标的左右列
+                  neighbors += this.world[i] ? ~~this.world[i][j] : 0;
+                  //如果该坐标的上下存在行(即该坐标在九宫格点的中心),则取出所求坐标对应的值,累计加到neighbors中
+                  //~~表示当其为undefined时:为0-----  ~~undefined:0    ~~1:1   ~~0:0
+                } 
+              }
+              neighbors -= cell
+    
+              if (cell) {//当该坐标的小格活着的时候
+                if (neighbors === 2 || neighbors === 3) {//如果活着的邻居数有两个或三个的时候
+                  world[rowIdx][colIdx] = 1;//该坐标就会活着
+                }
+              } else {//当该坐标的小哥死去的时候
+                if (neighbors === 3) {//它如果有活着的邻居数有三个
+                  world[rowIdx][colIdx] = 1;//它就可以复活(即值为1)
+                }
+              }
+            })
+          })
+    
+          this.world = world;//
+          return this;//最后返回该二维数组
+        }
+    
+        setCellStatus(row, col, status) {//修改该坐标的按钮值
+          this.world[row][col] = status;
+          return this;
+        }
+    
+        toString() {
+          return '\n' + this.world.map(row => row.map(it => it ? 'O' : '.').join('')).join('\n');
+        }
+      }
+
+      var c = new Conway();//新建一个Conway类
+
+      function renderHTML(c) {//创建一个二维按钮数组,并根据其每个cell的值确定每个按钮的状态
+        return c.world.map(row => {
+          return `<div>
+            ${row.map(cell => `<input type="checkbox" ${cell ? 'checked' : ''}>`).join('')}
+          </div>`
+        }).join('')
+      }
+
+      var world = document.querySelector('.world');
+      world.innerHTML = renderHTML(c);//将二维按钮添加待world中,如果world中已经存在,就替换掉存在的
+
+      world.addEventListener('click', e => {
+        if (e.target.matches('input')) {//当触发click的元素来源是input
+          var parentNode = e.target.parentNode;//元素父节点
+          var col = Array.from(parentNode.children).indexOf(e.target);//列坐标
+          var row = Array.from(parentNode.parentNode.children).indexOf(parentNode);//行坐标
+          console.log(row, col);
+          c.setCellStatus(row, col, Number(e.target.checked));
+        }
+      })
+
+      var intervalId
+      document.querySelector('#auto').addEventListener('click', e => {
+        intervalId = setInterval(() => {//每隔200毫秒运行一次如下操作:
+          c.next()
+          world.innerHTML = renderHTML(c)
+        }, 200)
+      })
+      
+      document.querySelector('#stop').addEventListener('click', e => {
+        clearInterval(intervalId);//终止该操作
+      })
+
+      document.querySelector('#next').addEventListener('click', e => {
+        c.next()
+        world.innerHTML = renderHTML(c)
+      })
+    
+    </script>
+</body>
+</html>
+

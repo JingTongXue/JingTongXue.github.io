@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <textarea name="" id="article" cols="30" rows="10"></textarea>
+    <script>
+        var article = document.querySelector("#article");
+
+        article.addEventListener("keyup",function(){
+            if(event.keyCode == 81){
+                var beforeCursor = article.value.slice(0,article.selectionStart);
+                var dateString = new Date().toLocaleDateString();
+                var afterCursor = article.value.slice(article.selectionEnd);
+                article.value = beforeCursor + dateString + afterCursor;
+                article.selectionStart = article.selectionEnd = beforeCursor.length + dateString.length;
+            }
+        })
+        
+    </script>
+</body>
+</html>

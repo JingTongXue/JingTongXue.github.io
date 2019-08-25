@@ -245,17 +245,17 @@ var jingtongxue = {
       return jingtongxue.matchesProperty(value);
     }
   },
-  dropRightWhile: function (array, predicate) {
-    var  predicate = jingtongxue.iterate(predicate);
-    for(var i = 0;i < array.length;i++){
-      if(!(predicate(array[i],i,array))){
-        return  array.slice(0,i);
+  dropRightWhile: function (array,predicate) {
+    predicate = jingtongxue.iterate(predicate);
+    for(let i = array.length;i >= 0;i--){
+      if(!predicate(array[i],i,array)){
+        return array.slice(0,i);
       }
     }
   },
   dropWhile: function (array, predicate) {
-    var predicate = jingtongxue.iterate(predicate);
-    for(var i = 0;i < array.length;i++){
+    predicate = jingtongxue.iterate(predicate);
+    for(let i = 0;i < array.length;i++){
       if(!(predicate(array[i],i,array))){
         return  array.slice(i);
       }
@@ -283,8 +283,8 @@ var jingtongxue = {
     return array;
   },
   findIndex : function(array,predicate){
-    var predicate = jingtongxue.iterate(predicate);
-    for(var i = 0;i < array.length;i++){
+    predicate = jingtongxue.iterate(predicate);
+    for(let i = 0;i < array.length;i++){
       if(predicate(array[i],i,array)){
         return i;
       }
@@ -292,8 +292,8 @@ var jingtongxue = {
     return -1;
   },
   findLastIndex :function(array,predicate){
-    var predicate = jingtongxue.iterate(predicate);
-    for(var i = array.length - 1;i >= 0;i--){
+    predicate = jingtongxue.iterate(predicate);
+    for(let i = array.length - 1;i >= 0;i--){
       if(predicate(array[i])){
         return i;
       }
@@ -344,28 +344,32 @@ var jingtongxue = {
     var len = array.length;
     return len == 0? undefined : array[0];
   },
-  indexOf :function(array,value,fromIndex){
-    if(fromIndex < 0){//fromIndex小于0时
-      for(var i = array.length;i >= 0;i++){
-        if(array[i] == value){
-          return i;
-        }
-      }
-    }else if(fromIndex == undefined){//fromIndex未赋值时
+  indexOf :function(array,value,fromIndex = 0){
+    if(value == NaN){
       for(var i = 0;i < array.length;i++){
-        if(array[i] == value){
+        if(array[i] == NaN){
           return i;
         }
       }
-    }else{
-      for(var i = fromIndex;i < array.length;i++){//fromIndex大于0时
-        if(array[i] == value){
-          return i;
-        }
+      return -1;
+    }
+    for(let i = fromIndex;i < array.length;i++){
+      if(array[i] == value){
+        return i;
       }
     }
-
-
-  }
+    return -1
+    },
+    initial :function(array){
+      // return 
+    },
+    reverse :function(array){
+      var ary = [];
+      for(var i = array.length - 1;i >= 0;i--){
+        ary.push(array[i]);
+      }
+      return ary;
+    }
+  
 
 }

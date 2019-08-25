@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text">
+
+    <script>
+    var field = document.querySelector("input");
+    field.addEventListener("keydown",function(){//按键触发的QWX
+        if(event.keyCode == 81 || event.keyCode == 87 || event.keyCode == 88){
+             event.preventDefault();
+        }
+    })
+    addEventListener("paste",e => {//粘贴事件,遇到QWX,将其换成***
+        console.log(e.target.value);
+        console.log(e)
+    })
+    </script>
+</body>
+</html>

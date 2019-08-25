@@ -1,0 +1,164 @@
+<script>
+
+    /*
+        时间复杂度:
+        时间复杂度为,一个算法流程中,常数操作数量的指标,这个指标叫做O,big O.具体为,如果常数操作数量的表达式中,
+        只要高阶项,不要低阶项,也不要高阶项系数之后,剩下的部分即为f(N),那么该算法的时间复杂度为O(f(N)).
+        空间复杂度:
+        看有多少变量;
+    */
+
+    //冒泡排序
+    //交换两个数
+    //1.
+    function swap(ary, i, j) {
+        var t = ary[i];
+        ary[i] = ary[j];
+        ary[j] = t;
+    }
+    //2.
+    /*异或 
+    a = a ^ b
+    b = a ^ b
+    a = a ^ b
+    */
+    function swap2(ary, i, j) {//该方法必须保证i与j不相同
+        ary[i] = ary[i] ^ ary[j];
+        ary[j] = ary[i] ^ ary[j]
+        ary[i] = ary[i] ^ ary[j]
+    }
+    //冒泡1.
+    function mao(ary) {
+        for (var j = ary.length - 1; j >= 0; j--) {
+            for (var i = 0; i <= j; i++) {
+                if (ary[i] > ary[i + 1]) {
+                    swap(ary, i, i + 1);
+                }
+            }
+        }
+    }
+    //冒泡2
+    function bubbleSort(arr) {
+        var len = arr.length;
+        for (var i = 0; i < len - 1; i++) {
+            for (var j = 0; j < len - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {        // 相邻元素两两对比   
+                    var temp = arr[j + 1];        // 元素交换   
+                    arr[j + 1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+    function bubbleSort(ary) {
+        for (var j = 0; j < length - 2; j--) {
+            var s = false;
+            for (var i = 0; i < j; i++) {
+                if (ary[i] > ary[i + 1]) {
+                    swap(ary, i, i + 1)
+                    s = true;
+                }
+
+            }
+            if (!s) {
+                break;
+            }
+        }
+        return ary;
+    }
+
+</script>
+<script>
+    //选择排序 时间复杂度:O(N * N)  空间复杂度:O(1)
+    //遍历数组中第二个即以后的每个数,判断其是否小于前数,小于则交换,直至遍历到倒数第二个数即可.
+    //冒泡排序是将大的数依次放到后面,选排则是将小的依次放到前面
+    function swap(ary, i, j) {
+        if (i !== j) {
+            var t = ary[i];
+            ary[i] = ary[j];
+            ary[j] = t;
+        }
+        return ary;
+    }
+    function selectSort(ary) {
+        for (var i = 0; i < ary.length - 2; i++) {
+            var min = i;
+            for (var j = i + 1; j < ary.length; j++) {
+                min = ary[min] > ary[j] ? j : min;
+            }
+            swap(ary, i, min);
+        }
+        return ary;
+    }
+    //插入排序
+    //假定数组第一个数为有序区,遍历之后的数,是否小于其前面的数,如果小于,就插入到前数中,继而有序区扩大+1,依次遍历,直至遍历完数组
+    function insertionSort() {
+        for (var i = 1; i < ary.length; i++) {
+            for (var j = i - 1; j >= 0 && ary[j] > ary[j + 1]; j--) {
+                swap(ary, j, j + 1);
+            }
+        }
+    }
+
+    //快速排序-------------常用
+    function quickSort(ary) {
+        if (ary.length < 2) {
+            return ary.slice();
+        }
+        var random = Math.floor(Math.random() * ary.length);//随机一个数
+        var randomValue = ary[random];
+
+        var left = [];
+        var middle = [];
+        var right = [];
+        for (var item of ary) {
+            if (item < randomValue) {
+                left.push(item);
+            } else if (item > randomValue) {
+                right.push(item);
+            } else {
+                middle.push(item);
+            }
+        }
+        left = quickSort(left);
+        right = quickSort(right);
+        return [...left, ...middle, ...right];
+    }
+    //
+
+    function swap(ary, i, j) {
+        var t = ary[i];
+        ary[i] = ary[j];
+        ary[j] = t;
+        return ary;
+    }
+    //time:log(N) 
+    //对于完全相同的数组来说,性能会退化n*n,调用栈会达到n层
+    function partation(ary, start = 0, end = ary.length - 1) {
+        if (end - start <= 0) {
+            return ary;
+        }
+        var pivotIndex = Math.floor(Math.random() * (end - start + 1) + start);//随机一个数
+        var pivot = ary[pivotIndex];//取出这个随机 挑的数
+
+        swap(ary, pivotIndex, end);//放到最后
+
+        var i = start - 1;//
+        for (var j = start; j < end; j++) {
+            if (ary[j] < pivot) {
+                i++;
+                swap(ary, i, j);
+            }
+        }
+        i++;
+        swap(ary, i, end);
+        partation(ary, start, i - 1);
+        partation(ary, i + 1, end);
+        return ary;
+    }
+
+
+
+
+</script>

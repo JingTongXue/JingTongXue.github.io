@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .search {
+            position: relative;
+            top: 90px;
+            left: 150px;
+        }
+
+        .new-todo {
+            width: 550px;
+            height: 25px;
+            font-size: 24px;
+            padding: 18px 18px 18px 60px;
+        }
+
+        section {
+            position: relative;
+            width: 632px;
+        }
+
+        #toggle-all {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            top: -8px;
+            left: -630px;
+        }
+
+        .footer {
+            height: 20px;
+            width: 630px;
+            text-align: center;
+        }
+
+        .todo-count {
+            float: left;
+        }
+
+        .clear-completed {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="search">
+        <!-- 输入框 -->
+        <input class="new-todo" type="text" placeholder="What needs to be done?">
+
+        <!-- 状态框 -->
+        <section style="display: none;">
+            <!-- 按钮 -->
+            <input type="checkbox" class="toggle-all" id="toggle-all">
+
+
+
+            <!-- 成品栏 -->
+            <ul class="todo-list"></ul>
+
+
+            <!-- 汇总栏 -->
+            <footer class="footer" >
+                <span class="todo-count">0 items left</span>
+                <ul class="filters"></ul>
+                <button class="clear-completed" style="display: none">Clear completed</button>
+            </footer>
+        </section>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        class TodoMVC {
+            constructor(node) {
+                this.$div = $(node);
+                this.$input = $(node).find('.new-todo');
+                this.$section = $(node).find("section");
+
+                this.add();
+            }
+
+            add() {
+                // debugger;
+                this.$input.on("keyup", e => {
+                    var inputer = this.$input.val();//获取input的值
+                    console.log(inputer);
+                    if (inputer && e.keyCode == 13) {//值不为空且按下回车键
+                        console.log(this.$section.css("display"));
+                        this.$section.css("display", "inline");
+                        var li = document.createElement("li");
+                        li.class
+                    }
+                })
+            }
+
+            delete(li){
+                this
+            }
+
+
+
+
+
+        }
+        new TodoMVC(document.querySelector("div"));
+    </script>
+</body>
+
+</html>

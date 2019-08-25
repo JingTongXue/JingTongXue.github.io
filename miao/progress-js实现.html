@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        class Progress{
+            constructor(){
+                this.el = document.createElement('div');
+                this.el.style = `
+                    position:fixed;
+                    height: 10px;
+                    background-color: blue;
+                    top: 0;
+                    left: 0;
+                    width: 3%;
+                    transition:width .2s;
+                `
+                this.precentage = 3;
+            }
+            start(){
+                this.precentage = 3;
+                this.el.style.width = this.precentage + '%';
+                document.body.appendChild(this.el);
+            }
+            increase(amount = 5){
+                this.precentage += amount;
+                this.el.style.width = this.precentage + '%';
+            }
+            set(amount){
+                this.precentage = amount;
+                this.el.style.width = this.precentage + '%';
+            }
+
+            complete(){
+                this.precentage = 100;
+                this.el.style.width = this.precentage + '%';
+                setTimeout( () => {
+                    document.body.removeChild(this.el);
+                })
+            }
+        }    
+        
+    </script>
+</body>
+</html>

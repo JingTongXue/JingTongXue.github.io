@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="color" id="color" value="#ff0000">
+    <script>
+        var colorInput = document.querySelector("#color");
+        //简洁版
+        //思路:mousemove事件中,当鼠标按下时,在添加创建的dot
+        // window.addEventListener("mousemove", function () {
+        //     if (event.which == 1) {//当点击左键时
+        //         var dot = document.createElement("div");
+        //         dot.classList.add('dot');
+        //         dot.style.left = (event.pageX - 4) + "px";
+        //         dot.style.top = (event.pageY - 4) + "px";
+        //         dot.style.backgroundColor = colorInput.value;
+        //         document.body.appendChild(dot);//创建dot并将其添加到页面中.
+        //     }
+        // })
+
+        //复杂版
+        function drawDot(event){
+            var dot = document.createElement("div");
+            dot.className = "dot";
+            dot.style.left = (event.pageX - 4) + "px";
+            dot.style.top = (event.pageY - 4) + "px";
+            dot.style.backgroundColor = colorInput.value;
+            document.body.appendChild(dot);//创建dot并将其啊添加到页面中.
+        }
+        //当鼠标按下时,添加一个新建的dot到页面中,移动时,也继续添加,当鼠标松开时,就解绑掉mousemove
+        window.addEventListener('mousedown',function(e){
+            if(e.target == colorInput){//如果当前按键是颜色框
+                return//则不画点;
+            }
+            drawDot(e);
+            // debugger;
+            window.addEventListener('mousemove',function f(e){
+                if(e.buttons == 0){
+                    window.removeEventListener('mousemove',f);//解绑
+                    return 
+                }
+                drawDot(e);
+            })
+        })
+    </script>
+</body>
+
+</html>

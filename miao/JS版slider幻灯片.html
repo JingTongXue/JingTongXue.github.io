@@ -1,12 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        div,
+        img {
+            height: 350px;
+            width: 800px;
+            position: absolute;
+            z-index: 0;
+            transition:z-index .6s;
+        }
+
+        div.indicators {
+            position: absolute;
+            height: 20px;
+            width: 130px;
+            top: 305px;
+            left: 650px;
+            z-index: 2000;
+        }
+
+        .left {
+            top: 135px;
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            background-position: 81px;
+            position: relative;
+            width: 41px;
+            height: 69px;
+            z-index: 2000;
+        }
+
+        .left:hover {
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            /* background-position:-41px; */
+        }
+
+        .right {
+            top: 65px;
+            left: 760px;
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            background-position: 42px;
+            position: relative;
+            width: 41px;
+            height: 69px;
+            z-index: 2000;
+        }
+
+        .right:hover {
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            background-position: -41px;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <div>
+        <img class="img one" src="https://i1.mifile.cn/a4/xmad_15593146429349_krIKn.jpg" alt="" style="z-index: 1;">
+        <img class="img two" src="https://i1.mifile.cn/a4/xmad_15593213929997_SIWOC.jpg" alt="">
+        <img class="img three" src="https://i1.mifile.cn/a4/xmad_15593222329545_TSIOe.jpg" alt="">
+        <img class="img four" src="https://i1.mifile.cn/a4/xmad_15592693810399_VSdAC.jpg" alt="">
+        <img class="img five" src="https://i1.mifile.cn/a4/xmad_15593143785816_iOTuH.jpg" alt="">
+        <div class="indicators">
+            <input type="radio" name="hello" class="i one">
+            <input type="radio" name="hello" class="i two">
+            <input type="radio" name="hello" class="i three">
+            <input type="radio" name="hello" class="i four">
+            <input type="radio" name="hello" class="i five">
+        </div>
+        <div class="left">
+            <label for="i1"></label>
+            <label for="i2"></label>
+            <label for="i3"></label>
+            <label for="i4"></label>
+            <label for="i5"></label>
+        </div>
+        <div class="right">
+            <label for="i1"></label>
+            <label for="i2"></label>
+            <label for="i3"></label>
+            <label for="i4"></label>
+            <label for="i5"></label>
+        </div>
+    </div>
+
+    <script>
+        var maxZindex = 1;
+        var imgs = document.querySelectorAll(".img");
+        var inputs = document.querySelectorAll(".i");
+        for (let i = 0; i < inputs.length; i++) {
+            let j = i;
+            console.log(j);
+            inputs[i].addEventListener("click", function click() {
+                console.log(imgs[j].style.zIndexs);
+                imgs[j].style.zIndex = maxZindex + 1;
+                maxZindex++;
+            });
+        }
+
+
+
+
+
+    </script>
 </body>
+
 </html>

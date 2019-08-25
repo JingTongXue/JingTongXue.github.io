@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>菜单</title>
+
+	<style>
+		/* *{
+			margin: 0;
+			padding: 0;
+			font-size: 14px;
+		}
+		ul{
+			list-style: none;
+		}
+		
+        li{
+        	height: 30px;
+        	line-height: 30px;
+        	width: 100px;
+        	background-color: #ccc;
+        	margin-bottom: 1px;
+        	text-align: center; /*居中*/
+		/*text-indent: 10px;	/*文字缩进10px*/
+		*/
+
+		/* }
+        li{
+        	float: left;
+        }
+        a{
+        	/*margin: auto;*/
+		/* text-decoration: none;  去除超链接下划线 */
+		/* display: block;   将a标签设置成块元素 */
+		/* } 
+		a:hover{
+			background-color: #f60;
+			color: #fff;
+		}  */
+		* {
+			font-size: 24px;
+			xbackground-color: rgba(0, 0, 0, 0.08);
+		}
+
+		ul {
+			padding: 0;
+			list-style: none;
+			position: absolute;
+		}
+
+		ul.menu>li {
+			float: left;
+			padding: 0px 20px;
+		}
+
+		ul.menu>li>ul {
+			top: 100%;
+			left: 0;
+		}
+
+		ul.menu>li>ul::before {
+			content: none;
+		}
+
+		ul li {
+			position: relative;
+			padding-right: 40px;
+			white-space: nowrap;
+			background-color: pink;
+		}
+
+		li:hover {
+			background-color: orange;
+		}
+
+		li:hover>ul>li {
+			/* display: block; */
+			opacity: 1;
+			pointer-events: auto;
+			/* visibility: visible; */
+		}
+
+		ul ul::before {
+			content: '>';
+			position: absolute;
+			left: -1em;
+		}
+
+		ul ul li {
+			opacity: 0;
+			/* visibility: hidden; */
+			/* display: none; */
+			transition: opacity .6s;
+		}
+
+		ul ul {
+			xdisplay: none;
+			position: absolute;
+			pointer-events: none;
+			top: 0;
+			left: 100%;
+		}
+	</style>
+
+</head>
+
+<body>
+	<!-- <ul>
+		<li><a href="#">首  页</a></li>
+		<li><a href="#">新闻快讯</a></li>
+		<li><a href="#">产品展示</a></li>
+		<li><a href="#">售后服务</a></li>
+		<li><a href="#">联系我们</a></li>
+	</ul> -->
+	<ul>
+		<li>文件
+			<ul>
+				<li>打开</li>
+				<li>保存
+					<ul>
+						<li>UTF-8
+							<ul>
+								<li>With BOM
+									<ul>
+										<li>aaa</li>
+										<li>bbbbb</li>
+										<li>cccc</li>
+									</ul>
+								</li>
+								<li>With Out BOM</li>
+							</ul>
+						</li>
+						<li>ANSI</li>
+						<li>UTF-8 with BOM</li>
+					</ul>
+				</li>
+				<li>另存为…</li>
+			</ul>
+		</li>
+		<li>编辑</li>
+		<li>查找</li>
+		<li>选择</li>
+	</ul>
+</body>
+
+</html>

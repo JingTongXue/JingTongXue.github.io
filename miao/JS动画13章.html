@@ -11,64 +11,64 @@
             height: 100%;
             width: 100%;
         }
-        .ear{
+        #ear{
             /* //居中 */
             text-align: center;
-            margin-top: 200px;
-            /* height: 500px; */
+            margin-top: 350px;
+            margin-left:550px;
+            height: 200px;
+            width: 200px;
+            position: relative;
         }
        
 
         #earth{
-            position: relative;
-            height: 150px;
-            width: 150px;
+            position: absolute;
+            margin-top: -50px;
+            margin-left: -150px;
+            height: 100px;
+            width: 100px;
             display: inline-block;
         }
         #moon{
             position: absolute;
-            height: 100px;
-            width: 100px;
+            margin-top:-40px;
+            margin-left:-40px;
+            height: 80px;
+            width: 80px;
             display: inline-block;
         }
     </style>
 </head>
 
 <body>
-    <p class = "ear">
+    <p id = "ear">
         <img id = "earth"src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIptKhWLKn4mMEs6Zz1MhijCFqxTYkwM1nf0PUscp0zZxyjW90 alt="">
-    
         <img id = "moon"src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQesqPgzEW4bSjGTYYPrLIfgHcl11mOsSJdeZeD6PwjJ1VVxPk2" alt="">
     </p>
 
     <script>
-        var earth = document.querySelectorAll("img")[0];
-        var angle = 0;
-        var lastTime = 0;
+        var earth = document.querySelector("#ear");
+        var moon = document.querySelector("#moon");
+        var earangle = 0;
+        var moone = 0;
+        var lastTime = null;
         function animate(time) {
             if (lastTime !== null) {
-                angle += (time - lastTime) * 0.001;
+                var angle = (time - lastTime) * 0.001;
+                earangle += angle;
+                moone -= angle;
             }
             lastTime = time;
-            earth.style.top = (Math.sin(angle) * 200) + "px";
-            earth.style.left = (Math.cos(angle) * 200) + "px";
+            earth.style.top = (Math.sin(earangle) * 150) + "px";
+            earth.style.left = (Math.cos(earangle) * 150) + "px";
+        
+            moon.style.top = (Math.sin(moone) * 120) + "px";
+            moon.style.left = (Math.cos(moone) * 120) + "px";
             requestAnimationFrame(animate);
         }
         requestAnimationFrame(animate);
 
-        var moon = document.querySelectorAll("img")[1];
-        var angle = 0;
-        var lastTime = 0;
-        function animate(time) {
-            if (lastTime !== null) {
-                angle += (time - lastTime) * 0.001;
-            }
-            lastTime = time;
-            earth.style.top = (Math.sin(angle) * 200) + "px";
-            earth.style.left = (Math.cos(angle) * 200) + "px";
-            requestAnimationFrame(animate);
-        }
-        requestAnimationFrame(animate);
     </script>
 </body>
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    body{
+        /* 用户无法选中页面里的东西 */
+        user-select: none;
+    }
+    .a,.b,.c{
+        position: absolute;
+        display: fixed;
+        width: 100px;
+        height: 100px;
+        left: 0px;
+        top:0px;
+    }
+
+    
+    </style>
+</head>
+<body>
+    <div class="a draggable" style="background-color: red;top:100px;left: 300px;">1</div>
+    <div class="b draggable" style="background-color: orange;top:200px;left: 200px;">2</div>
+    <div class="c draggable" style="background-color:palegoldenrod;top:300px;left:100px;">3</div>
+    <script>
+        var maxZ = 5;
+        window.addEventListener("mousedown", e => {
+                if(e.target.matches('.draggable')){
+                    var moving  = e.target;
+                    moving.style.zIndex = maxZ++;
+                    var mouseInitX = e.pageX;//鼠标点击的初始位置
+                    var mouseInitY = e.pageY;
+
+                    var elInitX = parseInt(moving.style.left);//元素的初始位置
+                    var elInitY = parseInt(moving.style.top);
+
+                window.addEventListener("mousemove",move = function move(e){
+                        // if(e.buttons == 0){
+                        //     window.removeEventListener("mousemove",f);
+                        // }
+                        var diffX = e.pageX - mouseInitX;//元素位移量 = 鼠标偏移量-鼠标初始位置
+                        var diffY = e.pageY - mouseInitY;
+
+                        // console.log(diffX,diffY);
+                        // console.log(parseInt(moving.style.left) + diffX + 'px');
+
+                        var left = elInitX + diffX;//元素当前位置 = 元素初始位置 + 元素位移量
+                        var top = elInitY + diffY;
+                        if(left < 100){
+                            left = 0;
+                        }
+                        if(left > innerWidth - 100){
+                            left = innerWidth - 100;
+                        }
+                        if(top > innerHeight - 100){
+                            top = innerHeight - 100;
+                        }
+                        if(top < 100){
+                            top = 0;
+                        }
+                        moving.style.left = left + 'px';
+                        moving.style.top = top + 'px';
+                    })
+                
+                window.addEventListener("mouseup",function(){
+                    window.removeEventListener("mousemove",move);
+                })
+                }
+
+
+        })
+    
+    </script>
+</body>
+</html>

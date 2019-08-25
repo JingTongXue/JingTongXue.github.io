@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>多栏等高自适应</title>
+    <style>
+        .flex{
+            display:flex;
+            overflow: hidden;
+        }
+        .flex > *{
+            padding-bottom:4000px;
+            margin-bottom:-4000px;
+        }
+
+        .a{
+            width: 1500px;
+            background-color: lime;
+        }
+        .b{
+            background-color: tan;
+            flex-grow:2;
+        }
+        .c{
+            width: 1450px;
+            background-color: blue;
+        }
+
+    </style>
+</head>
+<body>
+        <div class="flex">
+                <div class="a">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias quas veniam amet labore pariatur debitis reiciendis culpa iure vero, repellendus repudiandae, odio dignissimos tempora harum mollitia voluptatibus, id voluptatum error.
+                </div>
+                <div class="b">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis quam praesentium vero autem dignissimos! Quisquam suscipit autem enim esse accusantium modi reiciendis assumenda, unde, ullam nihil animi deserunt sunt maiores?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt exercitationem accusamus eius unde eveniet fuga non in, saepe rem doloremque harum dolore aperiam blanditiis praesentium, soluta eaque illum! Ducimus, maxime?
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim possimus quae hic consectetur. Sequi illo impedit maiores explicabo, laboriosam dignissimos ex aliquid reprehenderit accusantium modi nostrum quia, debitis quos. Natus!
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto at nisi itaque quae quis sint ullam alias dolorem reprehenderit adipisci facere, ipsum? Laboriosam cum rerum eligendi ab, in dolorem nesciunt.
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo alias quam quasi? Minima ratione adipisci sint aliquam, mollitia cumque fugiat distinctio rem odit minus sed animi nihil debitis laborum consequuntur.
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate soluta vel cupiditate saepe laboriosam ea totam, et aperiam eveniet facilis. Debitis temporibus qui exercitationem voluptas, natus ad laborum veniam ea?
+
+              </div>
+                <div class="c">
+                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias quas veniam amet labore pariatur debitis reiciendis culpa iure vero, repellendus repudiandae, odio dignissimos tempora harum mollitia voluptatibus, id voluptatum error.
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Liber
+          
+                </div>
+             </div>
+</body>
+</html>

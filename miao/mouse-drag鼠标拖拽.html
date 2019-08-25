@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        /* #box{
+            height: 100%;
+            width: 100%;
+        } */
+
+        #box1 {
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            background-color: lime;
+            border: 1px solid;
+            top: 300px;
+            left: 200px;
+            z-index: 0;
+        }
+
+        #box2 {
+            position: absolute;
+            height: 300px;
+            width: 300px;
+            background-color: lightsalmon;
+            border: 1px solid;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1">1</div>
+    <span id="box2">2</span>
+
+    <script>
+        var dragging;
+        var tLeft, tTop;
+        document.body.addEventListener("mousedown", function (event) {
+            // console.log(event.button)
+            if (event.target.tagName == "DIV") {
+                var maxZ = 1;
+                var box = event.target;
+                box.style.zIndex = maxZ + 1;
+                maxZ++;
+                console.log(box.style.zIndex);
+                addEventListener("mousemove", function moved(event) {
+                    if (event.target.nodeName !== box.tagName) {
+                        window.removeEventListener('mousemove', moved);//解绑
+                        return
+                    }
+                    if (event.which == 1) {
+                        box.style.top = (event.pageY - 100) + "px";
+                        box.style.left = (event.pageX - 100) + "px";
+                    }
+                    event.preventDefault();
+
+                });
+            }
+            if (event.target.tagName == "SPAN") {
+                var maxZ = 1;
+                var span = event.target;
+                span.style.zIndex= maxZ + 1;
+                maxZ++;
+                console.log(span.style.zIndex);
+                document.addEventListener("mousemove", function f(event) {
+                    if (event.target.nodeName !== "SPAN") {
+                        window.removeEventListener('mousemove', f);//解绑
+                        return
+                    }
+                    if (event.which == 1) {
+                        // console.log(event.pageX);
+                        span.style.top = (event.pageY - 150) + "px";
+                        span.style.left = (event.pageX - 150) + "px";
+                    }
+                    event.preventDefault();
+                })
+            }
+            
+        })
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

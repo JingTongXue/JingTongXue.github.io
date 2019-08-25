@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .slider {
+            width: 800px;
+            height: 350px;
+            border: 5px solid;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .imgs {
+            width: 800px;
+            height: 100%;
+            position: relative;
+        }
+
+        .imgs img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            
+        }
+
+        .pre {
+            position: absolute;
+            left: -800px;
+            z-index: 999;
+            
+        }
+
+        .active {
+            position: absolute;
+            z-index: 100;
+            transition: 1.5s;
+
+        }
+
+        .next {
+            position: absolute;
+            left: 800px;
+            z-index: 999;
+            
+        }
+
+        .indicators {
+            position: absolute;
+            left: 38%;
+            top: 80%;
+            z-index: 1000;
+        }
+
+        .indicators li {
+            display: inline-block;
+            border: 1px solid rgb(102, 102, 102);
+            background-color: rgb(224, 224, 224);
+            border-radius: 100%;
+            width: 12px;
+            height: 12px;
+            margin: 3px;
+        }
+
+        .left {
+            top: 135px;
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            background-position: 81px;
+            position: absolute;
+            width: 41px;
+            height: 69px;
+            z-index: 2000;
+        }
+
+        .left:hover {
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+        }
+
+        .right {
+            top: 135px;
+            left: 760px;
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            background-position: 42px;
+            position: absolute;
+            width: 41px;
+            height: 69px;
+            z-index: 2000;
+        }
+
+        .right:hover {
+            background: url(https://i1.mifile.cn/f/i/2014/cn/icon/icon-slides.png);
+            background-position: -41px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slider">
+        <div class="imgs">
+            <img class="img one active" src="https://i1.mifile.cn/a4/xmad_15593146429349_krIKn.jpg" alt="">
+            <img class="img two next" src="https://i1.mifile.cn/a4/xmad_15593213929997_SIWOC.jpg" alt="">
+            <img class="img three" src="https://i1.mifile.cn/a4/xmad_15593222329545_TSIOe.jpg" alt="">
+            <img class="img four" src="https://i1.mifile.cn/a4/xmad_15592693810399_VSdAC.jpg" alt="">
+            <img class="img five pre" src="https://i1.mifile.cn/a4/xmad_15593143785816_iOTuH.jpg" alt="">
+        </div>
+        <ul class="indicators">
+            <li class="li"></li>
+            <li class="li"></li>
+            <li class="li"></li>
+            <li class="li"></li>
+            <li class="li"></li>
+        </ul>
+        <div class="left">
+            <label class="L1"></label>
+        </div>
+        <div class="right">
+            <label class="R1"></label>
+        </div>
+    </div>
+
+
+
+    <script>
+        var lis = document.querySelectorAll(".li");
+        var left = document.querySelector(".left");
+        var right = document.querySelector(".right");
+        var imgs = document.querySelectorAll(".img");
+        var pre = document.querySelectorAll(".pre");
+        var active = document.querySelectorAll(".active");
+        var next = document.querySelectorAll(".next");
+        img = Array.from(imgs);
+        pr = Array.from(pre);
+        ac = Array.from(active);
+        ne = Array.from(next);
+        var indexP, indexA, indexN;
+
+        left.addEventListener("mouseup", function () {
+            var imgs = document.querySelectorAll(".img");
+            var active = document.querySelectorAll(".active");
+            var next = document.querySelectorAll(".next");
+            var pre = document.querySelectorAll(".pre");
+            ac = Array.from(active);
+            ne = Array.from(next);
+            pr = Array.from(pre);
+            img = Array.from(imgs);
+            indexP = img.indexOf(pre[0]);//现在next元素的下标
+            indexN = img.indexOf(next[0]);
+            imgs[indexN].classList = "img";
+            var n = indexN - 1;
+            if(n < 0){
+                n = imgs.length - 1;
+            }
+            if(indexP == -1){
+                indexP = imgs.length - 1;
+            }
+            var p = indexP - 1;
+            if(p < 0){
+                p = imgs.length - 1;
+            }
+            imgs[p].classList = "img pre";
+            imgs[indexP].classList = "img active";
+            imgs[n].style.zIndex = imgs[n].style.zIndex - 1;
+            imgs[n].classList = "img next"
+
+        })
+
+        right.addEventListener("mouseup", function () {
+            var imgs = document.querySelectorAll(".img");
+            var next = document.querySelectorAll(".next");
+            img = Array.from(imgs);
+            indexN = img.indexOf(next[0]);//现在next元素的下标
+            var p = indexN - 1;
+            var n = indexN + 1;
+            if (p < 0) {
+                p = imgs.length - 1;
+            } else {
+                p = indexN - 1;
+            }
+            if (n > imgs.length - 1) {
+                n = 0;
+            } else {
+                n = indexN + 1;
+            }
+            imgs[p].style.zIndex = imgs[p].style.zIndex - 2;
+            imgs[p].classList = "img pre";
+            imgs[indexN].classList = "img active";
+            imgs[n].classList = "img next"
+        })
+
+
+    </script>
+</body>
+
+</html>

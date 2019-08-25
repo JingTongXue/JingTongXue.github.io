@@ -25,10 +25,17 @@
             display: none;
             width: 120px;
             height: 20px;
-            /* top: -600px;
-            left: 50px; */
             background-color: aliceblue;
         }
+
+
+        .copyright-tip{
+            background-color: rgba(255,255,255,0.5);
+            padding:10px;
+            border-radius: 5px;
+            position: absolute;
+        }
+
     </style>
 </head>
 
@@ -36,20 +43,62 @@
     <p>
         <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=259058270,2037955824&fm=26&gp=0.jpg" alt="">
     </p>
-    <div class="hint" id="hint">
+    <!-- 方案一 -->
+    <!-- <div class="hint" id="hint">
         <span class="fonts">你好 要图? 掏钱</span>
-    </div>
+    </div> -->
     <script>
+        //方案一
+        // var img = document.querySelector("img");
+        // img.addEventListener("contextmenu", function (event) {
+        //     var hint = document.querySelector("div");
+        //     hint.style.top = (event.pageY - 10) + "px";
+        //     hint.style.left = (event.pageX - 10) + "px";
+        //     hint.style.display = "inline-block";
+        //     event.preventDefault();
+        // });
+
+        //方案二
         var img = document.querySelector("img");
-        
-        
-        img.addEventListener("contextmenu", function (event) {
-            var hint = document.querySelector("div");
-            hint.style.top = (event.pageY - 10) + "px";
-            hint.style.left = (event.pageX - 10) + "px";
-            hint.style.display = "inline-block";
-            event.preventDefault();
-        });
+
+        //左键点击后删除掉span:思路一
+        // window.addEventListener('click',e => {//如果点击事件发生时,点击的不是该span,则删掉span,这样左键点击后也会span也会消失
+        //         if(!e.target.matches('.copyright-tip')){
+        //             var tips = document.querySelectorAll('.copyright-tip');//获取创建的所有span
+        //         for(var t of tips){
+        //             t.parentElement.removeChild(t);//将他们删除掉
+        //         } 
+        //     }
+        // })
+
+
+        img.addEventListener("contextmenu",function(event){
+            var tips = document.querySelectorAll('.copyright-tip');//获取创建的所有span
+            for(var t of tips){
+                t.parentElement.removeChild(t);//将他们删除掉
+            }
+            event.preventDefault();//阻止默认行为
+            //再新建
+            var tip = document.createElement('span');//新建一个span
+            tip.classList.add('copyright-tip');//class赋值为copyright- tip
+            //赋予span一些属性值
+            tip.textContent = 'copyright' + 'username';
+            tip.style.top = event.pageY + "px";
+            tip.style.left = event.pageX + "px"; 
+
+
+            //思路二
+            tip.tabIndex = "-1";
+            tip.addEventListener('blur',e => {
+                document.body.removeChild(tip)
+            })
+
+            document.body.appendChild(tip);//将该span放到页面中
+            tip.focus();
+        })
+
+
+
 
     </script>
 </body>

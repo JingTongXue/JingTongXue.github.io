@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+    * {
+      background-color: rgba(0,0,0,0.08);
+    }
+
+    .autocompletion {
+      position: relative;
+      border: 1px solid;
+    }
+
+    .suggest {
+      position: absolute;
+      margin: 0;
+      top: 100%;
+      width: 200px;
+      height: 200px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="autocompletion">
+    <input type="text">
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+  <script>
+
+    class AutoCompletionInput {
+      constructor(node) {
+        this.$el = $(node)
+        this.$input = $(node).find('input');//站到node中的input标签
+        this.$suggest = $('<ul class="suggest"></ul>').appendTo(node);//把ul添加到node集合中,返回ul
+
+        this.showTime = 0
+        this.initEvent()
+      }
+
+      initEvent() {
+        this.$input.on('input', (e) => {//当input触发了'input'事件后(即发生改变后)
+          var inputStr = this.$input.val();//val:获取input当前的值
+
+          if (inputStr) {//如果当前值不为空
+            var time = Date.now();//返回自1970年1月1日 00:00:00 UTC到当前时间的毫秒数
+            getSuggestion(inputStr, suggestions => {
+              if (time > this.showTime) {
+                this.showTime = time
+
+                //items:获取的当前值跑一遍给定的程序后再返回
+                var items = $(suggestions).map((idx, suggest) => {
+                  return $(`<li><a>${suggest}</a></li>`)[0]
+                })
+                this.$suggest.empty().append(items).show();
+                //empty():删除ul里的所有子节点删除   
+                //append():再将items添加到ul里
+                //show():最后将ul显示出来
+              }
+            })
+          } else {//如果当前值为空
+            this.$suggest.empty().hide();
+            //hide():隐藏ul
+          }
+
+        }).blur((e) => {//当input触发blur事件后(失去焦点后)
+          if (!this.$suggest.is(':hover')) {//如果ul也失去焦点
+            this.$suggest.hide();//则ul隐藏(即消失)
+          }
+        }).focus((e) => {//当input触发focus时(获取焦点时)
+          if (this.$input.val()) {//如果input的值不为空
+            this.$suggest.show();//则显示ul
+          }
+        })
+
+        this.$suggest.on('click', 'li a', (e) => {//当ul里的a标签触发了click事件(被点击后):
+          var suggest = e.target.textContent;//a标签的值
+          this.$input.val(suggest);//将a标签的值赋给input
+        })
+      }
+    }
+
+    new AutoCompletionInput(document.querySelector('.autocompletion'));
+
+    // $.fn.autoCompletion = function (params) {
+    //   // 'this' points to jQuery object
+
+
+    //   return this
+    // }
+
+    // $('.autocompletion').autoCompletion()
+
+    function getSuggestion(str, callback) {//给定的程序
+      var suggestions = new Array(10).fill(0).map((_, idx) => idx).map(it => str + it)
+
+      setTimeout(() => {
+        callback(suggestions)
+      }, 500 + 500 * Math.random())
+    }
+
+  </script>
+</body>
+</html>

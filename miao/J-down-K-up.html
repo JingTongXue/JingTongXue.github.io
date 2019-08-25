@@ -284,37 +284,79 @@
             } //现在可以使用let了 for (let i=0; i < 5; i++) { arr[i]=function () { alert(i); } } 三、使用const声明变量
             合格关键字和let一样也是E6标准提出的，使用const声明变量和let几乎差不多，只不过是对于定义的值只能切必须进行一次初始化。一般声明为const的变量的变量名都要大写。
             console.log(CONST);//和let一样也是有‘暂存死区’的存在 const CONST=100; //CONST=12;//不能为定义const的变量修改值 //var
-            CONST=20;//不能命名重复发生冲突 </div> <script>
+            CONST=20;//不能命名重复发生冲突 
+        </div>
+            <script>
                 var div = document.querySelector("div");
-                
-                addEventListener("keydown", function (event) {
+                //方法一:
+                // addEventListener("keydown", function (event) {
+                //     if (event.keyCode == 74) {//J 向下
+                //         requestAnimationFrame(scrollDown);
+                //     }
+                //     if (event.keyCode == 75) {//K 向上
+                //         requestAnimationFrame(scrollUp);
+                //     }
+                // })
+                // function scrollUp(time,start){
+                //     if(start == null){
+                //         start = time;
+                //     }
+                //     window.scrollUp(0,-10);
+                //     if(time - start < 200){
+                //         requestAnimationFrame(time => scrollUp(time,start));
+                //     }
+                // }
+
+                // function scrollDown(time,start){
+                //     if(start == null){
+                //         start = time;
+                //     }
+                //     window.scrollDown(0,-10);
+                //     if(time - start < 200){
+                //         requestAnimationFrame(time => scrollDown(time,start));
+                //     }
+                // }
+               //方法二:
+                document.addEventListener("keyup", function (event) {
                     if (event.keyCode == 74) {//J 向下
-                        requestAnimationFrame(scrollDown);
+                        // requestAnimationFrame(scrollDown);
+                        // window.scrollBy(0,100);
+                        console.log(event);
+                        smoothScrollBy(window,100,1000);
                     }
                     if (event.keyCode == 75) {//K 向上
-                        requestAnimationFrame(scrollUp);
+                        // requestAnimationFrame(scrollUp);
+                        // window.scrollBy(0,-100);
+                        console.log(event);
+                        smoothScrollBy(window,-100,1000);
                     }
                 })
-                function scrollUp(time,start){
-                    if(start == null){
-                        start = time;
-                    }
-                    window.scrollUp(0,-10);
-                    if(time - start < 200){
-                        requestAnimationFrame(time => scrollUp(time,start));
-                    }
+
+                //用duration的时间让window垂直滚动pixel像素
+                function smoothScrollBy(window,pixel,duration){
+                    // debugger;
+                    var startTime = null;
+                    var lastTime = null;
+                    requestAnimationFrame(function a(time){
+                        if(startTime == null){//赋予开始时间
+                            startTime = time;
+                        }
+
+                        if(lastTime != null){
+                            var timeDiff = time - lastTime;//本次调用跟上次调用的时间间隔
+                        }
+                        lastTime = time;
+                        var timeRatio = timeDiff / duration;//时间间隔与总时间的比例
+                        var pixelRation = timeRatio * pixel;//根据时间比例算出每次移动的距离
+
+                        window.scrollBy(0,pixelRation);//相对于当前位置滚动pixelRation距离
+                        if(time - startTime < duration){//如果现在的时间time跟开始时的时间间隔小于给定的时间duration时,才调用requ....
+                            requestAnimationFrame(a);
+                        }
+
+                    })
                 }
 
-                function scrollDown(time,start){
-                    if(start == null){
-                        start = time;
-                    }
-                    window.scrollUp(0,-10);
-                    if(time - start < 200){
-                        requestAnimationFrame(time => scrollDown(time,start));
-                    }
-                }
-               
 
             </script>
 </body>

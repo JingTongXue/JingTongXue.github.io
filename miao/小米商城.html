@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>小米商城</title>
+	<style>
+		ul{
+			font-size: 24px;
+			padding: 0;
+			list-style: none;
+			position: absolute; 
+			/*background-color: rgb(188,188,187);*/
+		}
+		li:hover {
+			background-color: pink; 
+
+		}
+
+		ul.menu > li {
+			float: left;
+			padding: 0px 20px;
+		}
+		
+		ul.menu > li > ul {
+			top: 100%;
+			left: 0;
+		}
+		ul.menu > li > ul:before{
+			display: none; 
+		}
+
+		ul li{
+			padding-right: 25px;
+			position: relative;
+			white-space: nowrap;  /*内容不可以折行*/
+		}
+		li:hover > ul > li {
+			
+			opacity: 1;
+			pointer-events: auto;/*鼠标看的见它（控制鼠标的与其交互）*/
+			/*visibility: visible;*/
+		}
+        
+        ul ul::before {
+			content: '>';
+			position: absolute;
+			left:  -1em;
+        }
+
+        ul ul li{
+        	/*display: none;
+        	border: 5px solid transparent;
+        	background-clip: padding-box;*/
+        	opacity: 0;
+        	transition: opacity .6s;
+        	/*pointer-events: none; 鼠标看不见它*/
+        	/*visibility: hidden;*/
+        }
+
+		ul ul{
+			/*display: none;*/
+			pointer-events: none; /*鼠标看不见它*/
+			position: absolute;
+			top: 0;
+			left: 100%
+		}
+
+
+
+	</style>
+
+</head>
+<body>
+	<ul class="menu">
+		<li>文件
+			<ul>
+				<li>打开</li>
+				<li>保存
+					<ul>
+						<li>aaa</li>
+						<li>bbb</li>
+
+					</ul>
+				</li>
+				<li>另存为</li>
+				<li>新建</li>
+			</ul>
+		</li>
+		<li>编辑
+			<ul>
+				<li>编写</li>
+				<li>输入
+					<ul>
+						<li>fuck</li>
+						<li>bbb</li>
+
+					</ul>
+				</li>
+				<li>文档</li>
+			</ul>
+		</li>
+		<li>查找
+			<ul>
+				<li>回顾
+					<ul>
+						<li>fuck</li>
+						<li>bbb</li>
+
+					</ul>
+				</li>
+				<li>录入
+					<ul>
+						<li>fuck</li>
+						<li>bbb</li>
+
+					</ul>
+				</li>
+				<li>文档</li>
+			</ul>
+		</li>
+		<li>选择
+			<ul>
+				<li>回顾
+					<ul>
+						<li>fuck</li>
+						<li>bbb</li>
+
+					</ul>
+				</li>
+				<li>录入
+					<ul>
+						<li>fuck</li>
+						<li>bbb</li>
+
+					</ul>
+				</li>
+				<li>文档</li>
+			</ul>
+		</li>
+
+	</ul>
+</body>
+</html>

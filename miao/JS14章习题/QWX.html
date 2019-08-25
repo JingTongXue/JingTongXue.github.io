@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text">
+
+  <script>
+    
+    var input = document.querySelector('input')
+
+    // input.addEventListener('keypress', e => {
+    //   if (e.key == 'Q' || e.key == 'W' || e.key == 'X') {
+    //     e.preventDefault()
+    //   }
+    // })
+
+    // input.addEventListener('paste', e => {
+    //   console.log(e)
+    //   var pasted = e.clipboardData.getData('text/plain')
+
+    //   pasted = pasted.replace(/[QWX]/g, '*')
+
+    //   var from = input.selectionStart
+    //   var to = input.selectionEnd
+
+    //   input.value = input.value.slice(0, from) + pasted + input.value.slice(to)
+    //   input.selectionStart = input.selectionEnd = from + pasted.length
+
+    //   e.preventDefault()
+    // })
+
+    // input.addEventListener('drop', e => {
+    //   console.log(e)
+    //   console.log(e.dataTransfer.getData('text/plain'))
+    //   console.log(input.selectionStart, input.selectionEnd)
+    //   e.preventDefault()
+    // })
+
+    input.addEventListener('input', e => {
+
+      input.value = input.value.replace(/[QWX]/g, '*')
+
+      // if (e.data != ' ' && e.data != null) {
+      //   var str = e.data
+
+      //   var from = input.selectionStart
+
+      //   input.value = input.value.slice(0, from - str.length) + input.value.slice(from)
+      //   input.selectionStart = input.selectionEnd = from - str.length
+
+      //   str = str.replace(/[QWX]/g, '*')
+
+      //   var from = input.selectionStart
+      //   var to = input.selectionEnd
+
+      //   input.value = input.value.slice(0, from) + str + input.value.slice(to)
+      //   input.selectionStart = input.selectionEnd = from + str.length
+
+      // }
+    })
+
+    var valueDescriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(input), 'value')
+
+    Object.defineProperty(input, 'value', {
+      get: function() {
+        return valueDescriptor.get.call(this)
+      },
+      set: function(val) {
+        val = val.replace(/[QWX]/g, '*')
+        valueDescriptor.set.call(this, val)
+      }
+    })
+
+  </script>
+</body>
+</html>

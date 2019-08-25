@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>块级元素作业</title>
+ <style>
+ 	/*头部*/
+ 	header{
+ 		background-color: black;  /*头部背景颜色*/
+ 		
+ 	}
+ 	header p{
+ 		color: white;  /*字体颜色*/
+ 		margin: auto;  /*居中*/
+ 		width: 600px;  /*宽度*/
+ 	}
+    
+    /*主体样式*/
+    main {
+ 		width: 600px;
+ 		margin: 15px auto; 	/*上下边距15px,左右居中*/
+ 	}
+ 	main.abc div{
+ 		width: 180px;
+ 		height: 40px;
+ 		background-color: pink;
+ 		border: 3px solid black;  /*边框样式*/
+ 		margin-bottom: 15px;  /*各个div的下边距*/
+ 		text-align: center;   /*水平居中*/
+ 		line-height: 34px;    
+ 	}
+
+ 	main.abc div:nth-child(n+5){
+ 		margin-left: 210px;  /*左边距*/
+ 		/*margin-top: -60px;*/  /*上边距*/
+ 	}
+ 	main.abc div:nth-child(n+9){
+ 		margin-left: 420px;
+ 		/*margin-top: -60px;*/
+ 	}
+ 	main.abc div:nth-child(4n+5){  /*第5个到第9个*/
+ 		margin-top: -241px;
+ 	}
+
+ 	main.abc div:hover{
+ 		background-color: red;
+ 	}
+
+
+ 	section{
+ 		width:600px;
+ 		margin:15px auto;
+ 	}
+
+
+ 	.ok ul{
+ 		padding: 0; 
+ 		width: 600px; 
+ 		margin: auto;
+ 	}
+
+ 	.ok ul li{
+ 		list-style-type: none; /*设置列表前的标记（无标记）*/
+ 		margin: 0;
+ 		border-bottom: 1px dotted; /*设置底边框样式*/
+ 	}
+
+ 	.ok ul li:last-child{
+ 		border:none;
+ 	}
+    
+
+
+
+    /*尾部样式*/
+    footer{
+    	background-color: #ee82ee;
+    	margin-top: 16px;
+
+    }
+    footer p{
+    	/*padding: 0;*/
+    	margin: 0;
+    	text-align: center;
+    }
+ </style>
+
+</head>
+
+<body>
+   <header>
+   	<p>hello world 请调整浏览器窗口大小查看效果</p>
+   </header>	
+       
+       	  <section>
+       	  	  页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600
+       	  </section>
+       	  
+
+        
+        
+       	<main class="abc">
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  <div>宽180高40(包含边框)</div>
+       	  
+       	  
+		</main>
+
+       	  <div class="ok">
+       	  	<ul>
+       	  		<li>ok</li>
+       	  		<li>ok</li>
+       	  		<li>ok</li>
+       	  		<li>ok</li>
+       	  		<li>ok</li>
+       	  	</ul>
+       	  </div>
+
+
+
+     
+
+
+       <footer>
+       		<p>&copy; 版权所有</p>
+       		<p>块级元素作业</p>
+       </footer>
+</body>
+</html>

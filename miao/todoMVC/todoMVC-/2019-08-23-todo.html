@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>todo</title>
+  <link rel="stylesheet" href="G:/qianduan/font-awesome-4.7.0/css/font-awesome.css">
+  <style>
+    html {
+      box-sizing: border-box;
+      font-size: 24px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: rgb(245, 245, 245);
+      width: 550px;
+      margin: 0 auto;
+    }
+
+    ul,
+    li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-weight: 100;
+      color: #a004;
+      font-size: 4em;
+      margin: 10px 0;
+      text-align: center;
+    }
+
+    #todo-container {
+      font-size: 24px;
+      box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+      height: 60px;
+      background-color: #fff;
+      display: flex;
+      border-bottom: 1px solid#ddd;
+    }
+
+    input {
+      font-size: 24px;
+      font-weight: 200;
+      height: 100%;
+      border: none;
+      outline: none;
+      flex: 1;
+    }
+
+    input:focus {
+      color: black;
+    }
+
+    /* #container {
+    } */
+    .item {
+      line-height: 2.5;
+      font-weight: 100;
+      border-bottom: 1px solid #ddd;
+      background-color: #fff;
+    }
+
+    .symbol,
+    .del {
+      font-size: 1.5;
+      line-height: 60px;
+      margin: 0 20px;
+    }
+
+    .symbol {
+      float: left;
+      color: #aaa;
+    }
+
+    .del {
+      float: right;
+      display: none;
+      color: #f005;
+    }
+
+    .item:hover .del {
+      display: block;
+    }
+
+    .done {
+      color: #ccc;
+    }
+
+    .done .symbol {
+      color: lightgreen;
+    }
+
+    .done .text {
+      text-decoration: line-through;
+    }
+
+    #footer {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      font-weight: 100;
+      font-size: 14px;
+      height: 40px;
+      color: #aaa;
+      line-height: 40px;
+      display: none;
+      justify-content: space-between;
+    }
+    #footer > div {
+      margin: 0 20px;
+    }
+
+    #middle span {
+      border: 1px solid #f000;
+      padding: 3px 6px;
+      border-radius: 3px;
+      margin: 5px;
+    }
+
+    #middle span:hover {
+      border-color: #f002;
+      cursor: pointer;
+    }
+    #clear:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>todos</h1>
+  <div id="todo-container">
+    <label id="completeAll" for="todo" class="symbol fa fa-angle-down"></label>
+    <input type="text" name="todo" id="todo" placeholder="What needs to be done?">
+  </div>
+  <ul id="container"></ul>
+  <div id="footer">
+    <div id="remain">1 item left</div>
+    <div id="middle">
+      <span id="all">All</span>
+      <span id="active">Active</span>
+      <span id="completed">Complete</span>
+    </div>
+    <div id="clear">Clear completed</div>
+  </div>
+
+  <script src="2018-08-23.todo.js"></script>
+</body>
+
+</html>

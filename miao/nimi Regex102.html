@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mini Regex101</title>
+    <style>
+        em {
+            background-color: lightgreen;
+        }    
+        em:empty{
+            min-width: 1px;
+            display: inline-block;
+            height: 1.1em;
+            border:1px solid lightgreen;/*空位置的颜色显示*/
+        }
+    
+    </style>
+</head>
+<body>
+    <input type="text" id="regexp" onkeyup="process()">
+    <textarea  id="string" cols="30" rows="10" onkeyup="process()"></textarea>
+    <pre id="result"></pre>
+    <script>
+        
+
+        function matcher(re,str){
+            var result = '';
+            var lastIndex = re.lastIndex;
+            var match;
+            while(match = re.exec(str)){
+                result += str.slice(lastIndex ,match.index);//获取上一个匹配到的字符串的末尾索引(第一次即为0),和本次匹配到的字符串的开始索引
+
+                lastIndex = re.lastIndex;//将上一次匹配到的字符串的末尾索引赋值给last,作为下次循环的开始索引
+
+                //因为exec()方法匹配到零宽字符时,lastIndex就不会发生变化了
+                if(match[0].length == 0){//所以当匹配的字符串长度为0时(即碰到零宽字符后多得字符串的宽度就为零了)
+                    re.lastIndex++;
+                }
+
+                result += '<em>' + match[0] + '</em>'//再将匹配到的字符串添加到result中,并用em包围
+            }
+            result += str.slice(lastIndex);//如果给定的字符串后面还有其他字符,也一并添加到result,之后一并return即可
+            return result;
+        }
+
+        var regexpInput = document.getElementById('regexp');
+        var stringInput = document.getElementById('string');
+        var result = document.getElementById('result');
+
+        function process(){
+            try{
+                if(regexpInput.value.length == 0){
+                    return null;
+                }else{
+                    var re = new RegExp(regexpInput.value,'g');
+
+                }
+            } catch(e){
+                if(e instanceof SyntaxError){
+                    result.innerHTML = e.message;
+                    return;
+                }else{
+                    throw e;
+                }
+            }
+            var str = stringInput.value;
+            var match = matcher(re,str);
+            result.innerHTML = match;
+        }
+    </script>   
+</body>
+</html>

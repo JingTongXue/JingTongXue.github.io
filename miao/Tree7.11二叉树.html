@@ -1,0 +1,166 @@
+<script>
+	//7月11日
+	//数组转二叉树
+	//将根节点在数组rootPos位置的一个由数组表达的二叉树
+	//转换为一颗由二叉链表达的数
+	//化简前
+	function ary2tree(ary,rootPos = 0){
+		if(rootPos >= ary.length){
+			return null;
+		}
+		var left = ary2tree(ary,rootPos * 2 + 1);
+		var right = ary2tree(ary,rootPos * 2 + 2);
+		var root = {
+			val:ary[rootPos],
+			left:left,
+			right:right,
+		}
+		return root;
+	}
+	//化简后
+	function ary2tree(ary,rootPos = 0){
+		if(rootPos >= ary.length || ary[rootPos] == null){
+			return null;
+		}
+		return  {
+			val:ary[rootPos],
+			left:ary2tree(ary,rootPos * 2 + 1),
+			right:ary2tree(ary,rootPos * 2 + 2),
+		}
+	}
+	//二叉树转数组
+	//将由二叉链表达的树放回数组
+	//根节点放在pos位置  将每个节点放到array数组中,因为递归传的还是array,所以始终在一个array上操作
+	function tree2ary(root,pos = 0,array = []){
+		if(root){
+			array[pos] = root.val;
+			tree2ary(root.left,pos * 2 + 1,array);
+			tree2ary(root.right,pos * 2 + 2,array);
+		}
+		return array;
+	}
+
+	//
+	function lcary2tree(ary){
+		if(ary.length == 0){
+			return null;
+		}
+		var root  = {
+			val:ary[0],
+			left:null,
+			right:null,
+		}
+		for(var i = 1;i <ary.length;i++){
+			root.left = {
+				val:ary[i],
+				
+			}
+		}
+
+	}
+</script>
+<script>
+	//7月12早                          
+	//前序二叉树
+	function preOrderTraverse(root,action){
+		if(root){
+			action(root.val);
+			preOrderTraverse(root.left,action);
+			preOrderTraverse(root.right,action);
+		}
+	}
+	
+	//中序二叉树
+	function inOrderTraverse(root,action){
+		if(root){
+			inOrderTraverse(root.left,action);
+			action(root.val);
+			inOrderTraverse(root.right,action);
+		}
+	}
+	//后序二叉树
+	function postOrderTraverse(root,action){
+		if(root){
+			postOrderTraverse(root.left,action);
+			postOrderTraverse(root.right,action) ;
+			action(root.val);
+		}
+	}
+
+
+
+	//下  排序二叉树
+	//全国程序员不到40%特别得6666666能写这个
+	//leetcode.701题
+	function insertIntoBST(root,val){
+		if(!root){
+			return new TreeNode(val);
+		}
+		if(val < root.val){
+			root.left = insertIntoBST(root.left,val);
+		}else{
+			root.right = insertIntoBST(root.right,val);
+		}
+		return root;
+	}
+
+    //average time:O(n * log(n))
+	//worst time:O(n * n)
+	//space:O(n);
+	//把一个数组放到排序二叉树中,再通过中序遍历出来,即变成有序数组
+	function bsrSort(ary){
+		var root = null;
+		for(var i = 0;i < ary.length;i++){
+			root = insertIntoBST(root,ary[i]);
+		}
+		var k = 0;
+		inOrderTraverse(root,val=>{
+			ary[k++] = val;
+		})
+		return ary;
+	}
+
+	function swap(ary,i,j){
+		var t = ary[i];
+		ary[i] = ary[j];
+		ary[j] = t;
+	}
+	//选择排序
+	//time:O(n*n) space: P(1)
+	function selectSort(ary){
+		for(var i = 0;i <= ary.length - 2;i++){
+			for(var j = i + 1;j < ary.length;j++){
+				if(ary[i] > ary[j]){
+					swap(ary,i,j);
+				}
+			}
+		}
+			return ary;
+	}	
+
+	//插入排序
+
+
+</script>
+<script>
+	//插入排序
+	for(var i = 1;i < ary.length;i++){
+		for(var j = i - 1;j >= 0&& ary[j] >ary[j+1];j--){
+			swap(ary,j,j+1);
+		}
+	}
+	//选择排序
+	 for(var i = 0;i < ary.length;i++){
+		 var minIndex = i;
+		 for(var j  = i + 1;j < ary.length;j++){
+			minIndex = ary[j] < ary[minIndex] ? j : minIndex;
+		 }
+		 swap(ary,i,minIndex); 
+	 }
+
+	 function TreeNode(val) {
+       this.val = val;
+       this.left = this.right = null;
+   }
+
+</script>
