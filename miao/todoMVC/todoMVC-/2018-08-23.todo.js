@@ -1,8 +1,8 @@
 
 //add item
-todo.addEventListener("keydown", e => {
-  if (e.keyCode == 13 && todo.value != "") {
-    addItem(todo.value);
+todo.addEventListener("keydown", e => {//当触发按键按下事件时
+  if (e.keyCode == 13 && todo.value != "") {//当按键按下回车键并且input内容不为空时
+    addItem(todo.value);//调用添加函数,将input的内容传给该函数
     todo.value = "";
   }
   updateRemain();
@@ -19,7 +19,7 @@ completeAll.addEventListener("click", e => {
     item.classList.add("done");
   }
 });
-//
+
 
 // toggle item status && delete
 container.addEventListener("click", e => {
@@ -64,15 +64,18 @@ window.addEventListener("click", () => {
 
 
 function addItem(str) {
+  //新建HTML标签
   let item = document.createElement("li");
   let symbol = document.createElement("span");
   let text = document.createElement("span");
   let del = document.createElement("span");
-
+  //对其赋予class名
   item.classList.add("item");
   symbol.classList.add("symbol", "fa", "fa-circle-thin");
   text.classList.add("text");
   del.classList.add("del", "fa", "fa-remove");
+
+  //将提交的input内容添加到新建的text中
   text.textContent = str;
 
   item.append(symbol, text, del);

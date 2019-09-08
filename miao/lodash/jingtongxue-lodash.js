@@ -354,7 +354,7 @@ var jingtongxue = {
     return len == 0? undefined : array[0];
   },
   indexOf :function(array,value,fromIndex = 0){
-    if(value == NaN){
+    if(jingtongxue.isNaN(value)){
       for(var i = 0;i < array.length;i++){
         if(isNaN(array[i])){
           return i;
@@ -368,6 +368,11 @@ var jingtongxue = {
       }
     }
     return -1
+    },
+    initial :function(array){
+      // array.pop();
+      // return array;
+      return array.slice(0,array.length - 1);
     },
     isNaN :function(value){
       return jingtongxue.isNumber(value) && +value !== value;
@@ -408,11 +413,7 @@ var jingtongxue = {
     isUndefined :function(value){
       return Object.prototype.toString.call(value) == "[object Undefined]";
     },
-    initial :function(array){
-      // array.pop();
-      // return array;
-      return array.slice(0,array.length - 1);
-    },
+    
     reverse :function(array){
       var ary = [];
       for(var i = array.length - 1;i >= 0;i--){
@@ -447,6 +448,12 @@ var jingtongxue = {
         }
       }
       return str;
+    },
+    last:function(array){
+      return array[array.length - 1];
+    },
+    lastIndexOf:function(array,value,){
+
     }
   
 

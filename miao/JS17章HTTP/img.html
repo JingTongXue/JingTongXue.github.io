@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>下载图片</title>
+    <style>
+    html,body{
+        height: 100%;
+        width: 100%;
+    }
+    .img{
+        height: 100%;
+        width: 100%;
+        /* background-color: black; */
+        /* display: flex; */
+    }
+    
+    </style>
+</head>
+<body>
+    <div>
+        <button>下载</button>
+    </div>
+    <div class="img">
+
+
+    </div>
+    
+
+    <script>
+        var button = document.querySelector('button');
+        var divImg = document.querySelector('.img');
+        
+        button.addEventListener('click',function(){
+            var req = new XMLHttpRequest();
+            req.open("GET","http://xieranmaya.github.io/images/cats/cats.json?tdsourcetag=s_pcqq_aiomsg",true);
+            console.log("123")
+            req.addEventListener('load',function(){
+                console.log(req.responseText);
+                var imgs = JSON.parse(req.responseText);
+                console.log(imgs);
+                for(var i = 0;i < imgs.length;i++){
+                    var img = document.createElement("img");
+                    img.src = "http://xieranmaya.github.io/images/cats/" + imgs[i].url;
+                    img.style.height = imgs[i].height + "px";
+                    img.style.width = imgs[i].width + "px";
+                    divImg.appendChild(img);
+                }
+
+            })
+            req.send(null);
+        })
+    
+    </script>
+
+</body>
+</html>

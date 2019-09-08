@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .completed span {
+      text-decoration: line-through;
+    }
+    /* body {
+      counter-reset: count;
+    }
+    ul > li:not(.completed) {
+      counter-increment: count;
+    }
+
+    #count::before {
+      content: counter(count);
+    } */
+    ul[data-show="all"] {
+
+    }
+    ul[data-show="active"] li.completed {
+      display: none;
+    }
+    ul[data-show="completed"] li:not(.completed) {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div>
+      <input type="checkbox" id="select-all">
+      <input type="text" id="todo-input">
+    </div>
+    <div>
+      <ul id="todo-list" data-show="all"></ul>
+    </div>
+    <div>
+      <span><span id="count"></span> items left</span>
+      <span>
+        <label><input type="radio" onclick="todoList.dataset.show='all'" checked name="category"> All</label>
+        <label><input type="radio" onclick="todoList.dataset.show='active'" name="category"> Active</label>
+        <label><input type="radio" onclick="todoList.dataset.show='completed'" name="category"> Completed</label>
+      </span>
+      <button style="display: none;" id="clear-completed">Clear Completed</button>
+    </div>
+  </div>
+  <script>
+    var selectAll = document.querySelector('#select-all');//输入框前的按钮
+    var todoInput = document.querySelector('#todo-input');//输入框
+    var todoList = document.querySelector('#todo-list');
+    var countSpan = document.querySelector('#count')
+    var clearCompleted = document.querySelector('#clear-completed')
+    
+    var leftCount = {
+      _value: 0,
+      get value() {
+        return this._value
+      },
+      set value(val) {
+        this._value = val
+        countSpan.textContent = this._value
+
+        if (this._value < todoList.children.length) {
+          clearCompleted.style.display = ''
+        } else {
+          clearCompleted.style.display = 'none'
+        }
+      }
+    }
+
+    function isAllChecked(inputs) {
+      return Array.from(inputs).every(it => it.checked)
+    }
+
+    todoInput.addEventListener('keyup', e => {
+      if (e.keyCode != 13) {//如果没有触发回车键,直接返回
+        return
+      }
+
+      var todoContent = todoInput.value.trim();// 取得输入框中的文本,并删除掉两边的空格(利用trim()方法)
+      if (todoContent) {
+        leftCount.value++
+
+        todoInput.value = '';//回车之后将input的内容清空掉
+        selectAll.checked = false
+        var li = document.createElement('li');//新建一个li
+        var check = document.createElement('input');//新建一个input
+        check.type = 'checkbox';
+        check.onchange = function() {
+          if (check.checked) {
+            li.classList.add('completed')
+            leftCount.value--
+
+          } else {
+            leftCount.value++
+            li.classList.remove('completed')
+          }
+
+          if (isAllChecked(document.querySelectorAll('li>input[type="checkbox"]'))) {
+            selectAll.checked = true
+          } else {
+            selectAll.checked = false
+          }
+        }
+        
+        
+        var span = document.createElement('span')
+        span.textContent = todoContent
+        span.ondblclick = function (e) {
+          span.style.display = 'none'
+          editBox.style.display = ''
+          editBox.focus()
+        }
+        
+        
+        var editBox = document.createElement('input')
+        editBox.value = todoContent
+        editBox.style.display = 'none'
+        editBox.onblur = () => {
+          span.textContent = editBox.value
+          editBox.style.display = 'none'
+          span.style.display = ''
+        }
+        
+        
+        var deleteBtn = document.createElement('button')
+        deleteBtn.textContent = 'x'
+        deleteBtn.onclick = function() {
+          if (!li.classList.contains('completed')) {
+            leftCount.value--
+          }
+          li.remove()
+        }
+        
+        li.append(check)
+        li.append(span)
+        li.append(editBox)
+        li.append(deleteBtn)
+
+        todoList.append(li)
+      }
+    })
+
+    selectAll.addEventListener('change', e => {
+      if (selectAll.checked) {
+        document.querySelectorAll('li > input:first-child:not(:checked)').forEach(it => {
+          it.click()
+        })
+      } else {
+        document.querySelectorAll('li > input:first-child:checked').forEach(it => {
+          it.click()
+        })
+      }
+    })
+  </script>
+</body>
+</html>

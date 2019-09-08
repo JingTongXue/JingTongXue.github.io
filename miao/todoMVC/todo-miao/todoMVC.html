@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .completed span {
+            text-decoration: line-through;
+        }
+
+        /* body {
+      counter-reset: count;
+    }
+    ul > li:not(.completed) {
+      counter-increment: count;
+    }
+
+    #count::before {
+      content: counter(count);
+    } */
+        ul[data-show="all"] {}
+
+        ul[data-show="active"] li.completed {
+            display: none;
+        }
+
+        ul[data-show="completed"] li:not(.completed) {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="todo-app"></div>
+    <script>
+        var showingCategory = "all";
+        var todos = [{
+            done: true,
+            content: 'eat',
+        }, {
+            done: true,
+            content: 'drink',
+        }, {
+            done: false,
+            content: 'sleep',
+        }]
+
+        var todoAppEl = document.querySelector('#todo-app');
+
+        function showing(todo, idx) {
+        if (showingCategory === 'all') {
+            return true
+        }
+        if (showingCategory === 'active') {
+            return !todo.done
+        }
+        if (showingCategory === 'completed') {
+            return todo.done
+        }
+        }
+
+        function render() {
+            var html = `
+      <div>
+        <input type="checkbox" id="select-all">
+        <input type="text" id="todo-input" class="todo-input">
+      </div>
+      <div>
+          <ul id="todo-list" data-show="all">
+            ${todos.filter(showing).map((todo, idx) => {
+                return `
+                    <li data-idx="${idx}" class="${todo.done ? 'completed' : 'uncompleted'}">
+                        <input type="checkbox" ${todo.done ? 'checked' : ''}/>
+                        <span>${todo.content}</span>
+                        <input type="text"value="${todo.content}"/>
+                        <button class="delete-todo">&times;</button>
+                    </li>
+                `
+            }).join('')
+        }
+          </ul>
+      </div>
+      <div>
+        <span>${todos.filter(todo => !todo.done).length} item ${todos.filter(todo => !todo.done).length > 1 ? 's':''} left</span>
+        <span>
+            <label><input type="radio" ${showingCategory == 'all' ? 'checkbox' : ''} name="category"> All</label>
+            <label><input type="radio" ${showingCategory == 'active' ? 'checkbox' : ''} name="category"> Active</label>
+            <label><input type="radio" ${showingCategory == 'completed' ? 'checkbox' : ''} name="category"> Completed</label>
+        </span>
+        ${
+            todos.some(todo => todo.done) ? 
+            '<button>Clear Completed</button>' 
+            : 
+            ''
+        }
+      </div>
+      `;
+            todoAppEl.innerHTML = html;
+        }
+        render();
+
+        //添加
+        todoAppEl.addEventListener('keyup', e => {
+            if (e.target.matches('input.todo-input')) {
+                if (e.keyCode == 13) {
+                    var todoText = e.target.value.trim();
+                    if(todoText){
+                        todos.push({
+                            done: false,
+                            content: todoText,
+                        })
+                        render()
+                    }
+                }
+            }
+        })
+
+        //删除
+        todoAppEl.addEventListener('click', e => {
+            if (e.target.matches('button.delete-todo')) {
+                var idx = parseInt(e.target.parentNode.dataset.idx);
+
+                todos.splice(idx, 1)
+
+                render()
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>
