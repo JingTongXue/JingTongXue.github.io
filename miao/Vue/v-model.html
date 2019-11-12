@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+
+<body>
+
+    <div id="components-date">
+        <captha-input></captha-input>
+    </div>
+
+    <script>
+        // Vue.component('regexp-input', {
+        //     props: {
+        //         value: {
+        //             type: RegExp,
+        //             requ
+        //         }
+        //     },
+        //     data: function () {
+
+        //     },
+        //     template: `
+        //         <span style="display:inline-block;border:2px solid;padding:5px;">
+        //             <input type="text">
+        //             <span>
+        //                 <input type="checkbox" v-for=""/>
+        //             </span>
+        //         </span>
+        //     `,
+        //     methods: {
+                
+        //     }
+        // })
+
+        
+        Vue.component('captha-input',{
+            template:`
+                <span>
+                    <input type="text" @keyup="keyup" v-for="idx of 6">
+                </span>
+             `,
+             methods:{
+                keyup:function(e){
+                    if(e.key == 'Backspace'){
+                        var prev = e.target.previousElementSilbling;
+                        if(prev){
+                            prev.value = '';
+                            prev.focus();
+                        }
+                    }
+                    if(e.target.value.trim().length){
+                        if(e.target.nextElementSibling){
+                            e.target.nextElementSibling.focus();
+                        }else{
+                            this.$emit('input.complete');
+                        }
+                    }
+                }
+             },
+             data(){
+                return {
+
+                }
+             }
+        })
+
+        var app = new Vue({
+            el:'#components-date'
+        })
+    </script>
+</body>
+
+</html>

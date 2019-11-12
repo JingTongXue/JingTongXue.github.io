@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Click</title>
+  <style>
+    .circle{
+      width: 300px;
+      height: 300px;
+      /* border: 1px solid; */
+      border-radius:50% ;
+      margin: auto;
+      position: relative;
+      box-shadow: 0 0 20px 10px rgb(165, 164, 164);
+    }
+    .num{
+      width: 10px;
+      height: 10px;
+     
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin: -10px 0 0 -5px;
+    }
+    .hour{
+      
+      width: 10px;
+      height: 75px;
+      position: absolute;
+      bottom:50%;
+      left:50%;
+      background: #000a;
+      /* margin: -2px 0 0 -2px; */
+      transform-origin: 50% 100%;
+     
+    }
+    @keyframes myhour {
+     from { transform: rotate(0deg); }
+     to   { transform: rotate(360deg); }
+    }
+    .minute{
+      width: 6px;
+      /* border: 1px solid; */
+      height: 100px;
+    
+      position: absolute;
+      bottom:50%;
+      left:50%;  
+      transform-origin: center 100%;
+      background: #000a;
+      /* animation:mymin 3600 * 60s steps(60) infinite; */
+    }
+    @keyframes mymin {
+     from { transform: rotate(0deg) }
+     to   { transform: rotate(360deg) }
+    }
+    .seconed{
+      width: 2px;
+      height: 115px;
+      position: absolute;
+      bottom:50%;
+      left:50%;
+      
+      transform-origin: center 100%;
+      
+      /* animation:mysec 60s steps(60) infinite; */
+      
+    }
+    @keyframes mysec {
+     from { transform: rotate(0deg); }
+     to   { transform: rotate(360deg); }
+    }
+    .seconed::before{
+      content: "";
+    
+      height: 115px;
+      display: block;
+      
+      transform-origin: center 90%;
+      background: red;
+      animation: beats 1s infinite  ;
+      border-radius: 50% 50% 0 0/30% 30% 0 0;
+    }
+    @keyframes beats {
+     0% { transform: rotate(0deg)}
+     5% { transform: rotate(1deg)}
+     10%   { transform: rotate(0deg)}
+     15%   { transform: rotate(-1deg)}
+     20%  { transform: rotate(0deg)}
+     100%  { transform: rotate(0deg)}
+    }
+    .centerCircle{
+      width: 20px;
+      height: 20px;
+     
+      border-radius:50% 50% ;
+      background-color:  #000;
+      position: absolute;
+      top:50%;
+      left:50%;
+      z-index: 1;
+      transform: translate(-50%,-50%);
+     
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <section class="circle">
+      <div class="centerCircle"></div>
+      <div class="pointer">
+        <div class="hour"></div>
+        <div class="minute"></div>
+        <div class="seconed"></div>
+      </div>
+   
+   </section>
+
+  <script>
+  const fragment = document.createDocumentFragment()
+  const circle = document.querySelector(".circle")
+
+  const hour = document.querySelector(".hour")
+  const minute = document.querySelector(".minute")
+  const seconed = document.querySelector(".seconed")
+
+  let time = new Date()
+  let hours = time.getHours()
+  let minutes = time.getMinutes()
+  let seconeds = time.getSeconds() + time.getMilliseconds()/1000
+  
+  window.addEventListener("load",() =>{
+
+    for(let i = 1;i <=12;i++) {
+      const timeDiv = document.createElement("div")
+      timeDiv.className = "num"
+      timeDiv.innerText = i
+      timeDiv.style.transform = `rotate(${i * 30}deg) translateY(-125px) rotate(${-i *30}deg)`
+      
+      
+      fragment.appendChild(timeDiv)
+    }
+    circle.appendChild(fragment)
+  })
+
+    
+    hour.style.animation =  `myhour ${3600 * 12}s steps(12) -${(hours% 12) * 3600}s  infinite` 
+
+    minute.style.animation = `mymin ${60 * 60}s steps(60) -${minutes*60}s infinite`
+    seconed.style.animation = `mysec 60s steps(60) -${seconeds}s infinite`
+  
+
+  </script>
+</body>
+</html>

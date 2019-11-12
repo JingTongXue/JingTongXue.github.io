@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="vuex.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+
+<body>
+    <div id="app">
+        <todo-app></todo-app>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="lodash.min.js"></script>
+    <script src="vue-router.js"></script>
+    <script>
+
+        const store = new Vuex.Store({
+            state: {
+                todos: [{
+                    content: 'eat',
+                    done: false,
+                }, {
+                    content: 'drink',
+                    done: true,
+                }, {
+                    content: 'fasd',
+                    done: true,
+                }],
+                showingCategory: 'all',
+            },
+            getters: {
+                showingTodos(state) {
+                    if (state.showingCategory == 'all') {
+                        return state.todos;
+                    } else if (state.showingCategory == 'active') {
+                        return state.todos.filter(it => !it.done);
+                    } else if (state.showingCategory == 'comleted') {
+                        return state.todos.filter(it => it.done);
+                    }
+                }
+            },
+            mutations: {
+                //添加
+                addTodo(state, content) {
+                    state.todos.push({
+                        content,
+                        done: false,
+                    })
+                },
+                //删除
+                deleteTodo(state, todo) {
+                    state.todos = state.todos.filter(it => it !== todo);
+                },
+                //修改单个状态
+                toggleState(state, todo) {
+                    todo.done = !todo.done;
+                },
+                //修改全部状态
+                toggleSelectAll(state) {
+                    //如果下面的按钮全为true
+                    if (state.todos.every(it => it.done)) {
+                        //则将其全部改为false
+                        state.todos.forEach(it => {
+                            it.done = false;
+                        })
+                        //否则就全改为true
+                    } else {
+                        state.todos.forEach(it => {
+                            it.done = true;
+                        })
+                    }
+                }
+            }
+        })
+
+        Vue.component('todo-app', {
+            template: `
+                <div>
+                    <todo-input></todo-input>
+                    <todo-list ></todo-list>
+                    <todo-footer></todo-footer>
+                </div>
+            `,
+        })
+
+        Vue.component('todo-input', {
+            computed: {
+                todos() {
+                    return store.state.todos;
+                }
+            },
+            template: `
+                <div>
+                    <input 
+                        type="checkbox" 
+                        @click="toggleSelectAll"
+                        :checked="todos.every(it => it.done)" >
+                    <input 
+                        type="text" 
+                        v-model.trim="todoText"
+                        @keyup.enter="addTodo ">
+                </div>
+            `,
+            methods: {
+                addTodo() {
+                    if (this.todoText) {
+                        store.commit('addTodo', this.todoText);
+                        this.todoText = ""
+                    }
+                },
+                toggleSelectAll(e) {
+                    store.commit('toggleSelectAll')
+                }
+            },
+            data() {
+                return {
+                    // todos:store.state.todos,
+                    todoText: ''
+                }
+            }
+
+        })
+
+        Vue.component('todo-list', {
+            template: `
+                <ul>
+                    <todo-item 
+                        v-for="(todo, idx) of todos" :todo="todo"
+                        :key="idx" 
+                    >
+                    </todo-item>
+                </ul>
+            `,
+            computed: {
+                todos() {
+                    return store.getters.showingTodos;
+                }
+            }
+        })
+
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: `
+                <li>
+                    <input type="checkbox" :checked="todo.done" @click="toggleState ">
+                    <span>{{ todo.content }}</span>
+                    <button @click="deleteTodo">x</button>
+                </li>
+            `,
+            methods: {
+                toggleState() {
+                    // console.log(this.todo)
+                    store.commit('toggleState', this.todo);
+                },
+                deleteTodo() {
+                    store.commit('deleteTodo', this.todo);
+                }
+            }
+        })
+
+        Vue.component('todo-footer', {
+            template: `
+                <div>
+                    <span>{{todos.filter(todo => !todo.done).length}} item{{todos.filter(todo => !todo.done).length > 1 ? 's' : ''}} left</span>
+                    <span>
+                        <label><input type="radio" @click="allTodo" checked name="category">All</label>
+                        <label><input type="radio" @click="ActiveTodo" name="category">Active</label>
+                        <label><input type="radio" @click="comletedTodo" name="category">Comleted</label>
+                    </span>
+                    <button :style="clearDisplay" @click="deleteClear">Clear Completed</button>
+                </div>
+            `,
+            computed: {
+                todos() {
+                    return store.state.todos
+                },
+                clearDisplay(){
+                    if(store.state.todos.every(it => !it.done)){
+                        return  'display:none';
+                    }else{
+                        return  '';
+                    }
+                },
+                
+            },
+            methods: {
+                allTodo: function () {
+                    store.state.showingCategory = 'all';
+                },
+                ActiveTodo: function () {
+                    store.state.showingCategory = 'active';
+                },
+                comletedTodo: function () {
+                    store.state.showingCategory = 'comleted';
+                },
+                deleteClear(){
+                    store.state.todos = store.state.todos.filter(it => !it.done)
+                }
+            }
+        })
+
+
+        var app = new Vue({
+            el: '#app',
+            store: store,
+        })
+    </script>
+</body>
+
+</html>

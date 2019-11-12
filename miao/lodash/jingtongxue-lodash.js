@@ -23,7 +23,6 @@ var jingtongxue = {
     return array.filter(x => !arrays.flat().includes(x))
   },
   includes: function (coll, value, from) {
-
     if (typeof coll == "string") {//字符串
       var re = new RegExp(value);
       if (re.test(coll)) {
@@ -56,7 +55,7 @@ var jingtongxue = {
     }
     var iterator = values.pop()
     if (typeof iterator == "function") {
-        return array.filter(x => !values.flat().map(it => iterator(it)).includes(iterator(x)))
+      return array.filter(x => !values.flat().map(it => iterator(it)).includes(iterator(x)))
     }
     if (typeof iterator == "string") {
       return array.filter(it => !values.flat().map(x => x[iterator]).includes(it[iterator]))
@@ -245,28 +244,28 @@ var jingtongxue = {
       return jingtongxue.matchesProperty(value);
     }
   },
-  dropRightWhile: function (array,predicate = jingtongxue.identity) {
+  dropRightWhile: function (array, predicate = jingtongxue.identity) {
     var res = array.slice();
-    if(!jingtongxue.isFunction(predicate)){
+    if (!jingtongxue.isFunction(predicate)) {
       predicate = jingtongxue.iterate(predicate);
     }
-    for(let i = 0;i < array.length;i--){
-      if(predicate(array[i])){
-        return res.slice(0,i - 1);
+    for (let i = 0; i < array.length; i--) {
+      if (predicate(array[i])) {
+        return res.slice(0, i - 1);
       }
     }
   },
-  isFunction: function(value){
+  isFunction: function (value) {
     return Object.prototype.toString.call(value) == "[object Function]";
   },
-  identity :function(...value){
+  identity: function (...value) {
     return value[0];
   },
   dropWhile: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
-    for(let i = 0;i < array.length;i++){
-      if(!predicate(array[i],i,array)){
-        return  array.slice(i);
+    for (let i = 0; i < array.length; i++) {
+      if (!predicate(array[i], i, array)) {
+        return array.slice(i);
       }
     }
   },
@@ -274,187 +273,229 @@ var jingtongxue = {
   map: function (array, predicate) {
     predicate = jingtongxue.iterate(predicate);
     var result = [];
-    for(var i = 0;i < array.length;i++){
-      result.push(predicate(array[i],i,array));
+    for (var i = 0; i < array.length; i++) {
+      result.push(predicate(array[i], i, array));
     }
     return result;
   },
-  fill :function(array,value,start,end){
-    if(start >= 0 && end >= 0){
-      for(var i = start;i < end;i++){
+  fill: function (array, value, start, end) {
+    if (start >= 0 && end >= 0) {
+      for (var i = start; i < end; i++) {
         array[i] = value;
       }
-    }else{
-      for(var i = 0;i < array.length;i++){
+    } else {
+      for (var i = 0; i < array.length; i++) {
         array[i] = value;
       }
     }
     return array;
   },
-  findIndex : function(array,predicate = jingtongxue.identity,fromIndex = 0){
+  findIndex: function (array, predicate = jingtongxue.identity, fromIndex = 0) {
     predicate = jingtongxue.iterate(predicate);
-    for(let i = fromIndex;i < array.length;i++){
-      if(predicate(array[i])){
+    for (let i = fromIndex; i < array.length; i++) {
+      if (predicate(array[i])) {
         return i;
       }
     }
     return -1;
   },
-  findLastIndex :function(array,predicate = jingtongxue.identity,fromIndex = array.length - 1){
+  findLastIndex: function (array, predicate = jingtongxue.identity, fromIndex = array.length - 1) {
     predicate = jingtongxue.iterate(predicate);
-    for(let i = fromIndex;i >= 0;i--){
-      if(predicate(array[i])){
+    for (let i = fromIndex; i >= 0; i--) {
+      if (predicate(array[i])) {
         return i;
       }
     }
     return -1;
   },
-  flatten :function(array){
+  flatten: function (array) {
     var result = [];
-    for(var ary of array){
-      if(Object.prototype.toString.call(ary) == "[object Array]"){
-        for(var ar of ary){
+    for (var ary of array) {
+      if (Object.prototype.toString.call(ary) == "[object Array]") {
+        for (var ar of ary) {
           result.push(ar);
         }
-      }else{
+      } else {
         result.push(ary);
       }
     }
     return result;
   },
-  flattenDeep :function(array,result = []){
-    for(var ary of array){
-      if(Object.prototype.toString.call(ary) == "[object Array]"){
-        jingtongxue.flattenDeep(ary,result);
-      }else{
+  flattenDeep: function (array, result = []) {
+    for (var ary of array) {
+      if (Object.prototype.toString.call(ary) == "[object Array]") {
+        jingtongxue.flattenDeep(ary, result);
+      } else {
         result.push(ary);
       }
     }
     return result;
   },
-  flattenDepth :function(array,depth,result = []){
-    for(var ary of array){
-      if(Object.prototype.toString.call(ary) == "[object Array]" && depth != 0 ){
-        jingtongxue.flattenDepth(ary,depth - 1,result);
-      }else{
+  flattenDepth: function (array, depth, result = []) {
+    for (var ary of array) {
+      if (Object.prototype.toString.call(ary) == "[object Array]" && depth != 0) {
+        jingtongxue.flattenDepth(ary, depth - 1, result);
+      } else {
         result.push(ary);
       }
     }
     return result;
   },
-  fromPairs :function(pairs){
+  fromPairs: function (pairs) {
     var result = {};
-    for(var pari of pairs){
+    for (var pari of pairs) {
       result[pari[0]] = pari[1];
     }
     return result;
   },
-  head :function(array){
+  head: function (array) {
     var len = array.length;
-    return len == 0? undefined : array[0];
+    return len == 0 ? undefined : array[0];
   },
-  indexOf :function(array,value,fromIndex = 0){
-    if(jingtongxue.isNaN(value)){
-      for(var i = 0;i < array.length;i++){
-        if(isNaN(array[i])){
+  indexOf: function (array, value, fromIndex = 0) {
+    if (jingtongxue.isNaN(value)) {
+      for (var i = 0; i < array.length; i++) {
+        if (isNaN(array[i])) {
           return i;
         }
       }
       return -1;
     }
-    for(let i = fromIndex;i < array.length;i++){
-      if(array[i] == value){
+    for (let i = fromIndex; i < array.length; i++) {
+      if (array[i] == value) {
         return i;
       }
     }
     return -1
-    },
-    initial :function(array){
-      // array.pop();
-      // return array;
-      return array.slice(0,array.length - 1);
-    },
-    isNaN :function(value){
-      return jingtongxue.isNumber(value) && +value !== value;
-    },
-    isNative :function(value){
-      
-    },
-    isNil :function(value){
-      return value == null || value == undefined;
-    },
-    isNull :function(value){
-      return value === null;
-    },
-    isNumber :function(value){
-      return Object.prototype.toString.call(value) === "[object Number]" || Object.prototype.toString.call(value) === "[object Null]";
-    },
-    isObject :function(value){
-      return value instanceof Object;
-    },
-    isObjectLike :function(value){
-      return value != null && typeof value == "object";
-    },
-    isRegExp :function(value){
-      return Object.prototype.toString.call(value) == "[object RegExp]";
-    },
-    isSafeInteger :function(value){//~V~
-      return Number.isSafeInteger(value);
-    },
-    isSet :function(value){
-      return Object.prototype.toString.call(value) == "[object Set]";
-    },
-    isString :function(value){
-      return Object.prototype.toString.call(value) == "[object String]";
-    },
-    isSymbol :function(value){
-      return Object.prototype.toString.call(value) == "[object Symbol]";
-    },
-    isUndefined :function(value){
-      return Object.prototype.toString.call(value) == "[object Undefined]";
-    },
-    
-    reverse :function(array){
-      var ary = [];
-      for(var i = array.length - 1;i >= 0;i--){
-        ary.push(array[i]);
-      }
-      return ary;
-    },
-    intersection :function(...arrays){
-      var ary = arrays[0];
-      var result = [];
-      var de = false;
-      for(var i = 0;i < ary.length;i++){
-        for(var j = 1;j < arrays.length;j++){
-          if(arrays[j].indexOf(ary[i]) == -1){
-              break;
-          }
-          de = true;
-          if(de && result.length == 0){
-            result.push(ary[i]);
-          }
-        }
-      }
-      return result;
-    },
-    join :function(array,separator){
-      var str = "";
-      for(var i = 0;i < array.length;i++){
-        if(i == array.length - 1){
-          str +=  "" + array[i];
-        }else{
-          str += "" + array[i] + separator
-        }
-      }
-      return str;
-    },
-    last:function(array){
-      return array[array.length - 1];
-    },
-    lastIndexOf:function(array,value,){
+  },
+  initial: function (array) {
+    // array.pop();
+    // return array;
+    return array.slice(0, array.length - 1);
+  },
+  isNaN: function (value) {
+    return jingtongxue.isNumber(value) && +value !== value;
+  },
+  isNative: function (value) {
 
+  },
+  isNil: function (value) {
+    return value == null || value == undefined;
+  },
+  isNull: function (value) {
+    return value === null;
+  },
+  isNumber: function (value) {
+    return Object.prototype.toString.call(value) === "[object Number]" || Object.prototype.toString.call(value) === "[object Null]";
+  },
+  isObject: function (value) {
+    return value instanceof Object;
+  },
+  isObjectLike: function (value) {
+    return value != null && typeof value == "object";
+  },
+  isRegExp: function (value) {
+    return Object.prototype.toString.call(value) == "[object RegExp]";
+  },
+  isSafeInteger: function (value) {//~V~
+    return Number.isSafeInteger(value);
+  },
+  isSet: function (value) {
+    return Object.prototype.toString.call(value) == "[object Set]";
+  },
+  isString: function (value) {
+    return Object.prototype.toString.call(value) == "[object String]";
+  },
+  isSymbol: function (value) {
+    return Object.prototype.toString.call(value) == "[object Symbol]";
+  },
+  isUndefined: function (value) {
+    return Object.prototype.toString.call(value) == "[object Undefined]";
+  },
+
+  reverse: function (array) {
+    var ary = [];
+    for (var i = array.length - 1; i >= 0; i--) {
+      ary.push(array[i]);
     }
-  
+    return ary;
+  },
+  intersection: function (...arrays) {
+    var ary = arrays[0];
+    var result = [];
+    var de = false;
+    for (var i = 0; i < ary.length; i++) {
+      for (var j = 1; j < arrays.length; j++) {
+        if (arrays[j].indexOf(ary[i]) == -1) {
+          break;
+        }
+        de = true;
+        if (de && result.length == 0) {
+          result.push(ary[i]);
+        }
+      }
+    }
+    return result;
+  },
+  join: function (array, separator) {
+    var str = "";
+    for (var i = 0; i < array.length; i++) {
+      if (i == array.length - 1) {
+        str += "" + array[i];
+      } else {
+        str += "" + array[i] + separator
+      }
+    }
+    return str;
+  },
+  last: function (array) {
+    return array[array.length - 1];
+  },
+  lastIndexOf: function (array, value, ) {
+    if (jingtongxue.isNaN(value)) {
+      for (var i = 0; i < array.length; i++) {
+        if (isNaN(array[i])) {
+          return i;
+        }
+      }
+      return -1;
+    }
+    for (let i = fromIndex; i < array.length; i--) {
+      if (array[i] == value) {
+        return i;
+      }
+    }
+    return -1
+  },
+  sortedIndex :function(array,value){
+    for(var i = 0;i < array.length;i++){
+      if(array[i] < value){
+        return i + 1;
+      }
+    }
+  },
+  union:function(...arrays){
+    let result = [];
+    for(let i = 0;i < arrays.length;i++){
+      let array = arrays[i];
+      for(let j = 0;j < array.length;j++){
+        if(!jingtongxue.includes(result,array[j])){//如果该数不存在新建数组result中,则push进去
+          result.push(array[j]);
+        }
+      }
+    }
+    return result;
+  },
+  unionBy:function(...arrays){
+    let iter = arrays.pop();
+    let result = [];
+    if(Object.prototype.toString.call(iter) == "[object Function]"){
+      if(jingtongxue.includes(result)){
+        
+
+      }
+    }
+  }
+
 
 }

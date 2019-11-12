@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+
+  
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+      class Comp2 extends React.Component {
+        constructor(props) {
+          super(props)
+          console.log('constructor')
+
+          this.state = {
+            i: 0,
+          }
+        }
+        inc = () => {
+          this.setState({
+            i: this.state.i + 1
+          })
+        }
+        componentDidMount() {
+          console.log('componentDidMount')
+        }
+        UNSAFE_componentWillReceiveProps() {
+          console.log('componentWillReceiveProps')
+        }
+        UNSAFE_componentWillUpdate() {
+          console.log('componentWillUpdate')
+        }
+        componentWillUnmount() {
+          console.log('componentWillUnmount')
+        }
+        render() {
+          console.log('render')
+          return <h1 onClick={this.inc}>{this.props.count} - {this.state.i}</h1>
+        }
+      }
+
+      class Counter extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            count: this.props.start
+          }
+        }
+        static getDerivedStateFromProps(props, state) {
+          console.log(1)
+          return state
+        }
+        inc = () => {
+          this.setState({
+            count: this.state.count + 1
+          })
+        }
+        render() {
+          return (
+            <div>
+              <button onClick={this.inc}>{this.state.count}</button>
+            </div>
+          )
+        }
+      }
+
+      class Comp3 extends React.Component {
+        componentDidMount() {
+          console.log('comp3 componentDidMount')
+        }
+        UNSAFE_componentWillReceiveProps() {
+          console.log('comp3 componentWillReceiveProps')
+        }
+        UNSAFE_componentWillUpdate() {
+          console.log('comp3 componentWillUpdate')
+        }
+        componentWillUnmount() {
+          console.log('comp3 componentWillUnmount')
+        }
+
+        shouldComponentUpdate(nextProps, nextState) {
+          if (this.props.list === nextProps.list) {
+            return false
+          }
+          return true
+        }
+        
+        render() {
+          console.log('comp3 render')
+          return <h3>
+            i'm Comp3
+            {this.props.list.join('###')}
+            </h3>
+        }
+      }
+
+      class Comp1 extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            count: 0,
+            ary: [0,1],
+          }
+        }
+        componentDidMount() {
+          console.log('comp1 componentDidMount')
+        }
+        UNSAFE_componentWillReceiveProps() {
+          console.log('comp1 componentWillReceiveProps')
+        }
+        UNSAFE_componentWillUpdate() {
+          console.log('comp1 componentWillUpdate')
+        }
+        componentWillUnmount() {
+          console.log('comp1 componentWillUnmount')
+        }
+
+        inc = () => {
+          this.state.ary.push(Math.random())
+          this.setState({
+            count: this.state.count + 1
+          })
+        }
+
+        render() {
+          console.log('comp1 render')
+          return (
+            <div>
+              <Counter start={this.state.count} />
+              <Comp3 list={this.state.ary}/>
+              <p onClick={this.inc}>{this.state.count}</p>
+              {
+                this.state.count % 2 == 0 ?
+                <Comp2 count={this.state.count}/>
+                :
+                <p>hello</p>
+              }
+            </div>
+          )
+        }
+      }
+
+
+      ReactDOM.render(
+        <div>
+          <Comp1 />
+        </div>,
+        document.querySelector('#root')
+      )
+    
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      https://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      https://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

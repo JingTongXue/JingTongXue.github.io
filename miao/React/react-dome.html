@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // let item = []
+        // function Reeat(props){
+        //     for(let i = 0;i < props.numTimes;i++){
+        //         item.push(props.children(i));
+        //     }
+        //     return item;
+        // }
+    //     const components ={
+    //         photo:'photo',
+    //         video:'video',
+    //     }
+
+    //     function Story(props){
+    //         const  SpecificStory = components[props.storyType];
+    //         return <SpecificStory story={props.story}/>
+    //     }
+        
+    //     ReactDOM.render( 
+    //     <Story/>,
+    //     document.getElementById('root')
+    //   );
+    // class Clock extends React.Component {
+    //     constructor(props) {
+    //         super(props);
+    //         this.state = {
+    //             date: new Date()
+    //         };
+    //     }
+
+    //     componentDidMount() {//该方法会在组件已经被渲染到 DOM 中后运行
+    //         this.timerID = setInterval(() => this.tick(),1000);
+    //     }
+
+    //     componentWillUnmount() {
+    //         clearInterval(this.timerID);
+    //     }
+
+    //     tick(){
+    //         this.setState({
+    //             date:new Date()
+    //         });
+    //     }
+
+    //     render() {
+    //         return (
+    //             <div>
+    //                 <h1>Hello, world!</h1>
+    //                 <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+    //             </div>
+    //         );
+    //     }
+    // }
+    class CustomTextInput extends React.Component {
+        constructor(props) {
+            super(props);
+            // 创建一个 ref 来存储 textInput 的 DOM 元素
+            this.textInput = React.createRef();
+            this.focusTextInput = this.focusTextInput.bind(this);
+        }
+
+        focusTextInput() {
+            // 直接使用原生 API 使 text 输入框获得焦点
+            // 注意：我们通过 "current" 来访问 DOM 节点
+            this.textInput.current.focus();
+        }
+
+        render() {
+            // 告诉 React 我们想把 <input> ref 关联到
+            // 构造器里创建的 `textInput` 上
+            return (
+            <div>
+                <input
+                type="text"
+                ref={this.textInput} />
+
+                <input
+                type="button"
+                value="Focus the text input"
+                onClick={this.focusTextInput}
+                />
+            </div>
+            );
+        }
+    }
+    ReactDOM.render(
+        <CustomTextInput />,
+        document.getElementById('root')
+    );
+    </script>
+</body>
+
+</html>

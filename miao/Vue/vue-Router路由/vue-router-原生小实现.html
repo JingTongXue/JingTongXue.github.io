@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <a href="#/home">home</a>
+        <a href="#/about">about</a>
+        <a href="#/products">pro</a>
+        <main></main>
+    </div>
+
+    <script type="text/x-template" id="/home">home</script>
+    <script type="text/x-template" id="/about">about</script>
+    <script type="text/x-template" id="/products">products</script>
+
+
+    <script>
+        window.onhashchange = function(){
+            var pageUrl = location.hash.slice(1);
+            var pageHtml = document.getElementById(pageUrl).textContent;
+            document.querySelector('main').innerHTML = pageHtml;
+        }
+    
+    </script>
+</body>
+</html>

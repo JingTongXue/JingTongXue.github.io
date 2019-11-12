@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+  <script src="js/city2.js"></script>
+  <script type="text/javascript" src="js/citySelect2.js"></script>
+  <title>Document</title>
+ </head>
+ <body>
+
+	<div id="city_4">
+  		<select class="prov" id="prov4" data-code ="220000"></select> 
+    	<select class="city" id="city4" data-code ="220100"></select>
+        <select class="dist" id="area4" data-code ="220104"></select>
+    </div>
+
+	<div id="city_5">
+  		<select class="prov" id="prov5">
+			
+		</select> 
+    	<select class="city" id="city5"></select>
+        <select class="dist" id="area5"></select>
+    </div>
+	<script>
+			
+			var selectVal = new CitySelect({
+				data   : data,
+				provId : "#prov4",
+				cityId : '#city4',
+				areaId : '#area4'
+			});
+			
+			    
+			var selectVa2 = new CitySelect({
+				data   : data,
+				provId : "#prov5",
+				cityId : '#city5',
+				areaId : '#area5',
+				isSelect: false
+			});
+			
+	</script>
+ </body>
+</html>
