@@ -467,35 +467,114 @@ var jingtongxue = {
     }
     return -1
   },
-  sortedIndex :function(array,value){
-    for(var i = 0;i < array.length;i++){
-      if(array[i] < value){
+  sortedIndex: function (array, value) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] < value) {
         return i + 1;
       }
     }
   },
-  union:function(...arrays){
+  union: function (...arrays) {
     let result = [];
-    for(let i = 0;i < arrays.length;i++){
+    for (let i = 0; i < arrays.length; i++) {
       let array = arrays[i];
-      for(let j = 0;j < array.length;j++){
-        if(!jingtongxue.includes(result,array[j])){//如果该数不存在新建数组result中,则push进去
+      for (let j = 0; j < array.length; j++) {
+        if (!jingtongxue.includes(result, array[j])) {//如果该数不存在新建数组result中,则push进去
           result.push(array[j]);
         }
       }
     }
     return result;
   },
-  unionBy:function(...arrays){
-    let iter = arrays.pop();
-    let result = [];
-    if(Object.prototype.toString.call(iter) == "[object Function]"){
-      if(jingtongxue.includes(result)){
-        
-
+  unionBy: function (...arrays) {
+    let iteratee = arrays.pop();//迭代函数
+    let array = arrays.reduce((pre, cur) => pre.concat(cur));//将所有数组合并
+    let map = [];
+    let ary = [];
+    if (Object.prototype.toString.call(iteratee) === "[object Function]") {
+      for (let a of array) {
+        let newItem = iteratee(a);
+        if (!jingtongxue.includes(map, newItem)) {
+          map.push(newItem);
+          ary.push(a);
+        }
+      }
+      return ary;
+    }
+    if (Object.prototype.toString.call(iteratee) === "[object String]") {
+      for (let a of array) {
+        if (!jingtongxue.includes(map, a.iteratee)) {
+          map.push(a.iteratee);
+          ary.push(a);
+        }
+      }
+      return ary;
+    }
+  },
+  uniq: function (array) {
+    let ary = [];
+    for (let a of array) {
+      if (ary.indexOf(a) == -1) {
+        ary.push(a);
       }
     }
-  }
+    return ary;
+  },
+  uniqBy:function(array,iteratee) {
+    // let iteratee = array.pop();
+    let map = [];
+    let ary = [];
+    if (Object.prototype.toString.call(iteratee) === "[object Function]") {
+      for(let a of array) {
+        let newItem = iteratee(a);
+        if (!jingtongxue.includes(map, newItem)) {
+          map.push(newItem);
+          ary.push(a);
+        }
+      }
+      return ary;
+    }
+    if (Object.prototype.toString.call(iteratee) === "[object String]") {
+      for(let a of array) {
+        if (!jingtongxue.includes(map, a[iteratee])) {
+          map.push(a[iteratee]);
+          ary.push(a);
+        }
+      }
+      return ary;
+    }
+  },
+  unzip: function(arrays){
+    let len = arrays[0].length;//新建二维数组的长度就是数组的子数组的长度
+    let newAry = new Array(len).fill(0).map(it => it = new Array(arrays.length));
+    for(let i = 0;i < newAry.length;i++){
+      for(let j = 0;j < arrays.length;j++){
+        newAry[i][j] = arrays[j][i];
+      }
+    }
+    return newAry;
+  },
+  without:function(array,...values){
+    var result = [];
+    for(var a of array){
+      if(!jingtongxue.includes(values,a)){
+        result.push(a);
+      }
+    }
+    return result;
+  },
+  zip: function(...arrays){
+    //输入的子数组长度可能不一,取最大长度的子数组
+    let maxLen = arrays.reduce((prev,curArr) => Math.max(prev,curArr.length),0);
+    //新建一个二维数组,数组长度为子数组最大长度,子数组长度为输入数组的长度
+    let newAry = new Array(maxLen).fill(0).map(it => it = new Array(arrays,length));
+    for(let i = 0;i < newAry.length;i++){
+      for(let j = 0;j < arrays.length;j++){
+        newAry[i][j] = arrays[j][i];
+      }
+    }
+    return newAry; 
+  },
 
 
 }
