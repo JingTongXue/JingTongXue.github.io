@@ -6,7 +6,7 @@ const path = require('path');
 
 const port = 8090;
 const baseDir = __dirname
-
+//
 const server = http.createServer((req, res) => {
     console.log(req.method, req.url);
     //path.join方法使用特定的分隔符作为定界符将给定的path片段连接在一起,用以规范话路径
