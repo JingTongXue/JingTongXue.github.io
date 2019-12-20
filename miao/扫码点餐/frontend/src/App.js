@@ -9,7 +9,9 @@ import RestaurantManage from './RestaurantManage';
 import Login from './Login';
 import HomePage from './HomePage';
 import OrderSuccess from './OrderSuccess';
-import history from './history'
+import history from './history';
+import Register from './Register';
+import Resetps from './Resetps';
 //路由
 /**
  *  扫码进入的页面,选择人数:/landing/restaurant/35/desk/20  
@@ -29,12 +31,14 @@ function App() {
   return (
     <HashRouter history={history}>
       <Switch>
-        <Route path="/" exact component={HomePage}/>
+        <Route path="/" exact component={Login}/>
         <Route path="/landing/r/:rid/d/:did" component={LandingPage}/>
         <Route path="/r/:rid/d/:did/c/:count" component={FoodCart}/>
         <Route path="/r/:rid/d/:did/o/:id/order-success" component={OrderSuccess}/>
-        <Route path="/manage" component={RestaurantManage}/>
+        <Route path="/restaurant/:rid/manage" component={RestaurantManage}/>
         <Route path="/login" component={Login}/>
+        <Route path="/register" component={Register}/>
+        <Route path="/resetps" component={Resetps}/>
       </Switch>
     </HashRouter>
   );

@@ -17,31 +17,25 @@ let db
 
 const changePasswordTokenMap = {}
 const mailer = require('./mailer')
+const app = express.Router();
 
-const app = express.Router()
-
+//注册账户
 app.route('/register')
   .post(uploader.single('avatar'), async (req, res, next) => {
     var regInfo = req.body
-
     var user = await db.get('SELECT * FROM users WHERE name=?', regInfo.name)
-
     if (user) {
-
       if (req.file) {
         await fsp.unlink(req.file.path)
       }
-
-      res.status(401).json({
+      res.json({
         code: -1,
         msg: '用户名已被占用'
       })
-
     } else {
       await db.run('INSERT INTO users (name, email, password, title) VALUES (?,?,?,?)',
         regInfo.name, regInfo.email, regInfo.password, regInfo.title
       )
-
       res.json({
         code: 0,
         msg: '注册成功'
@@ -71,27 +65,27 @@ app.get('/userinfo', async (req, res, next) => {
     })
   }
 })
-
+//用户登录
 app.route('/login')
   .post(async (req, res, next) => {
     var tryLoginInfo = req.body
     console.log(tryLoginInfo)
-
     var user = await db.get('SELECT id,name,title FROM users WHERE name=? AND password=?',
       tryLoginInfo.name, tryLoginInfo.password
     )
-
+    console.log(user);
     if (user) {
       res.cookie('userid', user.id)
       res.json(user)
     } else {
-      res.status(403).json({code: -1, msg: '用户名或密码错误'})
+      res.json({code: -1, msg: '用户名或密码错误'})
     }
   })
 
+  //重置密码
 app.route('/forgot')
   .post(async (req, res, next) => {
-    var email = req.body.email
+    var email = req.body.email;
     var user = await db.get('SELECT * FROM users WHERE email=?', email)
     if (!user) {
       res.json({
@@ -99,30 +93,30 @@ app.route('/forgot')
         msg: '不存在此用户'
       })
     }
+    await db.run(`UPDATE users SET name=?,password=? WHERE email=?`,
+                  req.body.username,req.body.password,req.body.email);
+    res.json({code:0})
 
-    var token = Math.random().toString().slice(2)
+    // var token = Math.random().toString().slice(2)
+    // changePasswordTokenMap[token] = email
+    // setTimeout(() => {
+    //   delete changePasswordTokenMap[token]
+    // }, 60 * 1000 * 20)//20分钟后删除token
+    // var link = `http://localhost:3005/change-password/${token}`
 
-    changePasswordTokenMap[token] = email
+    // console.log(link)
 
-    setTimeout(() => {
-      delete changePasswordTokenMap[token]
-    }, 60 * 1000 * 20)//20分钟后删除token
-
-    var link = `http://localhost:3005/change-password/${token}`
-
-    console.log(link)
-
-    mailer.sendMail({
-      from: '285696737@qq.com',
-      to: email,
-      subject: '密码修改',
-      text: link
-    }, (err, info) => {
-      res.json({
-        code: 0,
-        msg: '已向您的邮箱发送密码重置链接，请于20分钟内点击链接修改密码！'
-      })
-    })
+    // mailer.sendMail({
+    //   from: '285696737@qq.com',
+    //   to: email,
+    //   subject: '密码修改',
+    //   text: link
+    // }, (err, info) => {
+    //   res.json({
+    //     code: 0,
+    //     msg: '已向您的邮箱发送密码重置链接，请于20分钟内点击链接修改密码！'
+    //   })
+    // })
   })
 
 app.route('/change-password/:token')
@@ -140,9 +134,7 @@ app.route('/change-password/:token')
     }
 
     delete changePasswordTokenMap[token]
-    
     await db.run('UPDATE users SET password=? WHERE email=?', md5(md5(password)), email)
-
     res.end({
       code: 0,
       msg: '密码修改成功'

@@ -2,51 +2,52 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const io = require('./io-server');
+var fs = require('fs');
+const sharp = require('sharp');
 
 var deskCartMap = new Map();
-
-io.restaurant.on('connection',socket => {
+//监听connection事件
+io.restaurant.on('connection', socket => {
     console.log('restaurant client in');
-
     var restaurant = socket.handshake.query.restaurant;
     socket.join(restaurant)
 })
 
-io.desk.on('connection', socket => {
-    console.log('someone on');
 
-    var desk = socket.handshake.query.desk;
-    if (!desk) {
-        socket.close()
-        return
-    }
-    socket.join(desk)
+ioServer.on('connection', socket => {
+    console.log('someone on');;
 
-    var cartFood = deskCartMap.get(desk);
+    socket.on('join restaurant', restaurant => {
+        socket.join(restaurant);
+    })
 
-    if (!cartFood) {
-        cartFood = []
-        deskCartMap.set(desk, cartFood)
-    }
-
-    socket.emit('cart food', cartFood || [])
+    socket.on('join desk', desk => {
+        console.log('join desk', desk);
+        socket.join(desk);
+        var cartFood = deskCartMap.get(desk);
+        if (!cartFood) {
+            deskCartMap.set(desk, []);
+        }
+        socket.emit('cart food', cartFood || []);
+    })
     socket.on('new food', info => {
         var foodAry = deskCartMap.get(info.desk);
         var idx = foodAry.findIndex(it => it.food.id === info.food.id);
-        if (idx >= 0) {
-            if (info.amount === 0) {
-                foodAry.splice(idx, 1)
+        if (idx >= 0) {//如果订单中存在此菜品
+            if (info.amount === 0) {//如果此菜品数量为0(顾客不点此菜)
+                foodAry.splice(idx, 1);//就将其菜品从订单中删除
             } else {
-                foodAry[idx].amount = info.amount
+                foodAry[idx].amount = info.amount;//否则就将其菜品数量更新
             }
-        } else {
+        } else {//否则就将此菜品添加进订单
             foodAry.push({
-                food: info.food,
-                amount: info.amount,
+                food:info.food,
+                amount:info.amount,
             })
-            // deskCartMap.get(info.desk).push({food:info.food, amount:info.amount})
-            io.desk.in(desk).emit('new food', info);
         }
+        console.log(foodAry);
+        
+        ioServer.in(info.desk).emit('new food', info);
     })
 
 })
@@ -151,9 +152,12 @@ app.post('/restaurant/:rid/desk/:did/order', async (req, res, next) => {
     res.json(order);
 
     var desk = 'desk:' + did
-    deskCartMap.set(desk, [])
-    io.desk.in(desk).emit('placeorder success', order)
-    io.restaurant.in('restaurant'+ rid).emit('new order',order);
+    deskCartMap.set(desk, []);
+    ioServer.in(desk).emit('placeorder success', order);
+    // io.restaurant.in('restaurant' + rid).emit('new order', order);
+    //发送一个new order事件,参数为order(新添加的的订单);
+    ioServer.emit('new order', order);
+
 })
 
 
@@ -202,13 +206,25 @@ app.route('/restaurant/:rid/order/:ord')
 
     })
 //更改订单状态
-app.route('/restaurant/:rid/order/:ord/status')
+app.route('/restaurant/:rid/order/:oid/status')
     .put(async (req, res, next) => {
+        console.log(req.body.status);
+        
         await db.run(`
                     UPDATE orders SET status = ?
                         WHERE id = ? AND rid = ?`,
             req.body.status, req.params.oid, req.cookies.userid);
-        res.json(await db.get(`SELECT * FROM orders WHERE id = ?`, req.params.oid));
+        let order =  await db.get(`SELECT * FROM orders WHERE id = ?`, req.params.oid)   
+        console.log(order);
+        
+        res.json(order);
+    })
+//查询最新订单(单个)
+app.route('/restaurant/order')
+    .get(async (req,res,next) => {
+        var order = await db.get('SELECT * from orders where id = (SELECT max(id) FROM orders)')
+        order.details = JSON.parse(order.details);
+        res.json(order);
     })
 
 
@@ -237,7 +253,22 @@ app.route('/restaurant/:rid/food')
     //<imput type="file" name="img"/>
     .post(uploader.single('img'), async (req, res, next) => {
         // 增加一个菜品
-        console.log(req.file);
+        var tryLoginInfo = req.body
+        console.log(tryLoginInfo,'000000')
+        console.log(req.file,'图');
+        let img = 'noPhoto.jpg';
+        if(req.file){
+            console.log('上传图片');
+            const image = req.file.filename;
+            await sharp(path.resolve(req.file.destination,image))
+            .resize(300,300)
+            .toFile(path.resolve(req.file.destination,`resized${image}`))
+            .catch(console.log)
+            fs.unlinkSync(path.resolve(req.file.destination,image));
+            img = `resized${image}`;
+        }
+        console.log(img);
+        var status = 'on';
 
         await db.run(`
             INSERT INTO foods (rid, name, price, status, desc, category, img) 
@@ -246,10 +277,10 @@ app.route('/restaurant/:rid/food')
             req.cookies.userid,
             req.body.name,
             req.body.price,
-            req.body.status,
+            status,
             req.body.desc,
             req.body.category,
-            req.file.filename)
+            img)
         //添加完成后,查出刚添加的菜品
         var food = await db.get('SELECT * FROM foods ORDER BY id DESC LIMIT 1')
         //转为json后返回
@@ -257,10 +288,10 @@ app.route('/restaurant/:rid/food')
     })
 
 app.route('/restaurant/:rid/food/:fid')
+    //删除一个菜品
     .delete(async (req, res, next) => {
         var fid = req.params.fid;
         var userid = req.cookies.userid;
-        //删除一个菜品
         //先查询有无该菜品
         var food = await db.get('SELECT * FROM foods WHERE id = ? AND rid = ?', fid, userid);
         if (food) {//如果有则删除
@@ -274,20 +305,36 @@ app.route('/restaurant/:rid/food/:fid')
             })
         }
     })
+    //修改菜品信息
     .put(uploader.single('img'), async (req, res, next) => {
-        //修改菜品信息
         var fid = req.params.fid;
         var userid = req.cookies.userid;
         var food = await db.get('SELECT * FROM foods WHERE id = ? AND rid = ?', fid, userid);
-
+        console.log(req.file);
+        console.log(food,'food');
+        let img = 'noPhoto.jpg';
+        if(req.file){
+            console.log('上传图片');
+            const image = req.file.filename;
+            await sharp(path.resolve(req.file.destination,image))
+            .resize(300,300)
+            .toFile(path.resolve(req.file.destination,`resized${image}`))
+            .catch(console.log)
+            fs.unlinkSync(path.resolve(req.file.destination,image));
+            img = `resized${image}`;
+        }
+        console.log(img);
+        
         var newFoodInfo = {
-            name: req.body.name ? req.body.name : food.name,
-            price: req.body.price ? req.body.price : food.price,
-            status: req.body.status ? req.body.status : food.status,
-            desc: req.body.desc ? req.body.desc : food.desc,
-            category: req.body.category ? req.body.category : food.category,
-            img: req.file ? req.file.filename : food.img,
-        };
+            name: req.body.name !== 'undefined' ? req.body.name : food.name,
+            price: req.body.price !== 'undefined'? req.body.price : food.price,
+            status: food.status,
+            desc: req.body.desc !== 'undefined'? req.body.desc : food.desc,
+            category: req.body.category !== 'undefined'? req.body.category : food.category,
+            img: img !== 'undefined'? img : food.img,
+        };  
+        console.log(newFoodInfo,'    121');
+        
 
         if (food) {//如果有则对其修改
             await db.run(
@@ -302,14 +349,48 @@ app.route('/restaurant/:rid/food/:fid')
             //将新菜品返回
             res.json(food);
         } else {
-            res.status(401).json({
+            res.json({
                 code: -1,
                 msg: '不存在此菜品或您没有权限修改此菜品'
             })
         }
 
     })
+// 修改菜品上下架
+app.route('/restaurant/:rid/foods/:fid')
+    .put(async (req,res,next) => {
+        var fid = req.params.fid;
+        var userid = req.cookies.userid;
+        var food = await db.get('SELECT * FROM foods WHERE id = ? AND rid = ?', fid, userid);
+        if (food) {//如果有则对其修改
+            await db.run(
+                `
+                    UPDATE foods SET status = ?
+                     WHERE id = ? AND rid = ?
+                `,
+                req.body.status,
+                fid, userid);
+            //修改后的菜品
+            var food = await db.get('SELECT * FROM foods WHERE id = ? AND rid = ?', fid, userid);
+            //将新菜品返回
+            res.json(food);
+        } else {
+            res.json({
+                code: -1,
+                msg: '不存在此菜品或您没有权限修改此菜品'
+            })
+        }
+    })
 
+
+//查询单个菜品
+app.route('/restaurant/:rid/food/:fid')
+    .get(async (req,res,next) => {
+        var fid = req.params.fid;
+        var userid = req.cookies.userid;
+        var food = await db.get('SELECT * FROM foods WHERE id = ? AND rid = ?', fid, userid); 
+        res.json(food);
+    })
 
 //桌面管理api
 app.route('/restaurant/:rid/desk')
@@ -320,6 +401,8 @@ app.route('/restaurant/:rid/desk')
         res.json(deskList);
     })
     .post(async (req, res, next) => {
+        console.log(req.body,'00000');
+        
         // 增加一个桌子
         await db.run(`
             INSERT INTO desks (rid, name, capacity) VALUES (?, ?, ?)

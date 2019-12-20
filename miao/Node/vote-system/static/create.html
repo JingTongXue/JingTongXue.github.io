@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>创建投票</title>
+</head>
+<body>
+  <h2>创建投票</h2>
+  <form id="form" action="/create-vote" method="post">
+    <div><input type="text" placeholder="标题" name="title" required /></div>
+    <div><input type="text" placeholder="问题描述" name="desc" /></div>
+    <div><input type="text" placeholder="选项" name="options" /><button type="button" class="remove-option">-</button></div>
+    <div><input type="text" placeholder="选项" name="options" /><button type="button" class="remove-option">-</button></div>
+    <div id="add-option-wrap"><button type="button" id="add-option">添加选项</button></div>
+    <div><input type="datetime-local" placeholder="截止日期" name="deadline" /></div>
+    <div>
+      非匿名<input type="radio" checked value="1" name="anonymouse" />
+      匿名<input type="radio" value="0" name="anonymouse" />
+    </div>
+    <div>
+      <select name="singleSelection">
+        <option value="1">单选</option>
+        <option value="0">多选</option>
+      </select>
+    </div>
+    <div>
+      <button>创建投票</button>
+    </div>
+  </form>
+
+  <script>
+    var form = document.querySelector('#form');//form表单
+    var addOptionBtn = document.querySelector('#add-option');//添加选项按钮
+    var addOptionBtnWrap = document.querySelector('#add-option-wrap');//添加选项按钮div
+
+    form.addEventListener('click', e => {
+      if (e.target.matches('.remove-option')) {//如果点击的是删除按钮
+        e.target.parentNode.remove();//就将被点击的按钮父元素删除掉
+      }
+    })
+
+    addOptionBtn.addEventListener('click', e => {//点击添加按钮
+      var wrap = document.createElement('div');//新建一个div
+      wrap.innerHTML = '<input type="text" placeholder="选项"" name="options" /><button type="button" class="remove-option">-</button>';//给新建div赋予样式
+      form.insertBefore(wrap, addOptionBtnWrap);//将新建div添加到添加选项div之前
+    })
+  </script>
+</body>
+</html>
